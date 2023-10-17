@@ -66,7 +66,6 @@ class UserStateProvider with ChangeNotifier {
         // In the new flutter update, we don't need to add .data()
         userName = value['userName'],
         userEmail = value['userEmail'],
-        userDateOfBirth = value['userDateOfBirth'],
         userMobileNumber = value['userMobileNumber'],
       });
     }
