@@ -1,5 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
+import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'login.dart';
 
@@ -16,9 +18,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Login(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => UserStateProvider()),
+      ],
+
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Login(),
+      ),
     );
   }
 }
