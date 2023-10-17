@@ -16,10 +16,34 @@ class UserStateProvider with ChangeNotifier {
   String userDateOfBirth = '';
   String userMobileNumber = '';
 
+  bool isSignedUp = false;
   bool isLogged = false;
 
   UserStateProvider() {
     userInfo = db.collection(Strings.collection_admin);
+  }
+
+  // 회원가입
+  Future<bool> signUp(String email, String password, String name, String mobileNumber) async {
+    final newUser = await _authentication.createUserWithEmailAndPassword(
+        email: email, password: password);
+
+    await userInfo
+        .doc(newUser.user!.uid)
+        .set({
+      // 데이터의 형식은 항상 map 의 형태
+      'signUpTime' : DateTime.now(),
+      'userEmail' : email,
+      'userPassword' : password,
+      'userName' : name,
+      'userMobileNumber' : mobileNumber,
+    });
+
+    if( newUser.user != null ) {
+      isSignedUp = true;
+    }
+
+    return isSignedUp;
   }
 
   // 로그인
