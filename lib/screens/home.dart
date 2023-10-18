@@ -9,12 +9,42 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+
+  final tabBarLength = 2;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Oasis cafe'),
-        backgroundColor: Palette.buttonColor1,
+    return DefaultTabController(
+      length: tabBarLength,
+      child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          backgroundColor: Palette.backgroundColor1,
+          elevation: 0.0,
+          title: Text('Oasis cafe'),
+
+          bottom: const TabBar(
+            indicator: BoxDecoration(
+              color: Colors.white
+            ),
+            labelColor: Colors.brown,
+            unselectedLabelColor: Colors.white,
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.bold,
+            ),
+            unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.normal
+            ),
+
+            tabs: [
+              Tab(text: '신규/처리중 0',),
+              Tab(text: '완료 44',)
+            ],
+          ),
+        ),
+
+
+        body: Text('ddd'),
       ),
     );
   }
