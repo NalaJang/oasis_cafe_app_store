@@ -18,7 +18,7 @@ class _HomeState extends State<Home> {
       length: tabBarLength,
       child: Scaffold(
         appBar: AppBar(
-          automaticallyImplyLeading: false,
+          // automaticallyImplyLeading: false,
           backgroundColor: Palette.backgroundColor1,
           elevation: 0.0,
           title: Text('Oasis cafe'),
@@ -27,7 +27,7 @@ class _HomeState extends State<Home> {
             indicator: BoxDecoration(
               color: Colors.white
             ),
-            labelColor: Colors.brown,
+            labelColor: Palette.textColor1,
             unselectedLabelColor: Colors.white,
             labelStyle: TextStyle(
               fontWeight: FontWeight.bold,
@@ -43,8 +43,53 @@ class _HomeState extends State<Home> {
           ),
         ),
 
+        drawer: myDrawer(),
 
         body: Text('ddd'),
+      ),
+    );
+  }
+
+  Drawer myDrawer() {
+    return Drawer(
+      child: ListView(
+        children: [
+
+          // 새 메뉴 추가, 메뉴 정보 수정, 메뉴 품절 등
+          ListTile(
+            leading: Icon(Icons.event_note_outlined),
+            title: Text('메뉴 관리'),
+            onTap: (){},
+          ),
+
+          // 사이렌 오더 받기 임시 중지
+          ListTile(
+            leading: Icon(Icons.event_note_outlined),
+            title: Text('임시중지'),
+            onTap: (){},
+          ),
+
+          // 운영 시간, 전화번호, 위치
+          ListTile(
+            leading: Icon(Icons.event_note_outlined),
+            title: Text('운영 정보'),
+            onTap: (){},
+          ),
+
+          // 사이렌 오더 알람 소리 설정, 앱 버전
+          ListTile(
+            leading: Icon(Icons.event_note_outlined),
+            title: Text('설정'),
+            onTap: (){},
+          ),
+
+          // 로그아웃
+          ListTile(
+            leading: Icon(Icons.event_note_outlined),
+            title: Text('로그아웃'),
+            onTap: (){},
+          ),
+        ],
       ),
     );
   }
