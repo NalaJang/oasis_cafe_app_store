@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
+import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -46,6 +47,9 @@ class _HomeState extends State<Home> {
 
         body: TabBarView(
           children: [
+
+            const OrderList(),
+
             ListView.builder(
               itemBuilder: (context, index) {
                 return Padding(
@@ -83,30 +87,11 @@ class _HomeState extends State<Home> {
                           )
                         ],
                       ),
-
-
                     ],
                   ),
                 );
               }
             ),
-
-            ListView.builder(
-                itemBuilder: (context, index) {
-                  return Row(
-                    children: [
-                      Text('시간'),
-                      Text('주문 내역'),
-                      ElevatedButton(
-                          onPressed: (){},
-                          child: Text(
-                              '주문 접수'
-                          )
-                      )
-                    ],
-                  );
-                }
-            )
           ],
         ),
       ),
