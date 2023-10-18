@@ -18,7 +18,6 @@ class _HomeState extends State<Home> {
       length: tabBarLength,
       child: Scaffold(
         appBar: AppBar(
-          // automaticallyImplyLeading: false,
           backgroundColor: Palette.backgroundColor1,
           elevation: 0.0,
           title: Text('Oasis cafe'),
@@ -45,7 +44,71 @@ class _HomeState extends State<Home> {
 
         drawer: myDrawer(),
 
-        body: Text('ddd'),
+        body: TabBarView(
+          children: [
+            ListView.builder(
+              itemBuilder: (context, index) {
+                return Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        '13:22',
+                        style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
+
+                      Text('카페 모카 외 3개'),
+
+                      Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: (){},
+                            child: Text(
+                              '주문표 \n인쇄',
+                              textAlign: TextAlign.center,
+                            )
+                          ),
+
+                          SizedBox(width: 10,),
+
+                          ElevatedButton(
+                            onPressed: (){},
+                            child: Text(
+                                '주문 접수'
+                            )
+                          )
+                        ],
+                      ),
+
+
+                    ],
+                  ),
+                );
+              }
+            ),
+
+            ListView.builder(
+                itemBuilder: (context, index) {
+                  return Row(
+                    children: [
+                      Text('시간'),
+                      Text('주문 내역'),
+                      ElevatedButton(
+                          onPressed: (){},
+                          child: Text(
+                              '주문 접수'
+                          )
+                      )
+                    ],
+                  );
+                }
+            )
+          ],
+        ),
       ),
     );
   }
