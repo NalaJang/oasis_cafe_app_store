@@ -1,6 +1,7 @@
 class Strings {
 
   static const String collection_admin = 'admin';
+  static const String collection_userOrder = 'user_order';
 
 
   static const String hello = 'Hello';

@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => UserStateProvider()),
+        ChangeNotifierProvider(create: (context) => OrderStateProvider()),
       ],
 
       child: const MaterialApp(
