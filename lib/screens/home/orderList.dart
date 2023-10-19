@@ -29,8 +29,59 @@ class _OrderListState extends State<OrderList> {
             itemCount: streamSnapshot.data!.docs.length,
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
-              String itemId = documentSnapshot.id;
-              print('itemId > ${itemId}');
+              int quantity = documentSnapshot['quantity'];
+              String itemName = documentSnapshot['itemName'];
+              String orderTime = documentSnapshot['orderTime'];
+              String processState = documentSnapshot['processState'];
+
+              // orderTime = yyyy-MM-dd H:m:s
+              List<String> split_orderTime = orderTime.split(' ');
+              List<String> split_time = split_orderTime[1].split(':');
+              String time = '${split_time[0]}:${split_time[1]}';
+
+              String buttonText = '';
+              if( processState == 'new' ) {
+                buttonText = '주문 접수';
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      time,
+                      style: const TextStyle(
+                        fontSize: 20.0,
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
+
+                    Text('$itemName $quantity개'),
+
+                    Row(
+                      children: [
+                        ElevatedButton(
+                          onPressed: (){},
+                          child: const Text(
+                            '주문표 \n인쇄',
+                            textAlign: TextAlign.center,
+                          )
+                        ),
+
+                        const SizedBox(width: 10,),
+
+                        ElevatedButton(
+                          onPressed: (){},
+                          child: Text(
+                            buttonText
+                          )
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              );
             }
           );
 

@@ -11,7 +11,7 @@ class OrderStateProvider with ChangeNotifier {
   List<OrderModel> orderList = [];
 
   OrderStateProvider() {
-    orderCollection = db.collection(Strings.collection_userOrder);
+    orderCollection = db.collection('user_order_new');
   }
 
 
