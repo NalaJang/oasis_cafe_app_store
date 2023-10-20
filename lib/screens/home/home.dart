@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
 
+import 'completedOrderList.dart';
+
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
 
@@ -45,53 +47,12 @@ class _HomeState extends State<Home> {
 
         drawer: myDrawer(),
 
-        body: TabBarView(
+        body: const TabBarView(
           children: [
 
-            const OrderList(),
+            OrderList(),
 
-            ListView.builder(
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        '13:22',
-                        style: TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-
-                      Text('카페 모카 외 3개'),
-
-                      Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: (){},
-                            child: Text(
-                              '주문표 \n인쇄',
-                              textAlign: TextAlign.center,
-                            )
-                          ),
-
-                          SizedBox(width: 10,),
-
-                          ElevatedButton(
-                            onPressed: (){},
-                            child: Text(
-                                '주문 접수'
-                            )
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                );
-              }
-            ),
+            CompletedOrderList()
           ],
         ),
       ),
