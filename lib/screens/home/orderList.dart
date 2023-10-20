@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:get/route_manager.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +18,8 @@ class _OrderListState extends State<OrderList> {
 
   @override
   Widget build(BuildContext context) {
+
+    double getWidth = Get.width;
 
     var orderStateProvider = Provider.of<OrderStateProvider>(context);
 
@@ -44,36 +48,48 @@ class _OrderListState extends State<OrderList> {
 
 
               if( processState == 'new' ) {
-                buttonText = '주문 접수';
+                buttonText = '주문\n접수';
               } else {
                 buttonText = '처리중';
               }
 
               return Padding(
-                padding: const EdgeInsets.all(10.0),
+                padding: const EdgeInsets.only(left: 5, right: 0, top: 10, bottom: 10),
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // 주문 시간
-                    Text(
-                      time,
-                      style: const TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold
+                    SizedBox(
+                      width: getWidth * 0.2,
+                      child: Text(
+                        time,
+                        style: const TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.bold
+                        ),
                       ),
                     ),
 
                     // 주문 아이템 및 개수
-                    Text('$itemName $quantity개'),
+                    SizedBox(
+                      width: getWidth * 0.4,
+                      child: Text(
+                        '$itemName $quantity개',
+                        textAlign: TextAlign.center,
+                      )
+                    ),
 
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         // 주문표 인쇄
                         ElevatedButton(
                           onPressed: (){},
                           child: const Text(
-                            '주문표 \n인쇄',
+                            '주문표\n인쇄',
                             textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 15
+                            ),
                           )
                         ),
 
@@ -91,7 +107,7 @@ class _OrderListState extends State<OrderList> {
                             } else if(processState == 'inProcess'){
                               updateState = 'new';
                               setState(() {
-                                buttonText = '주문 접수';
+                                buttonText = '주문\n접수';
                               });
                             }
                             orderStateProvider.updateOrderState(orderId, updateState);
@@ -99,7 +115,7 @@ class _OrderListState extends State<OrderList> {
                           child: Text(
                             buttonText
                           )
-                        )
+                        ),
                       ],
                     ),
                   ],
