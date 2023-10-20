@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
 
-import 'completedOrderList.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -47,12 +46,11 @@ class _HomeState extends State<Home> {
 
         drawer: myDrawer(),
 
-        body: const TabBarView(
+        body: TabBarView(
           children: [
+            for( var i = 0; i < tabBarLength; i++ )
+              OrderList(currentTabIndex: i,)
 
-            OrderList(),
-
-            CompletedOrderList()
           ],
         ),
       ),

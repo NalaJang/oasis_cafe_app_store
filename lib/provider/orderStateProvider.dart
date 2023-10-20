@@ -10,9 +10,9 @@ class OrderStateProvider with ChangeNotifier {
   late CollectionReference orderCollection;
   List<OrderModel> orderList = [];
 
-  OrderStateProvider() {
-    orderCollection = db.collection('user_order_new');
-  }
+  // OrderStateProvider() {
+  //   orderCollection = db.collection('user_order_new');
+  // }
 
 
   Future<void> getUserOrderList() async {

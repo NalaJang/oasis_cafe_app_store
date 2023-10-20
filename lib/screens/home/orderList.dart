@@ -6,7 +6,9 @@ import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:provider/provider.dart';
 
 class OrderList extends StatefulWidget {
-  const OrderList({Key? key}) : super(key: key);
+  const OrderList({required this.currentTabIndex, Key? key}) : super(key: key);
+
+  final int currentTabIndex;
 
   @override
   State<OrderList> createState() => _OrderListState();
@@ -19,12 +21,25 @@ class _OrderListState extends State<OrderList> {
   @override
   Widget build(BuildContext context) {
 
+    final db = FirebaseFirestore.instance;
+    var orderStateProvider = Provider.of<OrderStateProvider>(context);
+    String collectionName = 'user_order_new';
     double getWidth = Get.width;
 
-    var orderStateProvider = Provider.of<OrderStateProvider>(context);
+    String setCollectionName() {
+      if( widget.currentTabIndex == 0 ) {
+        collectionName = 'user_order_new';
+      } else if( widget.currentTabIndex == 1 ) {
+        // collectionName = 'user_order_completed';
+      }
+      return collectionName;
+    }
+
+    CollectionReference collectionReference = db.collection(setCollectionName());
+    orderStateProvider.orderCollection = db.collection(setCollectionName());
 
     return StreamBuilder(
-      stream: orderStateProvider.orderCollection.snapshots(),
+      stream: collectionReference.snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         if( streamSnapshot.hasData ) {
           return ListView.separated(
