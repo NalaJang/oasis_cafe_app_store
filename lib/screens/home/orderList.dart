@@ -12,6 +12,8 @@ class OrderList extends StatefulWidget {
 
 class _OrderListState extends State<OrderList> {
 
+  String buttonText = '주문 접수';
+
   @override
   Widget build(BuildContext context) {
 
@@ -39,7 +41,7 @@ class _OrderListState extends State<OrderList> {
               List<String> split_time = split_orderTime[1].split(':');
               String time = '${split_time[0]}:${split_time[1]}';
 
-              String buttonText = '';
+
               if( processState == 'new' ) {
                 buttonText = '주문 접수';
               }
@@ -49,6 +51,7 @@ class _OrderListState extends State<OrderList> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
+                    // 주문 시간
                     Text(
                       time,
                       style: const TextStyle(
@@ -57,10 +60,12 @@ class _OrderListState extends State<OrderList> {
                       ),
                     ),
 
+                    // 주문 아이템 및 개수
                     Text('$itemName $quantity개'),
 
                     Row(
                       children: [
+                        // 주문표 인쇄
                         ElevatedButton(
                           onPressed: (){},
                           child: const Text(
@@ -71,6 +76,7 @@ class _OrderListState extends State<OrderList> {
 
                         const SizedBox(width: 10,),
 
+                        // 주문 접수 또는 처리 중
                         ElevatedButton(
                           onPressed: (){},
                           child: Text(
