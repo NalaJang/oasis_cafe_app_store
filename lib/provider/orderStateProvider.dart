@@ -25,4 +25,11 @@ class OrderStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateOrderState(String orderId, String processState) async {
+    print('processState >> ${processState}');
+    await orderCollection.doc(orderId).update({
+      'processState' : processState,
+    });
+  }
+
 }

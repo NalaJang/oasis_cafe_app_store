@@ -31,6 +31,7 @@ class _OrderListState extends State<OrderList> {
             itemCount: streamSnapshot.data!.docs.length,
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+              String orderId = documentSnapshot.id;
               int quantity = documentSnapshot['quantity'];
               String itemName = documentSnapshot['itemName'];
               String orderTime = documentSnapshot['orderTime'];
@@ -44,6 +45,8 @@ class _OrderListState extends State<OrderList> {
 
               if( processState == 'new' ) {
                 buttonText = '주문 접수';
+              } else {
+                buttonText = '처리중';
               }
 
               return Padding(
@@ -78,7 +81,21 @@ class _OrderListState extends State<OrderList> {
 
                         // 주문 접수 또는 처리 중
                         ElevatedButton(
-                          onPressed: (){},
+                          onPressed: (){
+                            String updateState = 'new';
+                            if( processState == 'new' ) {
+                              updateState = 'inProcess';
+                              setState(() {
+                                buttonText = '처리중';
+                              });
+                            } else if(processState == 'inProcess'){
+                              updateState = 'new';
+                              setState(() {
+                                buttonText = '주문 접수';
+                              });
+                            }
+                            orderStateProvider.updateOrderState(orderId, updateState);
+                          },
                           child: Text(
                             buttonText
                           )
