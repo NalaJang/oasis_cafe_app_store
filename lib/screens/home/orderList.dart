@@ -68,73 +68,30 @@ class _OrderListState extends State<OrderList> {
                 buttonText = '처리중';
               }
 
-              return Padding(
-                padding: const EdgeInsets.only(left: 5, right: 0, top: 10, bottom: 10),
-                child: Row(
+              return ListTile(
+                leading: Text(time,),
+                title: Text('$itemName $quantity개'),
+                trailing: Row(
+                  mainAxisSize: MainAxisSize.min,
                   children: [
-                    // 주문 시간
-                    SizedBox(
-                      width: getWidth * 0.2,
-                      child: Text(
-                        time,
-                        style: const TextStyle(
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold
-                        ),
+                    ElevatedButton(
+                      onPressed: (){},
+                      child: const Text(
+                        '주문표\n인쇄',
+                        textAlign: TextAlign.center,
                       ),
                     ),
 
-                    // 주문 아이템 및 개수
-                    SizedBox(
-                      width: getWidth * 0.4,
-                      child: Text(
-                        '$itemName $quantity개',
-                        textAlign: TextAlign.center,
-                      )
-                    ),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        // 주문표 인쇄
-                        ElevatedButton(
-                          onPressed: (){},
-                          child: const Text(
-                            '주문표\n인쇄',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 15
-                            ),
-                          )
-                        ),
-
-                        const SizedBox(width: 10,),
-
-                        // 주문 접수 또는 처리 중
-                        ElevatedButton(
-                          onPressed: (){
-                            String updateState = 'new';
-                            if( processState == 'new' ) {
-                              updateState = 'inProcess';
-                              setState(() {
-                                buttonText = '처리중';
-                              });
-                            } else if(processState == 'inProcess'){
-                              updateState = 'new';
-                              setState(() {
-                                buttonText = '주문\n접수';
-                              });
-                            }
-                            orderStateProvider.updateOrderState(orderId, updateState);
-                          },
-                          child: Text(
-                            buttonText
-                          )
-                        ),
-                      ],
+                    ElevatedButton(
+                      onPressed: (){},
+                      child: Text(buttonText),
                     ),
                   ],
                 ),
+                onTap: (){
+                  print('클릭');
+                  _showOrderDetailDialog(context);
+                },
               );
             }
           );
@@ -142,6 +99,18 @@ class _OrderListState extends State<OrderList> {
         } else {
           return const Center(child: CircularProgressIndicator(),);
         }
+      }
+    );
+  }
+
+  Future<void> _showOrderDetailDialog(BuildContext context, ) {
+    return showDialog<void> (
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('상세 주문'),
+          content: Text(''),
+        );
       }
     );
   }
