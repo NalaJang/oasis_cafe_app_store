@@ -37,6 +37,7 @@ class _OrderListState extends State<OrderList> {
 
     CollectionReference collectionReference = db.collection(setCollectionName());
     orderStateProvider.orderCollection = db.collection(setCollectionName());
+    orderStateProvider.getUserOrderList();
 
     return StreamBuilder(
       stream: collectionReference.snapshots(),
@@ -88,9 +89,11 @@ class _OrderListState extends State<OrderList> {
                     ),
                   ],
                 ),
+
+                // 주문 정보 다이얼로그
                 onTap: (){
                   print('클릭');
-                  _showOrderDetailDialog(context);
+                  _showOrderDetailDialog(context, index);
                 },
               );
             }
@@ -103,13 +106,49 @@ class _OrderListState extends State<OrderList> {
     );
   }
 
-  Future<void> _showOrderDetailDialog(BuildContext context, ) {
+  // 주문 정보 보기 다이얼로그
+  Future<void> _showOrderDetailDialog(BuildContext context, int index) {
+    var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
+    var orderedItem = orderStateProvider.orderList[index];
+
     return showDialog<void> (
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: const Text('상세 주문'),
-          content: Text(''),
+          title: const Text('주문 정보'),
+          content: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('주문자'),
+                  Text(
+                    'userName',
+                    // textAlign: TextAlign.end,
+                  ),
+                ],
+              ),
+
+              SizedBox(height: 15,),
+
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text('접수 시간'),
+                  Text(orderedItem.orderTime),
+                ],
+              ),
+
+              SizedBox(height: 15,),
+
+              Text('주문 내역'),
+
+              SizedBox(height: 10,),
+
+              Text('${orderedItem.quantity} ${orderedItem.itemName}'),
+            ],
+          ),
         );
       }
     );
