@@ -130,23 +130,29 @@ class _OrderListState extends State<OrderList> {
                 ],
               ),
 
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('접수 시간'),
+                  const Text('접수 시간'),
                   Text(orderedItem.orderTime),
                 ],
               ),
 
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
 
-              Text('주문 내역'),
+              const Text('주문 내역'),
 
-              SizedBox(height: 10,),
+              const SizedBox(height: 10,),
 
-              Text('${orderedItem.quantity} ${orderedItem.itemName}'),
+              Text('${orderedItem.quantity} ${orderedItem.hotOrIced} ${orderedItem.itemName}'),
+              Text('${orderedItem.espressoOption} shots'),
+              Text(orderedItem.drinkSize),
+              orderedItem.syrupOption.isEmpty ? const Visibility(visible: false,child: Text(''),) : Text(orderedItem.syrupOption),
+              orderedItem.iceOption.isEmpty ? const Visibility(visible: false, child: Text('')) : Text(orderedItem.iceOption),
+              orderedItem.whippedCreamOption.isEmpty ? const Visibility(visible: false,child: Text('',),) : Text('${orderedItem.whippedCreamOption}'),
+              Text(orderedItem.cup),
             ],
           ),
         );
