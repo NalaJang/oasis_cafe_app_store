@@ -35,4 +35,29 @@ class OrderModel {
     whippedCreamOption = data['whippedCreamOption'];
     iceOption = data['iceOption'];
   }
+
+  // 완료된 주문 내역
+  OrderModel.setDataToCompletedOrder(String orderId, OrderModel data) {
+
+    FirebaseFirestore.instance
+        .collection('user_order_completed')
+        .doc(orderId)
+        .set(
+        {
+          'orderTime' : data.orderTime,
+          'userUid' : data.userUid,
+          'quantity' : data.quantity,
+          'itemName' : data.itemName,
+          'itemPrice' : data.itemPrice,
+          'totalPrice' : data.totalPrice,
+          'drinkSize' : data.drinkSize,
+          'cup' : data.cup,
+          'hotOrIced' : data.hotOrIced,
+          'espressoOption' : data.espressoOption,
+          'syrupOption' : data.syrupOption,
+          'whippedCreamOption' : data.whippedCreamOption,
+          'iceOption' : data.iceOption,
+          'processState' : 'done'
+        });
+  }
 }

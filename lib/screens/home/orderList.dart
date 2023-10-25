@@ -30,7 +30,7 @@ class _OrderListState extends State<OrderList> {
       if( widget.currentTabIndex == 0 ) {
         collectionName = 'user_order_new';
       } else if( widget.currentTabIndex == 1 ) {
-        // collectionName = 'user_order_completed';
+        collectionName = 'user_order_completed';
       }
       return collectionName;
     }
@@ -83,9 +83,12 @@ class _OrderListState extends State<OrderList> {
                       ),
                     ),
 
+                    // 주문 상태 업데이트
                     ElevatedButton(
-                      onPressed: (){},
-                      child: Text(buttonText),
+                      onPressed: (){
+                        orderStateProvider.updateOrderState(index, orderId, processState);
+                      },
+                      child: Text(processState),
                     ),
                   ],
                 ),

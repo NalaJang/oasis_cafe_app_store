@@ -39,11 +39,20 @@ class OrderStateProvider with ChangeNotifier {
   }
 
 
-  Future<void> updateOrderState(String orderId, String processState) async {
-    print('processState >> ${processState}');
-    await orderCollection.doc(orderId).update({
-      'processState' : processState,
-    });
+  // 주문 상태 업데이트
+  Future<void> updateOrderState(int index, String orderId, String processState) async {
+
+    if( processState == 'new' ) {
+
+      await orderCollection.doc(orderId).update({
+        'processState' : 'inProcess',
+      });
+
+    } else if( processState == 'inProcess' ) {
+
+      OrderModel.setDataToCompletedOrder(orderId, orderList[index]);
+      await orderCollection.doc(orderId).delete();
+    }
   }
 
 }
