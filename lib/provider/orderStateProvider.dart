@@ -25,6 +25,20 @@ class OrderStateProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  Future<String> getUserName(int index) async {
+    String userName = '';
+    var userUid = orderList[index].userUid;
+
+    await db.collection('user')
+        .doc(userUid)
+        .get()
+        .then((value) =>
+        userName = value['userName']
+    );
+    return userName;
+  }
+
+
   Future<void> updateOrderState(String orderId, String processState) async {
     print('processState >> ${processState}');
     await orderCollection.doc(orderId).update({

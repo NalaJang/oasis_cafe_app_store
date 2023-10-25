@@ -92,7 +92,6 @@ class _OrderListState extends State<OrderList> {
 
                 // 주문 정보 다이얼로그
                 onTap: (){
-                  print('클릭');
                   _showOrderDetailDialog(context, index);
                 },
               );
@@ -107,56 +106,56 @@ class _OrderListState extends State<OrderList> {
   }
 
   // 주문 정보 보기 다이얼로그
-  Future<void> _showOrderDetailDialog(BuildContext context, int index) {
+  Future<void> _showOrderDetailDialog(BuildContext context, int index) async {
     var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
+    var customerName = await orderStateProvider.getUserName(index);
     var orderedItem = orderStateProvider.orderList[index];
 
-    return showDialog<void> (
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: const Text('주문 정보'),
-          content: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('주문자'),
-                  Text(
-                    'userName',
-                    // textAlign: TextAlign.end,
-                  ),
-                ],
-              ),
+    if( mounted ) {
+      return showDialog<void> (
+        context: context,
+        builder: (context) {
+          return AlertDialog (
+            title: const Text('주문 정보'),
+            content: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('주문자'),
+                    Text(customerName,),
+                  ],
+                ),
 
-              const SizedBox(height: 15,),
+                const SizedBox(height: 15,),
 
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  const Text('접수 시간'),
-                  Text(orderedItem.orderTime),
-                ],
-              ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text('접수 시간'),
+                    Text(orderedItem.orderTime),
+                  ],
+                ),
 
-              const SizedBox(height: 15,),
+                const SizedBox(height: 15,),
 
-              const Text('주문 내역'),
+                const Text('주문 내역'),
 
-              const SizedBox(height: 10,),
+                const SizedBox(height: 10,),
 
-              Text('${orderedItem.quantity} ${orderedItem.hotOrIced} ${orderedItem.itemName}'),
-              Text('${orderedItem.espressoOption} shots'),
-              Text(orderedItem.drinkSize),
-              orderedItem.syrupOption.isEmpty ? const Visibility(visible: false,child: Text(''),) : Text(orderedItem.syrupOption),
-              orderedItem.iceOption.isEmpty ? const Visibility(visible: false, child: Text('')) : Text(orderedItem.iceOption),
-              orderedItem.whippedCreamOption.isEmpty ? const Visibility(visible: false,child: Text('',),) : Text('${orderedItem.whippedCreamOption}'),
-              Text(orderedItem.cup),
-            ],
-          ),
-        );
-      }
-    );
+                Text('${orderedItem.quantity} ${orderedItem.hotOrIced} ${orderedItem.itemName}'),
+                Text('${orderedItem.espressoOption} shots'),
+                Text(orderedItem.drinkSize),
+                orderedItem.syrupOption.isEmpty ? const Visibility(visible: false,child: Text(''),) : Text(orderedItem.syrupOption),
+                orderedItem.iceOption.isEmpty ? const Visibility(visible: false, child: Text('')) : Text(orderedItem.iceOption),
+                orderedItem.whippedCreamOption.isEmpty ? const Visibility(visible: false,child: Text('',),) : Text('${orderedItem.whippedCreamOption}'),
+                Text(orderedItem.cup),
+              ],
+            ),
+          );
+        }
+      );
+    }
   }
 }
