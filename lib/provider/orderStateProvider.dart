@@ -32,7 +32,7 @@ class OrderStateProvider with ChangeNotifier {
   // 신규/처리중 메뉴 항목 리스트 개수 가져오기
   int getNewOrderLength() {
 
-    db.collection('user_order_new').get().then((value) {
+    db.collection(Strings.collection_userOrderNew).get().then((value) {
       newOrderLength = value.size;
     });
     return newOrderLength;
@@ -41,7 +41,7 @@ class OrderStateProvider with ChangeNotifier {
   // 완료 메뉴 항목 리스트 개수 가져오기
   int getCompletedOrderLength() {
 
-    db.collection('user_order_completed').get().then((value) {
+    db.collection(Strings.collection_userOrderCompleted).get().then((value) {
       completedOrderLength = value.size;
     });
     return completedOrderLength;
@@ -52,7 +52,7 @@ class OrderStateProvider with ChangeNotifier {
     String userName = '';
     var userUid = orderList[index].userUid;
 
-    await db.collection('user')
+    await db.collection(Strings.collection_user)
         .doc(userUid)
         .get()
         .then((value) =>

@@ -1,7 +1,10 @@
 class Strings {
 
   static const String collection_admin = 'admin';
+  static const String collection_user = 'user';
   static const String collection_userOrder = 'user_order';
+  static const String collection_userOrderNew = 'user_order_new';
+  static const String collection_userOrderCompleted = 'user_order_completed';
 
 
   static const String hello = 'Hello';
