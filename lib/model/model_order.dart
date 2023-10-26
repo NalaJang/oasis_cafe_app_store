@@ -36,7 +36,7 @@ class OrderModel {
     iceOption = data['iceOption'];
   }
 
-  // 완료된 주문 내역
+  // 완료 처리된 주문 내역을 'user_order_completed' collection 에 저장
   OrderModel.setDataToCompletedOrder(String orderId, OrderModel data) {
 
     FirebaseFirestore.instance
