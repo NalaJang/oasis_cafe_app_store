@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
+import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
+import 'package:provider/provider.dart';
 
 
 class Home extends StatefulWidget {
@@ -24,7 +26,7 @@ class _HomeState extends State<Home> {
           elevation: 0.0,
           title: Text('Oasis cafe'),
 
-          bottom: const TabBar(
+          bottom: TabBar(
             indicator: BoxDecoration(
               color: Colors.white
             ),
@@ -38,8 +40,8 @@ class _HomeState extends State<Home> {
             ),
 
             tabs: [
-              Tab(text: '신규/처리중 0',),
-              Tab(text: '완료 44',)
+              Tab(text: '신규/처리중 ${Provider.of<OrderStateProvider>(context).getNewOrderLength()}',),
+              Tab(text: '완료 ${Provider.of<OrderStateProvider>(context).getCompletedOrderLength()}',)
             ],
           ),
         ),

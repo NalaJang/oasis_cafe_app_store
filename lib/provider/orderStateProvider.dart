@@ -3,12 +3,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:oasis_cafe_app_store/strings/strings_en.dart';
 
 import '../model/model_order.dart';
+import '../screens/home/home.dart';
 
 class OrderStateProvider with ChangeNotifier {
 
   final db = FirebaseFirestore.instance;
   late CollectionReference orderCollection;
   List<OrderModel> orderList = [];
+  var newOrderLength = 0;
+  var completedOrderLength = 0;
 
   // OrderStateProvider() {
   //   orderCollection = db.collection('user_order_new');
@@ -24,6 +27,26 @@ class OrderStateProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+
+  // 신규/처리중 메뉴 항목 리스트 개수 가져오기
+  int getNewOrderLength() {
+
+    db.collection('user_order_new').get().then((value) {
+      newOrderLength = value.size;
+    });
+    return newOrderLength;
+  }
+
+  // 완료 메뉴 항목 리스트 개수 가져오기
+  int getCompletedOrderLength() {
+
+    db.collection('user_order_completed').get().then((value) {
+      completedOrderLength = value.size;
+    });
+    return completedOrderLength;
+  }
+
 
   Future<String> getUserName(int index) async {
     String userName = '';
