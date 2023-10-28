@@ -116,10 +116,10 @@ class _OrderListState extends State<OrderList> {
                           var result = await showProcessingStateDialog();
 
                           setState(() {
-                            print('result > $result');
+                            if( result )  {
+                              orderStateProvider.updateOrderInProcessState(index, orderId);
+                            }
                           });
-                          // orderStateProvider.updateOrderState(index, orderId, processState);
-
                         }
                       },
                       child: Text(
@@ -242,6 +242,13 @@ class _OrderListState extends State<OrderList> {
               ),
               onPressed: (){
                 processingConfirm = true;
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        '완료 처리되었습니다.',
+                      ),
+                    )
+                );
                 Navigator.pop(context);
               },
               child: const Text(Strings.submit)
