@@ -16,10 +16,16 @@ class OrderList extends StatefulWidget {
   State<OrderList> createState() => _OrderListState();
 }
 
+// 주문 취소 사유
+enum ReasonOfOrderCancellation {cafeCircumstances, soldOut, notAllowed}
+
 class _OrderListState extends State<OrderList> {
 
   String buttonText = '주문 접수';
   bool processingConfirm = false;
+  // 라디오 버튼 초기화 값
+  ReasonOfOrderCancellation _reason = ReasonOfOrderCancellation.cafeCircumstances;
+
 
   @override
   Widget build(BuildContext context) {
@@ -194,6 +200,30 @@ class _OrderListState extends State<OrderList> {
                 orderedItem.iceOption.isEmpty ? const Visibility(visible: false, child: Text('')) : Text(orderedItem.iceOption),
                 orderedItem.whippedCreamOption.isEmpty ? const Visibility(visible: false,child: Text('',),) : Text('${orderedItem.whippedCreamOption}'),
                 Text(orderedItem.cup),
+
+                const Spacer(),
+                // 주문 취소 버튼
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      elevation: 0,
+                      backgroundColor: const Color(0xFF878787),
+                      side: const BorderSide(
+                        color: Color(0xFF878787)
+                      )
+                    ),
+                    onPressed: () async {
+                      await showOrderCancelDialog();
+                      },
+                    child: const Text(
+                      '주문 취소',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold
+                      ),
+                    )
+                  ),
+                )
               ],
             ),
           );
@@ -202,10 +232,53 @@ class _OrderListState extends State<OrderList> {
     }
   }
 
+
+  List<String> reasonOfCancellationList = ['업소 사정 취소', '재료 소진', '요청사항 불가'];
+  // AlertDialog 에서는 setState() 가 작동을 하지 않았다.
+  // setState() 는 StatefulBuilder 에서만 사용이 가능하다고 해서
+  // AlertDialog 를 StatefulBuilder widget 으로 감싸주었다.
+  Future<void> showOrderCancelDialog() async {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, StateSetter setState) {
+            return AlertDialog(
+              title: Text('주문 취소'),
+              content: Column(
+                children: [
+                  for( var i = 0; i < reasonOfCancellationList.length; i++ )
+                    RadioListTile(
+                      title: Text(reasonOfCancellationList[i]),
+                      value: ReasonOfOrderCancellation.values[i],
+                      groupValue: _reason,
+                      onChanged: (ReasonOfOrderCancellation? value) {
+                        setState(() {
+                          _reason = value!;
+                        });
+                      },
+                    ),
+                ],
+              ),
+
+              actions: [
+                // 취소
+                cancelButton(),
+
+                // 확인
+                submitButton('취소')
+              ],
+            );
+          },
+        );
+      }
+    );
+  }
+
   // 주문 처리 상태 다이얼로그
   Future<bool> showProcessingStateDialog() async {
-    // return
-      await showDialog(
+    processingConfirm = false;
+    await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
@@ -213,50 +286,63 @@ class _OrderListState extends State<OrderList> {
           content: Text('완료 처리를 하시겠습니까?'),
           actions: [
             // 취소
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.white,
-                side: const BorderSide(
-                  color: Colors.brown
-                )
-              ),
-              onPressed: (){
-                processingConfirm = false;
-                Navigator.pop(context);
-              },
-              child: const Text(
-                Strings.cancel,
-                style: TextStyle(
-                  color: Colors.brown
-                ),
-              )
-            ),
+            cancelButton(),
 
             // 확인
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.brown,
-                  side: const BorderSide(
-                      color: Colors.brown
-                  )
-              ),
-              onPressed: (){
-                processingConfirm = true;
-                ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(
-                      content: Text(
-                        '완료 처리되었습니다.',
-                      ),
-                    )
-                );
-                Navigator.pop(context);
-              },
-              child: const Text(Strings.submit)
-            )
+            submitButton('완료')
           ],
         );
       }
     );
-      return processingConfirm;
+    return processingConfirm;
   }
+
+  // 취소 버튼
+  ElevatedButton cancelButton() {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.white,
+            side: const BorderSide(
+                color: Colors.brown
+            )
+        ),
+        onPressed: (){
+          // processingConfirm = false;
+          Navigator.pop(context);
+        },
+        child: const Text(
+          Strings.cancel,
+          style: TextStyle(
+              color: Colors.brown
+          ),
+        )
+    );
+  }
+
+  // 제출 버튼
+  ElevatedButton submitButton(String content) {
+    return ElevatedButton(
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.brown,
+            side: const BorderSide(
+                color: Colors.brown
+            )
+        ),
+        onPressed: (){
+          if( content == '완료' ) {
+            processingConfirm = true;
+          }
+          ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  '$content 처리되었습니다.',
+                ),
+              )
+          );
+          Navigator.pop(context);
+        },
+        child: const Text(Strings.submit)
+    );
+  }
+
 }
