@@ -60,8 +60,8 @@ class _OrderListState extends State<OrderList> {
 
               // orderTime = yyyy-MM-dd H:m:s
               List<String> split_orderTime = orderTime.split(' ');
-              List<String> split_time = split_orderTime[1].split(':');
-              String time = '${split_time[0]}:${split_time[1]}';
+              String date = split_orderTime[0];
+              String time = split_orderTime[1];
 
 
               if( processState == 'new' ) {
@@ -71,25 +71,48 @@ class _OrderListState extends State<OrderList> {
               }
 
               return ListTile(
-                leading: Text(orderTime,),
+                leading: Text('$date\n$time', textAlign: TextAlign.center,),
                 title: Text('$itemName $quantity개'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          side: const BorderSide(
+                              color: Colors.white
+                          )
+                      ),
                       onPressed: (){},
                       child: const Text(
                         '주문표\n인쇄',
                         textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black
+                        ),
                       ),
                     ),
 
+                    const SizedBox(width: 5,),
+
                     // 주문 상태 업데이트
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: processState == 'new' ? Colors.brown : Colors.white,
+                        side: const BorderSide(
+                          color: Colors.brown,
+                        )
+                      ),
                       onPressed: (){
                         orderStateProvider.updateOrderState(index, orderId, processState);
                       },
-                      child: Text(processState),
+                      child: Text(
+                        processState,
+                        style: TextStyle(
+                          color: processState == 'new' ? Colors.white : Colors.brown,
+                          fontWeight: FontWeight.bold
+                        ),
+                      ),
                     ),
                   ],
                 ),
