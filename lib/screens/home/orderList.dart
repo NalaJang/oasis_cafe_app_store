@@ -5,6 +5,8 @@ import 'package:get/route_manager.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:provider/provider.dart';
 
+import '../../strings/strings_en.dart';
+
 class OrderList extends StatefulWidget {
   const OrderList({required this.currentTabIndex, Key? key}) : super(key: key);
 
@@ -17,6 +19,7 @@ class OrderList extends StatefulWidget {
 class _OrderListState extends State<OrderList> {
 
   String buttonText = '주문 접수';
+  bool processingConfirm = false;
 
   @override
   Widget build(BuildContext context) {
@@ -98,18 +101,31 @@ class _OrderListState extends State<OrderList> {
                     // 주문 상태 업데이트
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: processState == 'new' ? Colors.brown : Colors.white,
+                        backgroundColor: processState == Strings.newOrder ? Colors.brown : Colors.white,
                         side: const BorderSide(
                           color: Colors.brown,
                         )
                       ),
-                      onPressed: (){
-                        orderStateProvider.updateOrderState(index, orderId, processState);
+                      onPressed: () async {
+                        // '주문 접수(new)' 클릭 시
+                        if( processState == Strings.newOrder ) {
+                          orderStateProvider.updateNewOrderState(orderId);
+
+                        // '처리중(inProcess)' 클릭 시
+                        } else if( processState == 'inProcess' ) {
+                          var result = await showProcessingStateDialog();
+
+                          setState(() {
+                            print('result > $result');
+                          });
+                          // orderStateProvider.updateOrderState(index, orderId, processState);
+
+                        }
                       },
                       child: Text(
                         processState,
                         style: TextStyle(
-                          color: processState == 'new' ? Colors.white : Colors.brown,
+                          color: processState == Strings.newOrder ? Colors.white : Colors.brown,
                           fontWeight: FontWeight.bold
                         ),
                       ),
@@ -184,5 +200,56 @@ class _OrderListState extends State<OrderList> {
         }
       );
     }
+  }
+
+  // 주문 처리 상태 다이얼로그
+  Future<bool> showProcessingStateDialog() async {
+    // return
+      await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('처리중'),
+          content: Text('완료 처리를 하시겠습니까?'),
+          actions: [
+            // 취소
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                side: const BorderSide(
+                  color: Colors.brown
+                )
+              ),
+              onPressed: (){
+                processingConfirm = false;
+                Navigator.pop(context);
+              },
+              child: const Text(
+                Strings.cancel,
+                style: TextStyle(
+                  color: Colors.brown
+                ),
+              )
+            ),
+
+            // 확인
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.brown,
+                  side: const BorderSide(
+                      color: Colors.brown
+                  )
+              ),
+              onPressed: (){
+                processingConfirm = true;
+                Navigator.pop(context);
+              },
+              child: const Text(Strings.submit)
+            )
+          ],
+        );
+      }
+    );
+      return processingConfirm;
   }
 }

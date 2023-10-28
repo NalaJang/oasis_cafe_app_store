@@ -6,6 +6,8 @@ class Strings {
   static const String collection_userOrderNew = 'user_order_new';
   static const String collection_userOrderCompleted = 'user_order_completed';
 
+  static const String submit = 'Submit';
+  static const String cancel = 'Cancel';
 
   static const String hello = 'Hello';
   static const String welcome = 'Welcome to Oasis cafe';
@@ -27,4 +29,7 @@ class Strings {
   static const String nameValidation = 'Please enter your name';
   static const String dateOfBirthValidation = 'Please enter your date of birth';
   static const String mobileNumberValidation = 'Please enter a valid mobile number';
+
+  static const String newOrder = 'new';
+  static const String orderInProcess = 'inProcess';
 }
