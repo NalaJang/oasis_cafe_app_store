@@ -40,7 +40,8 @@ class _OrderListState extends State<OrderList> {
     orderStateProvider.getUserOrderList();
 
     return StreamBuilder(
-      stream: collectionReference.snapshots(),
+      // orderTime 내림차순으로 데이터 정렬
+      stream: collectionReference.orderBy('orderTime', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         if( streamSnapshot.hasData ) {
           return ListView.separated(
@@ -70,7 +71,7 @@ class _OrderListState extends State<OrderList> {
               }
 
               return ListTile(
-                leading: Text(time,),
+                leading: Text(orderTime,),
                 title: Text('$itemName $quantity개'),
                 trailing: Row(
                   mainAxisSize: MainAxisSize.min,
