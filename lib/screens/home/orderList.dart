@@ -112,7 +112,7 @@ class _OrderListState extends State<OrderList> {
                           orderStateProvider.updateNewOrderState(orderId);
 
                         // '처리중(inProcess)' 클릭 시
-                        } else if( processState == 'inProcess' ) {
+                        } else if( processState == Strings.orderInProcess ) {
                           var result = await showProcessingStateDialog();
 
                           setState(() {
