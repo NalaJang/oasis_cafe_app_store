@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
+import 'package:oasis_cafe_app_store/provider/aboutUsProvider.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
+import 'package:oasis_cafe_app_store/screens/aboutUs/aboutUs.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
 import 'package:provider/provider.dart';
 
@@ -82,7 +84,10 @@ class _HomeState extends State<Home> {
           ListTile(
             leading: Icon(Icons.event_note_outlined),
             title: Text('운영 정보'),
-            onTap: (){},
+            onTap: (){
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AboutUs()));
+            },
           ),
 
           // 사이렌 오더 알람 소리 설정, 앱 버전
