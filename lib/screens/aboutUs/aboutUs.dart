@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/provider/aboutUsProvider.dart';
+import 'package:oasis_cafe_app_store/screens/aboutUs/aboutUsEditPage.dart';
 import 'package:provider/provider.dart';
 
 class AboutUs extends StatelessWidget {
@@ -27,12 +28,33 @@ class AboutUs extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              '영업 시간',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.bold
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  '영업 시간',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold
+                  ),
+                ),
+
+                GestureDetector(
+                  onTap: (){
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) =>
+                        const AboutUsEditPage())
+                    );
+                  },
+                  child: const Text(
+                    '수정하기',
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontSize: 17.0
+                    ),
+                  ),
+                )
+              ],
             ),
 
             const SizedBox(height: 10,),
