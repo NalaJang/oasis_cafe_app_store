@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
@@ -14,6 +13,7 @@ class AboutUsEditPage extends StatefulWidget {
 class _AboutUsEditPageState extends State<AboutUsEditPage> {
 
   var openingHoursModel = OpeningHoursModel();
+  List<String> dayList = ['월', '화', '수', '목', '금', '토', '일'];
 
   @override
   void dispose() {
@@ -40,19 +40,35 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              for( var i = 0; i < openingHoursModel.dayList.length; i++ )
+              for( var i = 0; i < dayList.length; i++ )
               Row(
                 children: [
                   Text(
-                    '${openingHoursModel.dayList[i]}요일',
+                    '${dayList[i]}요일',
                     style: const TextStyle(
                       fontSize: 17.0
                     ),
                   ),
 
                   const SizedBox(width: 10,),
-                  const Text('오전'),
-                  const Text('오전'),
+                  Column(
+                    children: [
+                      Text(
+                        openingHoursModel.openAmPm[i],
+                        style: TextStyle(
+                          color: openingHoursModel.openAmPm[i] == '오전' ?
+                              Colors.blue : Colors.black54
+                        ),
+                      ),
+                      Text(
+                        '오후',
+                        style: TextStyle(
+                            color: openingHoursModel.openAmPm[i] == '오후' ?
+                            Colors.blue : Colors.black54
+                        ),
+                      ),
+                    ],
+                  ),
 
                   Expanded(
                     child: TextFormField(
