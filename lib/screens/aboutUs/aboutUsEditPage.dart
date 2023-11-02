@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/model/model_openingHours.dart';
+import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
+import 'package:provider/provider.dart';
 
 class AboutUsEditPage extends StatefulWidget {
   const AboutUsEditPage({Key? key}) : super(key: key);
@@ -12,13 +14,72 @@ class AboutUsEditPage extends StatefulWidget {
 
 class _AboutUsEditPageState extends State<AboutUsEditPage> {
 
-  var openingHoursModel = OpeningHoursModel();
-  List<String> dayList = ['월', '화', '수', '목', '금', '토', '일'];
+  var chagedTime;
 
-  DateTime _openTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,
-      DateTime.now().hour, 00);
-  DateTime _closeTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,
-      DateTime.now().hour, 0);
+  @override
+  Widget build(BuildContext context) {
+    var openingHoursProvider = Provider.of<OpeningHoursProvider>(context);
+    openingHoursProvider.getOpeningHours();
+
+    late DateTime openTime;
+    DateTime closeTime;
+    String id = '';
+
+    for( var i = 0; i < openingHoursProvider.hoursList.length; i++ ) {
+      id = openingHoursProvider.hoursList[i].id;
+      openTime = openingHoursProvider.hoursList[i].openTime;
+      closeTime = openingHoursProvider.hoursList[i].closeTime;
+    }
+
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Palette.backgroundColor1,
+        title: const Text('운영시간 수정'),
+      ),
+
+      body: Padding(
+        padding: const EdgeInsets.all(10.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              Row(
+                children: [
+                  const Text('월요일'),
+                  const Text('시작'),
+                  CupertinoButton(
+                    onPressed: () => _showTimePickerDialog(
+                      id,
+                      CupertinoDatePicker(
+                        initialDateTime: openTime,
+                        mode: CupertinoDatePickerMode.time,
+                        use24hFormat: false,
+                        minuteInterval: 30,
+                        onDateTimeChanged: (DateTime newTime) {
+                          chagedTime = newTime.hour.toString();
+                        },
+                      ),
+                    ),
+
+                    child: setSelectedTime(openTime),
+                  ),
+
+                  const Text('종료'),
+                  // CupertinoButton(
+                  //     onPressed: () => _showTimePickerDialog(
+                  //         _timePicker()
+                  //     ),
+                  //
+                  //     child: setSelectedTime(_closeTime)
+                  // ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 
 
   Container setSelectedTime(DateTime time) {
@@ -39,66 +100,9 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
   }
 
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Palette.backgroundColor1,
-        title: const Text('운영시간 수정'),
-      ),
+  void _showTimePickerDialog(String id, Widget child) {
+    var provider = Provider.of<OpeningHoursProvider>(context, listen: false);
 
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('평일(월~금)'),
-                  const Text('시작'),
-                  CupertinoButton(
-                    onPressed: () => _showTimePickerDialog(
-                      CupertinoDatePicker(
-                        initialDateTime: _openTime,
-                        mode: CupertinoDatePickerMode.time,
-                        use24hFormat: false,
-                        minuteInterval: 30,
-                        onDateTimeChanged: (DateTime newTime) {
-                          setState(() => _openTime = newTime);
-                        },
-                      ),
-                    ),
-
-                    child: setSelectedTime(_openTime),
-                  ),
-
-                  const Text('종료'),
-                  CupertinoButton(
-                    onPressed: () => _showTimePickerDialog(
-                      CupertinoDatePicker(
-                        initialDateTime: _closeTime,
-                        mode: CupertinoDatePickerMode.time,
-                        use24hFormat: true,
-                        minuteInterval: 30,
-                        onDateTimeChanged: (DateTime newTime) {
-                          setState(() => _closeTime = newTime);
-                        },
-                      ),
-                    ),
-
-                    child: setSelectedTime(_closeTime)
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-
-  void _showTimePickerDialog(Widget child) {
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => Container(
@@ -112,11 +116,31 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
         // Provide a background color for the popup.
         color: CupertinoColors.systemBackground.resolveFrom(context),
         // Use a SafeArea widget to avoid system overlaps.
-        child: SafeArea(
-          top: false,
-          child: child,
-        ),
+        child: Column(
+          children: [
+            TextButton(
+              onPressed: (){
+                Navigator.pop(context);
+                provider.updateTime(id, chagedTime);
+              },
+              child: const Text('Done'),
+            ),
+            Expanded(child: child)
+          ],
+        )
       ),
     );
   }
+
+  // CupertinoDatePicker _timePicker() {
+  //   return CupertinoDatePicker(
+  //     initialDateTime: _closeTime,
+  //     mode: CupertinoDatePickerMode.time,
+  //     use24hFormat: true,
+  //     minuteInterval: 30,
+  //     onDateTimeChanged: (DateTime newTime) {
+  //       setState(() => _closeTime = newTime);
+  //     },
+  //   );
+  // }
 }
