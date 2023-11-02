@@ -34,10 +34,15 @@ class OpeningHoursProvider with ChangeNotifier {
   }
 
 
-  Future<void> updateTime(String date, String time) async {
-    print('data >> ${date}, time >> ${time}');
+  // 운영 시간 업데이트
+  Future<void> updateTime(String date, String openHour, String openMinutes,
+      String closeHour, String closeMinutes) async {
+
     await openingHoursDocument.collection('openingHours').doc(date).update({
-      'openHour' : time
+      'openHour' : openHour,
+      'openMinutes' : openMinutes,
+      'closeHour' : closeHour,
+      'closeMinutes' : closeMinutes,
     });
   }
 }

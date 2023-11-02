@@ -14,7 +14,10 @@ class AboutUsEditPage extends StatefulWidget {
 
 class _AboutUsEditPageState extends State<AboutUsEditPage> {
 
-  var chagedTime;
+  String changedOpenHour = '';
+  String changedOpenMinutes = '';
+  String changedCloseHour = '';
+  String changedCloseMinutes = '';
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,7 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
     openingHoursProvider.getOpeningHours();
 
     late DateTime openTime;
-    DateTime closeTime;
+    late DateTime closeTime;
     String id = '';
 
     for( var i = 0; i < openingHoursProvider.hoursList.length; i++ ) {
@@ -56,22 +59,33 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
                         use24hFormat: false,
                         minuteInterval: 30,
                         onDateTimeChanged: (DateTime newTime) {
-                          chagedTime = newTime.hour.toString();
+                          changedOpenHour = newTime.hour.toString();
+                          changedOpenMinutes = newTime.minute.toString();
                         },
                       ),
                     ),
 
-                    child: setSelectedTime(openTime),
+                    child: setTimeText(openTime),
                   ),
 
                   const Text('종료'),
-                  // CupertinoButton(
-                  //     onPressed: () => _showTimePickerDialog(
-                  //         _timePicker()
-                  //     ),
-                  //
-                  //     child: setSelectedTime(_closeTime)
-                  // ),
+                  CupertinoButton(
+                    onPressed: () => _showTimePickerDialog(
+                      id,
+                      CupertinoDatePicker(
+                        initialDateTime: closeTime,
+                        mode: CupertinoDatePickerMode.time,
+                        use24hFormat: false,
+                        minuteInterval: 30,
+                        onDateTimeChanged: (DateTime newTime) {
+                          changedCloseHour = newTime.hour.toString();
+                          changedCloseMinutes = newTime.minute.toString();
+                        },
+                      ),
+                    ),
+
+                    child: setTimeText(closeTime),
+                  ),
                 ],
               ),
             ],
@@ -82,15 +96,17 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
   }
 
 
-  Container setSelectedTime(DateTime time) {
+  Container setTimeText(DateTime time) {
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
           border: Border.all(color: Colors.grey, width: 1),
           borderRadius: BorderRadius.circular(8.0)
       ),
+
       child: Text(
         '${time.hour} : ${time.minute}',
+
         style: const TextStyle(
             fontSize: 18.0,
             color: Colors.black87
@@ -121,7 +137,8 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
             TextButton(
               onPressed: (){
                 Navigator.pop(context);
-                provider.updateTime(id, chagedTime);
+                provider.updateTime(id, changedOpenHour, changedOpenMinutes,
+                changedCloseHour, changedCloseMinutes);
               },
               child: const Text('Done'),
             ),
@@ -132,15 +149,4 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
     );
   }
 
-  // CupertinoDatePicker _timePicker() {
-  //   return CupertinoDatePicker(
-  //     initialDateTime: _closeTime,
-  //     mode: CupertinoDatePickerMode.time,
-  //     use24hFormat: true,
-  //     minuteInterval: 30,
-  //     onDateTimeChanged: (DateTime newTime) {
-  //       setState(() => _closeTime = newTime);
-  //     },
-  //   );
-  // }
 }
