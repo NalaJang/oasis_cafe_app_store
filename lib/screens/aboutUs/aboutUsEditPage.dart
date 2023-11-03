@@ -138,7 +138,8 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
       ),
 
       child: Text(
-        '${time.hour} : ${time.minute}',
+        time.minute.toString() == '0' ?
+        '${time.hour} : 00' : '${time.hour} : ${time.minute}',
 
         style: const TextStyle(
             fontSize: 18.0,
