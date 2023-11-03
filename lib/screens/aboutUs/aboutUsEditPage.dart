@@ -14,26 +14,13 @@ class AboutUsEditPage extends StatefulWidget {
 
 class _AboutUsEditPageState extends State<AboutUsEditPage> {
 
-  String changedOpenHour = '';
-  String changedOpenMinutes = '';
-  String changedCloseHour = '';
-  String changedCloseMinutes = '';
 
   @override
   Widget build(BuildContext context) {
+
     var openingHoursProvider = Provider.of<OpeningHoursProvider>(context);
     openingHoursProvider.getOpeningHours();
-
-    late DateTime openTime;
-    late DateTime closeTime;
-    String id = '';
-
-    for( var i = 0; i < openingHoursProvider.hoursList.length; i++ ) {
-      id = openingHoursProvider.hoursList[i].id;
-      openTime = openingHoursProvider.hoursList[i].openTime;
-      closeTime = openingHoursProvider.hoursList[i].closeTime;
-    }
-
+    List<String> dayList = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 
     return Scaffold(
       appBar: AppBar(
@@ -43,55 +30,88 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
 
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              Row(
-                children: [
-                  const Text('월요일'),
-                  const Text('시작'),
-                  CupertinoButton(
-                    onPressed: () => _showTimePickerDialog(
-                      id,
-                      CupertinoDatePicker(
-                        initialDateTime: openTime,
-                        mode: CupertinoDatePickerMode.time,
-                        use24hFormat: false,
-                        minuteInterval: 30,
-                        onDateTimeChanged: (DateTime newTime) {
-                          changedOpenHour = newTime.hour.toString();
-                          changedOpenMinutes = newTime.minute.toString();
-                        },
-                      ),
-                    ),
-
-                    child: setTimeText(openTime),
-                  ),
-
-                  const Text('종료'),
-                  CupertinoButton(
-                    onPressed: () => _showTimePickerDialog(
-                      id,
-                      CupertinoDatePicker(
-                        initialDateTime: closeTime,
-                        mode: CupertinoDatePickerMode.time,
-                        use24hFormat: false,
-                        minuteInterval: 30,
-                        onDateTimeChanged: (DateTime newTime) {
-                          changedCloseHour = newTime.hour.toString();
-                          changedCloseMinutes = newTime.minute.toString();
-                        },
-                      ),
-                    ),
-
-                    child: setTimeText(closeTime),
-                  ),
-                ],
+        child: Column(
+          children: [
+            for( var day = 0; day < dayList.length; day++ )
+              SetOpeningHoursTime(
+                id: openingHoursProvider.hoursList[day].id,
+                day: dayList[day],
+                openTime: openingHoursProvider.hoursList[day].openTime,
+                closeTime: openingHoursProvider.hoursList[day].closeTime
               ),
-            ],
-          ),
+          ],
         ),
-      ),
+      )
+    );
+  }
+}
+
+
+class SetOpeningHoursTime extends StatefulWidget {
+  const SetOpeningHoursTime({required this.id, required this.day,
+    required this.openTime, required this.closeTime, Key? key}) : super(key: key);
+
+  final String id;
+  final String day;
+  final DateTime openTime;
+  final DateTime closeTime;
+
+
+  @override
+  State<SetOpeningHoursTime> createState() => _SetOpeningHoursTime();
+}
+
+class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
+
+  String changedOpenHour = '';
+  String changedOpenMinutes = '';
+  String changedCloseHour = '';
+  String changedCloseMinutes = '';
+
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        Text(widget.day),
+        const Text('시작'),
+        CupertinoButton(
+          onPressed: () => _showTimePickerDialog(
+            widget.id,
+            CupertinoDatePicker(
+              initialDateTime: widget.openTime,
+              mode: CupertinoDatePickerMode.time,
+              use24hFormat: false,
+              minuteInterval: 30,
+              onDateTimeChanged: (DateTime newTime) {
+                changedOpenHour = newTime.hour.toString();
+                changedOpenMinutes = newTime.minute.toString();
+              },
+            ),
+          ),
+
+          child: setTimeText(widget.openTime),
+        ),
+
+        const Text('종료'),
+        CupertinoButton(
+          onPressed: () => _showTimePickerDialog(
+            widget.id,
+            CupertinoDatePicker(
+              initialDateTime: widget.closeTime,
+              mode: CupertinoDatePickerMode.time,
+              use24hFormat: false,
+              minuteInterval: 30,
+              onDateTimeChanged: (DateTime newTime) {
+                changedCloseHour = newTime.hour.toString();
+                changedCloseMinutes = newTime.minute.toString();
+              },
+            ),
+          ),
+
+          child: setTimeText(widget.closeTime),
+        ),
+      ],
     );
   }
 
@@ -133,12 +153,13 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
         color: CupertinoColors.systemBackground.resolveFrom(context),
         // Use a SafeArea widget to avoid system overlaps.
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             TextButton(
               onPressed: (){
                 Navigator.pop(context);
                 provider.updateTime(id, changedOpenHour, changedOpenMinutes,
-                changedCloseHour, changedCloseMinutes);
+                    changedCloseHour, changedCloseMinutes);
               },
               child: const Text('Done'),
             ),
@@ -148,5 +169,4 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
       ),
     );
   }
-
 }

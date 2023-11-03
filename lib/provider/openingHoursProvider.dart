@@ -9,14 +9,6 @@ class OpeningHoursProvider with ChangeNotifier {
   late CollectionReference openingHoursCollection;
   List<OpeningHoursModel> hoursList = [];
 
-  String monday = '';
-  String tuesday = '';
-  String wednesday = '';
-  String thursday = '';
-  String friday = '';
-  String saturday = '';
-  String sunday = '';
-
 
   OpeningHoursProvider() {
     openingHoursDocument = db.collection('aboutUs').doc('DGiejo4a7ZkeWpC8OnY6');
