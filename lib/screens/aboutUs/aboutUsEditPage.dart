@@ -30,17 +30,21 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
 
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            for( var day = 0; day < dayList.length; day++ )
-              SetOpeningHoursTime(
-                id: openingHoursProvider.hoursList[day].id,
-                day: dayList[day],
-                openTime: openingHoursProvider.hoursList[day].openTime,
-                closeTime: openingHoursProvider.hoursList[day].closeTime
-              ),
-          ],
-        ),
+        child:
+        openingHoursProvider.hoursList.isEmpty ?
+          const CircularProgressIndicator() :
+
+          Column(
+            children: [
+              for( var day = 0; day < dayList.length; day++ )
+                SetOpeningHoursTime(
+                  id: openingHoursProvider.hoursList[day].id,
+                  day: dayList[day],
+                  openTime: openingHoursProvider.hoursList[day].openTime,
+                  closeTime: openingHoursProvider.hoursList[day].closeTime
+                ),
+            ],
+          ),
       )
     );
   }
