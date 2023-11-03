@@ -72,6 +72,15 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
   String changedCloseHour = '';
   String changedCloseMinutes = '';
 
+  @override
+  void initState() {
+    super.initState();
+
+    changedOpenHour = widget.openTime.hour.toString();
+    changedOpenMinutes = widget.openTime.minute.toString();
+    changedCloseHour = widget.closeTime.hour.toString();
+    changedCloseMinutes = widget.closeTime.minute.toString();
+  }
 
   @override
   Widget build(BuildContext context) {
