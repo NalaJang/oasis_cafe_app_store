@@ -29,7 +29,7 @@ class _AboutUsEditPageState extends State<AboutUsEditPage> {
       ),
 
       body: Padding(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
         child:
         openingHoursProvider.hoursList.isEmpty ?
           const CircularProgressIndicator() :
@@ -86,8 +86,25 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(widget.day),
-        const Text('시작'),
+        Expanded(
+          child: Text(
+            widget.day,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: Colors.black87,
+              fontSize: 17.0,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+        ),
+
+        const Text(
+          '시작',
+          style: TextStyle(
+            fontSize: 15.0
+          ),
+        ),
+
         CupertinoButton(
           onPressed: () => _showTimePickerDialog(
             widget.id,
@@ -106,6 +123,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
           child: setTimeText(widget.openTime),
         ),
 
+        const SizedBox(width: 15.0,),
         const Text('종료'),
         CupertinoButton(
           onPressed: () => _showTimePickerDialog(
@@ -167,15 +185,26 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
         color: CupertinoColors.systemBackground.resolveFrom(context),
         // Use a SafeArea widget to avoid system overlaps.
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
           children: [
-            TextButton(
-              onPressed: (){
-                Navigator.pop(context);
-                provider.updateTime(id, changedOpenHour, changedOpenMinutes,
-                    changedCloseHour, changedCloseMinutes);
-              },
-              child: const Text('Done'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                  },
+                  child: const Text('취소'),
+                ),
+
+                TextButton(
+                  onPressed: (){
+                    Navigator.pop(context);
+                    provider.updateTime(id, changedOpenHour, changedOpenMinutes,
+                        changedCloseHour, changedCloseMinutes);
+                  },
+                  child: const Text('적용'),
+                ),
+              ],
             ),
             Expanded(child: child)
           ],
