@@ -189,6 +189,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                // 취소
                 TextButton(
                   onPressed: (){
                     Navigator.pop(context);
@@ -196,17 +197,38 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                   child: const Text('취소'),
                 ),
 
+
+                // 휴무
                 TextButton(
                   onPressed: (){
                     Navigator.pop(context);
-                    provider.updateTime(id, changedOpenHour, changedOpenMinutes,
-                        changedCloseHour, changedCloseMinutes);
                   },
-                  child: const Text('적용'),
+                  child: const Text('휴무'),
                 ),
               ],
             ),
-            Expanded(child: child)
+            Expanded(child: child),
+
+            Container(
+              padding: const EdgeInsets.all(20.0),
+              width: double.infinity,
+              child: ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0)
+                  ),
+                  side: const BorderSide(
+                      color: Colors.white
+                  )
+                ),
+                onPressed: (){
+                  Navigator.pop(context);
+                  provider.updateTime(id, changedOpenHour, changedOpenMinutes,
+                      changedCloseHour, changedCloseMinutes);
+                },
+                child: const Text('적용'),
+              ),
+            ),
           ],
         )
       ),
