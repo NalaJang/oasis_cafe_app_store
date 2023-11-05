@@ -202,8 +202,14 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                 TextButton(
                   onPressed: (){
                     Navigator.pop(context);
+                    provider.updateTime(id, '0', '0', '0', '0');
                   },
-                  child: const Text('휴무'),
+                  child: const Text(
+                    '휴무',
+                    style: TextStyle(
+                      color: Colors.red
+                    ),
+                  ),
                 ),
               ],
             ),
