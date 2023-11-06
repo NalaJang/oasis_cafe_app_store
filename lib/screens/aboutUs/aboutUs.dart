@@ -4,6 +4,8 @@ import 'package:oasis_cafe_app_store/provider/aboutUsProvider.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/aboutUsEditPage.dart';
 import 'package:provider/provider.dart';
 
+import '../../provider/openingHoursProvider.dart';
+
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);
 
@@ -11,8 +13,10 @@ class AboutUs extends StatelessWidget {
   Widget build(BuildContext context) {
 
     List<String> dayList = ['월', '화', '수', '목', '금', '토', '일'];
-    var aboutUsProvider = Provider.of<AboutUsProvider>(context);
-    aboutUsProvider.getStoreInfo();
+    // var aboutUsProvider = Provider.of<AboutUsProvider>(context);
+    // aboutUsProvider.getStoreInfo();
+    var openingHoursProvider = Provider.of<OpeningHoursProvider>(context);
+    openingHoursProvider.getOpeningHours();
 
     var dayTextSize = const TextStyle(fontSize: 17.0);
 
@@ -68,10 +72,11 @@ class AboutUs extends StatelessWidget {
                     style: dayTextSize,
                   ),
 
-                  aboutUsProvider.dayList.isEmpty ?
+                  openingHoursProvider.hoursList.isEmpty ?
                       const CircularProgressIndicator() :
                       Text(
-                        aboutUsProvider.dayList[i],
+                        '${openingHoursProvider.hoursList[i].openAmPm} ${openingHoursProvider.hoursList[i].openHour}:${openingHoursProvider.hoursList[i].openMinutes} ~ '
+                            '${openingHoursProvider.hoursList[i].closeAmPm} ${openingHoursProvider.hoursList[i].closeHour}:${openingHoursProvider.hoursList[i].closeMinutes}',
                         style: dayTextSize,
                       )
                 ],
