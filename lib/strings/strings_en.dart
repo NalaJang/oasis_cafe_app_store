@@ -32,4 +32,6 @@ class Strings {
 
   static const String newOrder = 'new';
   static const String orderInProcess = 'inProcess';
+
+  static const String signOut = 'Sign out';
 }
