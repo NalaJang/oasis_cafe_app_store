@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
-import 'package:oasis_cafe_app_store/provider/aboutUsProvider.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/aboutUs.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
