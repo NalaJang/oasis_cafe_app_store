@@ -33,6 +33,8 @@ class UserStateProvider with ChangeNotifier {
         .set({
       // 데이터의 형식은 항상 map 의 형태
       'signUpTime' : DateTime.now(),
+      'signInTime' : DateTime.now(),
+      'signOutTime' : DateTime.now(),
       'userEmail' : email,
       'userPassword' : password,
       'userName' : name,
@@ -68,6 +70,10 @@ class UserStateProvider with ChangeNotifier {
         userEmail = value['userEmail'],
         userMobileNumber = value['userMobileNumber'],
       });
+
+      await userInfo.doc(userUid).update({
+        'signInTime' : DateTime.now()
+      });
     }
 
     if (newUser.user != null) {
@@ -75,5 +81,20 @@ class UserStateProvider with ChangeNotifier {
     }
 
     return isLogged;
+  }
+
+
+  // 로그아웃
+  Future<void> signOut() async{
+    try {
+      await _authentication.signOut();
+      await userInfo.doc(userUid).update({
+        'signOutTime' : DateTime.now()
+      });
+
+      print('signOut');
+    } catch(e) {
+      print(e.toString());
+    }
   }
 }

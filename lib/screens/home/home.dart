@@ -5,6 +5,8 @@ import 'package:oasis_cafe_app_store/screens/aboutUs/aboutUs.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
 import 'package:provider/provider.dart';
 
+import '../../main.dart';
+import '../../provider/userStateProvider.dart';
 import '../../strings/strings_en.dart';
 
 
@@ -76,7 +78,7 @@ class _HomeState extends State<Home> {
                       color: Palette.backgroundColor1
                   ),
                   child: Text(
-                    'Hello,',
+                    'Hello,\n',
                     style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold
@@ -121,13 +123,26 @@ class _HomeState extends State<Home> {
           // 로그아웃
           Align(
             alignment: Alignment.bottomCenter,
-            child: Container(
-              margin: const EdgeInsets.only(bottom: 50),
-              child: ListTile(
-                leading: const Icon(Icons.logout),
-                title: const Text(Strings.signOut),
-                onTap: (){},
-              ),
+            child: Column(
+              children: [
+                const Divider(thickness: 1, color: Colors.grey,),
+                Container(
+                  margin: const EdgeInsets.only(bottom: 50),
+                  child: ListTile(
+                    leading: const Icon(Icons.logout),
+                    title: const Text(Strings.signOut),
+                    onTap: (){
+                      Provider.of<UserStateProvider>(context, listen: false).signOut();
+                      Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const MyApp()
+                          ), (route) => false
+                      );
+                    },
+                  ),
+                ),
+              ],
             ),
           ),
         ],

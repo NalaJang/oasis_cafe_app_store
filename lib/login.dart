@@ -140,7 +140,7 @@ class _LoginState extends State<Login> {
                         var isLogged = Provider
                             .of<UserStateProvider>(context, listen: false)
                             .signIn(
-                            'admin1@email.com',
+                            'admin3@email.com',
                             '123456'
                         );
 
