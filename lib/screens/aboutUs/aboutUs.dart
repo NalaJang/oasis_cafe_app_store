@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
-import 'package:oasis_cafe_app_store/provider/aboutUsProvider.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/aboutUsEditPage.dart';
 import 'package:provider/provider.dart';
 
@@ -13,8 +12,6 @@ class AboutUs extends StatelessWidget {
   Widget build(BuildContext context) {
 
     List<String> dayList = ['월', '화', '수', '목', '금', '토', '일'];
-    // var aboutUsProvider = Provider.of<AboutUsProvider>(context);
-    // aboutUsProvider.getStoreInfo();
     var openingHoursProvider = Provider.of<OpeningHoursProvider>(context);
     openingHoursProvider.getOpeningHours();
 
