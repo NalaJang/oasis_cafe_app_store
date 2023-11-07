@@ -27,11 +27,6 @@ class OpeningHoursModel {
     closeHour = data['closeHour'];
     closeMinutes = data['closeMinutes'];
 
-    if( int.parse(openHour) > 12 ) {
-      openHour = (int.parse(openHour) - 12).toString();
-    } else if( int.parse(closeHour) > 12 ) {
-      closeHour = (int.parse(closeHour) - 12).toString();
-    }
 
     if( openMinutes == '0' ) {
       openMinutes = '00';
@@ -44,6 +39,13 @@ class OpeningHoursModel {
         int.parse(openHour), int.parse(openMinutes));
     closeTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,
         int.parse(closeHour), int.parse(closeMinutes));
+
+
+    if( int.parse(openHour) > 12 ) {
+      openHour = (int.parse(openHour) - 12).toString();
+    } else if( int.parse(closeHour) > 12 ) {
+      closeHour = (int.parse(closeHour) - 12).toString();
+    }
 
   }
 
