@@ -71,6 +71,11 @@ class AboutUs extends StatelessWidget {
 
                   openingHoursProvider.hoursList.isEmpty ?
                       const CircularProgressIndicator() :
+                      openingHoursProvider.hoursList[i].openHour == '0' ?
+                      Text(
+                        '휴무',
+                        style: dayTextSize,
+                      ) :
                       Text(
                         '${openingHoursProvider.hoursList[i].openAmPm} ${openingHoursProvider.hoursList[i].openHour}:${openingHoursProvider.hoursList[i].openMinutes} ~ '
                             '${openingHoursProvider.hoursList[i].closeAmPm} ${openingHoursProvider.hoursList[i].closeHour}:${openingHoursProvider.hoursList[i].closeMinutes}',
