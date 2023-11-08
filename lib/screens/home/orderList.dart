@@ -62,6 +62,8 @@ class _OrderListState extends State<OrderList> {
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
               String orderId = documentSnapshot.id;
+              String userUid = documentSnapshot['userUid'];
+              String orderUid = documentSnapshot['orderUid'];
               int quantity = documentSnapshot['quantity'];
               String itemName = documentSnapshot['itemName'];
               String orderTime = documentSnapshot['orderTime'];
@@ -115,7 +117,7 @@ class _OrderListState extends State<OrderList> {
                       onPressed: () async {
                         // '주문 접수(new)' 클릭 시
                         if( processState == Strings.newOrder ) {
-                          orderStateProvider.updateNewOrderState(orderId);
+                          orderStateProvider.updateNewOrderState(orderId, userUid, orderUid);
 
                         // '처리중(inProcess)' 클릭 시
                         } else if( processState == Strings.orderInProcess ) {

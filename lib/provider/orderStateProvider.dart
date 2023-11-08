@@ -63,10 +63,20 @@ class OrderStateProvider with ChangeNotifier {
 
 
   // 새 주문 상태 업데이트
-  Future<void> updateNewOrderState(String orderId) async {
+  Future<void> updateNewOrderState(String orderId, String userUid, String orderUid) async {
 
     // '주문 접수(new)' 클릭 시 '처리중(inProcess)' 로 상태 업데이트
     await orderCollection.doc(orderId).update({
+      'processState' : Strings.orderInProcess,
+    });
+
+
+    // 고객 데이터베이스에서도 업데이트
+    await db.collection('user')
+        .doc(userUid)
+        .collection('user_order')
+        .doc(orderUid)
+        .update({
       'processState' : Strings.orderInProcess,
     });
   }
