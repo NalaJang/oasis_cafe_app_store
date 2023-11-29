@@ -94,7 +94,7 @@ class OrderStateProvider with ChangeNotifier {
         .collection('user_order')
         .doc(orderUid)
         .update({
-      'processState' : Strings.orderInProcess,
+      'processState' : Strings.orderDone,
     });
   }
 
