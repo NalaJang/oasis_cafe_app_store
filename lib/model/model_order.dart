@@ -1,5 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../strings/strings_en.dart';
+
 class OrderModel {
 
   late String id;
@@ -58,7 +60,7 @@ class OrderModel {
           'syrupOption' : data.syrupOption,
           'whippedCreamOption' : data.whippedCreamOption,
           'iceOption' : data.iceOption,
-          'processState' : 'pickUp'
+          'processState' : Strings.orderPickedUp
         });
   }
 }

@@ -113,7 +113,7 @@ class OrderStateProvider with ChangeNotifier {
         .collection('user_order')
         .doc(orderUid)
         .update({
-      'processState' : Strings.orderPickUp,
+      'processState' : Strings.orderPickedUp,
     });
   }
 }
