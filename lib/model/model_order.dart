@@ -37,13 +37,14 @@ class OrderModel {
   }
 
   // 완료 처리된 주문 내역을 'user_order_completed' collection 에 저장
-  OrderModel.setDataToCompletedOrder(String orderId, OrderModel data) {
+  OrderModel.setDataToCompletedOrder(String orderId, String orderUid, OrderModel data) {
 
     FirebaseFirestore.instance
         .collection('user_order_completed')
         .doc(orderId)
         .set(
         {
+          'orderUid' : orderUid,
           'orderTime' : data.orderTime,
           'userUid' : data.userUid,
           'quantity' : data.quantity,

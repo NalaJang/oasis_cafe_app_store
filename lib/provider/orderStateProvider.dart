@@ -104,7 +104,7 @@ class OrderStateProvider with ChangeNotifier {
   Future<void> updateOrderDoneState(int index, String orderId, String userUid, String orderUid) async {
 
     // '완료' 클릭 시 신규/처리중 메뉴 항목에서 삭제, 해당 항목을 완료 항목으로 업데이트
-    OrderModel.setDataToCompletedOrder(orderId, orderList[index]);
+    OrderModel.setDataToCompletedOrder(orderId, orderUid, orderList[index]);
     await orderCollection.doc(orderId).delete();
 
     // 고객 데이터베이스에서도 업데이트
