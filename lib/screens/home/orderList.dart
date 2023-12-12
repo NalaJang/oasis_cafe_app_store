@@ -119,13 +119,23 @@ class _OrderListState extends State<OrderList> {
                         if( processState == Strings.newOrder ) {
                           orderStateProvider.updateNewOrderState(orderId, userUid, orderUid);
 
-                        // '처리중(inProcess)' 클릭 시
+                        // '처리중(inProcess)' 클릭 -> '완료' 로 상태 업데이트
                         } else if( processState == Strings.orderInProcess ) {
-                          var result = await showProcessingStateDialog();
+                          var result = await showProcessingStateDialog('완료');
 
                           setState(() {
                             if( result )  {
                               orderStateProvider.updateOrderInProcessState(index, orderId, userUid, orderUid);
+                            }
+                          });
+
+                        // '완료(done)' 클릭 -> 'pickUp' 으로 상태 업데이트
+                        } else if( processState == Strings.orderDone ) {
+                          var result = await showProcessingStateDialog('픽업');
+
+                          setState(() {
+                            if( result )  {
+                              orderStateProvider.updateOrderDoneState(index, orderId, userUid, orderUid);
                             }
                           });
                         }
@@ -278,20 +288,20 @@ class _OrderListState extends State<OrderList> {
   }
 
   // 주문 처리 상태 다이얼로그
-  Future<bool> showProcessingStateDialog() async {
+  Future<bool> showProcessingStateDialog(String nextProcess) async {
     processingConfirm = false;
     await showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           title: Text('처리중'),
-          content: Text('완료 처리를 하시겠습니까?'),
+          content: Text('$nextProcess 처리를 하시겠습니까?'),
           actions: [
             // 취소
             cancelButton(),
 
             // 확인
-            submitButton('완료')
+            submitButton(nextProcess)
           ],
         );
       }
@@ -331,7 +341,7 @@ class _OrderListState extends State<OrderList> {
             )
         ),
         onPressed: (){
-          if( content == '완료' ) {
+          if( content == '완료' || content == '픽업' ) {
             processingConfirm = true;
           }
           ScaffoldMessenger.of(context).showSnackBar(

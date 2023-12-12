@@ -57,7 +57,7 @@ class OrderModel {
           'syrupOption' : data.syrupOption,
           'whippedCreamOption' : data.whippedCreamOption,
           'iceOption' : data.iceOption,
-          'processState' : 'done'
+          'processState' : 'pickUp'
         });
   }
 }
