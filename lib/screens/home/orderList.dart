@@ -226,8 +226,10 @@ class _OrderListState extends State<OrderList> {
                       )
                     ),
                     onPressed: () async {
-                      await showOrderCancelDialog();
-                      },
+                      var result = await showOrderCancelDialog();
+                      print('result > $result');
+
+                    },
                     child: const Text(
                       '주문 취소',
                       style: TextStyle(
@@ -244,13 +246,13 @@ class _OrderListState extends State<OrderList> {
     }
   }
 
-
   List<String> reasonOfCancellationList = ['업소 사정 취소', '재료 소진', '요청사항 불가'];
   // AlertDialog 에서는 setState() 가 작동을 하지 않았다.
   // setState() 는 StatefulBuilder 에서만 사용이 가능하다고 해서
   // AlertDialog 를 StatefulBuilder widget 으로 감싸주었다.
-  Future<void> showOrderCancelDialog() async {
-    return showDialog(
+  Future<bool> showOrderCancelDialog() async {
+    processingConfirm = false;
+    await showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
@@ -278,13 +280,14 @@ class _OrderListState extends State<OrderList> {
                 cancelButton(),
 
                 // 확인
-                submitButton('취소')
+                submitButton('주문 취소')
               ],
             );
           },
         );
       }
     );
+    return processingConfirm;
   }
 
   // 주문 처리 상태 다이얼로그
@@ -341,7 +344,7 @@ class _OrderListState extends State<OrderList> {
             )
         ),
         onPressed: (){
-          if( content == '완료' || content == '픽업' ) {
+          if( content == '완료' || content == '픽업' || content == '주문 취소' ) {
             processingConfirm = true;
           }
           ScaffoldMessenger.of(context).showSnackBar(
