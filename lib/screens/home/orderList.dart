@@ -153,7 +153,7 @@ class _OrderListState extends State<OrderList> {
 
                 // 주문 정보 다이얼로그
                 onTap: (){
-                  _showOrderDetailDialog(context, index);
+                  _showOrderDetailDialog(context, index, processState);
                 },
               );
             }
@@ -167,7 +167,7 @@ class _OrderListState extends State<OrderList> {
   }
 
   // 주문 정보 보기 다이얼로그
-  Future<void> _showOrderDetailDialog(BuildContext context, int index) async {
+  Future<void> _showOrderDetailDialog(BuildContext context, int index, String processState) async {
     var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
     var customerName = await orderStateProvider.getUserName(index);
     var orderedItem = orderStateProvider.orderList[index];
@@ -214,7 +214,8 @@ class _OrderListState extends State<OrderList> {
                 Text(orderedItem.cup),
 
                 const Spacer(),
-                // 주문 취소 버튼
+                // 주문 취소 버튼(새 주문일 경우에만 취소 버튼 보임)
+                processState == Strings.newOrder ?
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
@@ -242,7 +243,7 @@ class _OrderListState extends State<OrderList> {
                       ),
                     )
                   ),
-                )
+                ) : const Spacer()
               ],
             ),
           );
