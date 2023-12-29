@@ -225,10 +225,15 @@ class _OrderListState extends State<OrderList> {
                         color: Color(0xFF878787)
                       )
                     ),
-                    onPressed: () async {
-                      var result = await showOrderCancelDialog();
-                      print('result > $result');
 
+                    onPressed: () async {
+                      var isCanceled = await showOrderCancelDialog();
+                      if( isCanceled ) {
+                        print('_reason > $_reason');
+                        if( mounted ) {
+                          Navigator.pop(context);
+                        }
+                      }
                     },
                     child: const Text(
                       '주문 취소',
@@ -258,7 +263,7 @@ class _OrderListState extends State<OrderList> {
         return StatefulBuilder(
           builder: (context, StateSetter setState) {
             return AlertDialog(
-              title: Text('주문 취소'),
+              title: const Text('주문 취소'),
               content: Column(
                 children: [
                   for( var i = 0; i < reasonOfCancellationList.length; i++ )
