@@ -31,6 +31,7 @@ class Strings {
   static const String mobileNumberValidation = 'Please enter a valid mobile number';
 
   static const String newOrder = 'new';
+  static const String orderCanceled = 'canceled';
   static const String orderInProcess = 'inProcess';
   static const String orderDone = 'done';
   static const String orderPickedUp = 'pickedUp';

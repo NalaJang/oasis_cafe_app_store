@@ -44,13 +44,11 @@ class _OrderListState extends State<OrderList> {
       return collectionName;
     }
 
-    CollectionReference collectionReference = db.collection(setCollectionName());
     orderStateProvider.orderCollection = db.collection(setCollectionName());
-    orderStateProvider.getUserOrderList();
 
     return StreamBuilder(
       // orderTime 내림차순으로 데이터 정렬
-      stream: collectionReference.orderBy('orderTime', descending: true).snapshots(),
+      stream: orderStateProvider.orderCollection.orderBy('orderTime', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         if( streamSnapshot.hasData ) {
           return ListView.separated(
@@ -61,6 +59,7 @@ class _OrderListState extends State<OrderList> {
             itemCount: streamSnapshot.data!.docs.length,
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+              orderStateProvider.getUserOrderList();
               String orderId = documentSnapshot.id;
               String userUid = documentSnapshot['userUid'];
               String orderUid = documentSnapshot['orderUid'];
@@ -171,6 +170,8 @@ class _OrderListState extends State<OrderList> {
     var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
     var customerName = await orderStateProvider.getUserName(index);
     var orderedItem = orderStateProvider.orderList[index];
+    print('주문 정보 index > $index');
+    print('주문 정보 orderedItem > ${orderedItem.id}');
 
     if( mounted ) {
       return showDialog<void> (
@@ -233,6 +234,9 @@ class _OrderListState extends State<OrderList> {
                         print('_reason > $_reason');
                         if( mounted ) {
                           Navigator.pop(context);
+                          orderStateProvider.updateOrderCanceled(
+                              index, orderedItem.id, orderedItem.userUid, orderedItem.orderUid, _reason.toString()
+                          );
                         }
                       }
                     },

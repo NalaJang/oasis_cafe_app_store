@@ -19,10 +19,12 @@ class OrderStateProvider with ChangeNotifier {
 
 
   Future<void> getUserOrderList() async {
-    orderList = await orderCollection.get().then((querySnapshot) {
-      return querySnapshot.docs.map((document) {
-        return OrderModel.getSnapshotData(document);
-      }).toList();
+    orderList = await orderCollection
+                .orderBy('orderTime', descending: true)
+                .get().then((querySnapshot) {
+                  return querySnapshot.docs.map((document) {
+                    return OrderModel.getSnapshotData(document);
+                  }).toList();
     });
 
     notifyListeners();
@@ -81,6 +83,24 @@ class OrderStateProvider with ChangeNotifier {
     });
   }
 
+  // 취소 처리된 주문 상태 업데이트
+  Future<void> updateOrderCanceled(int index, String orderId, String userUid, String orderUid, String reason) async {
+
+    // 취소된 사유와 함께 '주문 취소(canceled)' 로 상태 업데이트
+    OrderModel.setDataToCompletedOrder(true, reason, orderId, orderUid, orderList[index]);
+    await orderCollection.doc(orderId).delete();
+
+    // 고객 데이터베이스에서도 업데이트
+    await db.collection('user')
+        .doc(userUid)
+        .collection('user_order')
+        .doc(orderUid)
+        .update({
+      'processState' : Strings.orderCanceled,
+      'reasonOfCanceled' : reason
+    });
+  }
+
   // 처리중인 주문 상태 업데이트
   Future<void> updateOrderInProcessState(int index, String orderId, String userUid, String orderUid) async {
 
@@ -104,7 +124,7 @@ class OrderStateProvider with ChangeNotifier {
   Future<void> updateOrderDoneState(int index, String orderId, String userUid, String orderUid) async {
 
     // '완료' 클릭 시 신규/처리중 메뉴 항목에서 삭제, 해당 항목을 완료 항목으로 업데이트
-    OrderModel.setDataToCompletedOrder(orderId, orderUid, orderList[index]);
+    OrderModel.setDataToCompletedOrder(false, '', orderId, orderUid, orderList[index]);
     await orderCollection.doc(orderId).delete();
 
     // 고객 데이터베이스에서도 업데이트

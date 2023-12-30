@@ -6,6 +6,7 @@ class OrderModel {
 
   late String id;
   late String userUid;
+  late String orderUid;
   late String orderTime;
   late int quantity;
   late String itemName;
@@ -24,6 +25,7 @@ class OrderModel {
 
     id = snapshot.id;
     userUid = data['userUid'];
+    orderUid = data['orderUid'];
     orderTime = data['orderTime'];
     quantity = data['quantity'];
     itemName = data['itemName'];
@@ -39,7 +41,13 @@ class OrderModel {
   }
 
   // 완료 처리된 주문 내역을 'user_order_completed' collection 에 저장
-  OrderModel.setDataToCompletedOrder(String orderId, String orderUid, OrderModel data) {
+  OrderModel.setDataToCompletedOrder(bool isCanceled, String reason, String orderId, String orderUid, OrderModel data) {
+    String processState;
+    if( isCanceled ) {
+      processState = Strings.orderCanceled;
+    } else {
+      processState = Strings.orderPickedUp;
+    }
 
     FirebaseFirestore.instance
         .collection('user_order_completed')
@@ -60,7 +68,8 @@ class OrderModel {
           'syrupOption' : data.syrupOption,
           'whippedCreamOption' : data.whippedCreamOption,
           'iceOption' : data.iceOption,
-          'processState' : Strings.orderPickedUp
+          'processState' : processState,
+          'reasonOfCancel' : reason
         });
   }
 }
