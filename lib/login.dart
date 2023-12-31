@@ -18,6 +18,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
 
   bool showSpinner = false;
+  bool isChecked = false;
   var formKey = GlobalKey<FormState>();
 
   void _tryValidation() {
@@ -46,6 +47,10 @@ class _LoginState extends State<Login> {
                 // 이메일, 비밀번호 텍스트 필드
                 const EmailPasswordField(),
 
+                // 로그인 상태 유지
+                _autoLoginCheckBox(),
+                const SizedBox(height: 30,),
+
                 // 로그인 버튼
                 _loginButton(),
 
@@ -57,6 +62,26 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Widget _autoLoginCheckBox() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Row(
+        children: [
+          Checkbox(
+            value: isChecked,
+            onChanged: (value) {
+              setState(() {
+                isChecked = value!;
+              });
+            }
+          ),
+
+          const Text('로그인 상태 유지'),
+        ],
       ),
     );
   }
@@ -216,7 +241,7 @@ class EmailPasswordField extends StatelessWidget {
             decoration: _getDecoration(Strings.password),
           ),
         ),
-        const SizedBox(height: 30,),
+        const SizedBox(height: 10,),
       ],
     );
   }
