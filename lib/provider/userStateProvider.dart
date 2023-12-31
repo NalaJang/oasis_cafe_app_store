@@ -13,6 +13,7 @@ class UserStateProvider with ChangeNotifier {
   String userUid = '';
   String userName = '';
   String userEmail = '';
+  String userPassword = '';
   String userDateOfBirth = '';
   String userMobileNumber = '';
 
