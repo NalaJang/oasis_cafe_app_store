@@ -124,7 +124,7 @@ class _OrderListState extends State<OrderList> {
 
                           setState(() {
                             if( result )  {
-                              orderStateProvider.updateOrderInProcessState(index, orderId, userUid, orderUid);
+                              orderStateProvider.updateOrderInProcessState(orderId, userUid, orderUid);
                             }
                           });
 
