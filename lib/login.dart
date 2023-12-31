@@ -239,12 +239,13 @@ class BottomMenu extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
+        // 비밀번호 찾기
         const Text(Strings.forgottenPassword),
 
-        const SizedBox(height: 10,),
+        const Text(' | '),
 
         // 회원가입
         GestureDetector(
