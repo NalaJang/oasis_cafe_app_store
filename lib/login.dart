@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
@@ -28,6 +29,28 @@ class _LoginState extends State<Login> {
     if( isValid) {
       formKey.currentState!.save();
     }
+  }
+
+  var storage = const FlutterSecureStorage();
+  dynamic userInfo = '';
+
+  @override
+  void initState() {
+    super.initState();
+
+    // 자동 로그인 확인
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      userInfo = await storage.read(key: 'STATUS_LOGIN');
+
+      if( userInfo != null ) {
+        Provider.of<UserStateProvider>((context), listen: false).getUserInfo(userInfo);
+
+        Navigator.push(
+          (context),
+          MaterialPageRoute(builder: (context) => const Home())
+        );
+      }
+    });
   }
 
   @override
@@ -110,6 +133,11 @@ class _LoginState extends State<Login> {
               setState(() {
                 showSpinner = false;
               });
+
+              // 자동 로그인 체크 박스 체크를 했다면, storage 에 사용자 정보 저장
+              if( isChecked ) {
+                storage.write(key: 'STATUS_LOGIN', value: userProvider.userUid);
+              }
 
               Navigator.push(
                 (context),

@@ -59,22 +59,23 @@ class UserStateProvider with ChangeNotifier {
     if (newUser.user != null) {
       userUid = newUser.user!.uid;
 
-      await userInfo
-          .doc(userUid)
-          .get()
-          .then((value) =>
-      {
-
-        // value.data()!['userName'] -> value['userName'] can be replaced
-        // In the new flutter update, we don't need to add .data()
-        userName = value['userName'],
-        userEmail = value['userEmail'],
-        userMobileNumber = value['userMobileNumber'],
-      });
-
-      await userInfo.doc(userUid).update({
-        'signInTime' : DateTime.now()
-      });
+      // await userInfo
+      //     .doc(userUid)
+      //     .get()
+      //     .then((value) =>
+      // {
+      //
+      //   // value.data()!['userName'] -> value['userName'] can be replaced
+      //   // In the new flutter update, we don't need to add .data()
+      //   userName = value['userName'],
+      //   userEmail = value['userEmail'],
+      //   userMobileNumber = value['userMobileNumber'],
+      // });
+      //
+      // await userInfo.doc(userUid).update({
+      //   'signInTime' : DateTime.now()
+      // });
+      getUserInfo(userUid);
     }
 
     if (newUser.user != null) {
@@ -82,6 +83,25 @@ class UserStateProvider with ChangeNotifier {
     }
 
     return isLogged;
+  }
+
+  Future<void> getUserInfo(String userUid) async {
+    await userInfo
+        .doc(userUid)
+        .get()
+        .then((value) =>
+    {
+
+      // value.data()!['userName'] -> value['userName'] can be replaced
+      // In the new flutter update, we don't need to add .data()
+      userName = value['userName'],
+      userEmail = value['userEmail'],
+      userMobileNumber = value['userMobileNumber'],
+    });
+
+    await userInfo.doc(userUid).update({
+      'signInTime' : DateTime.now()
+    });
   }
 
 
