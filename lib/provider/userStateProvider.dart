@@ -59,32 +59,16 @@ class UserStateProvider with ChangeNotifier {
     if (newUser.user != null) {
       userUid = newUser.user!.uid;
 
-      // await userInfo
-      //     .doc(userUid)
-      //     .get()
-      //     .then((value) =>
-      // {
-      //
-      //   // value.data()!['userName'] -> value['userName'] can be replaced
-      //   // In the new flutter update, we don't need to add .data()
-      //   userName = value['userName'],
-      //   userEmail = value['userEmail'],
-      //   userMobileNumber = value['userMobileNumber'],
-      // });
-      //
-      // await userInfo.doc(userUid).update({
-      //   'signInTime' : DateTime.now()
-      // });
-      getUserInfo(userUid);
-    }
+      // 사용자 정보 가져오기
+      await getUserInfo(userUid);
 
-    if (newUser.user != null) {
       isLogged = true;
     }
 
     return isLogged;
   }
 
+  // 사용자 정보 가져오기
   Future<void> getUserInfo(String userUid) async {
     await userInfo
         .doc(userUid)

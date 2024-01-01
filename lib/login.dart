@@ -21,6 +21,8 @@ class _LoginState extends State<Login> {
   bool showSpinner = false;
   bool isChecked = false;
   var formKey = GlobalKey<FormState>();
+  var storage = const FlutterSecureStorage();
+  dynamic userInfo = '';
 
   void _tryValidation() {
     final isValid = formKey.currentState!.validate();
@@ -31,8 +33,6 @@ class _LoginState extends State<Login> {
     }
   }
 
-  var storage = const FlutterSecureStorage();
-  dynamic userInfo = '';
 
   @override
   void initState() {
