@@ -13,18 +13,20 @@ class AboutUs extends StatelessWidget {
         backgroundColor: Palette.backgroundColor1,
       ),
 
-      body: Padding(
-        padding: const EdgeInsets.all(10.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: const [
 
-            // 영업 시간
-            OpeningHours(),
+              // 영업 시간
+              OpeningHours(),
 
-            Divider(height: 30, color: Colors.grey,)
+              Divider(height: 30, color: Colors.grey,)
 
-          ],
+            ],
+          ),
         ),
       ),
     );

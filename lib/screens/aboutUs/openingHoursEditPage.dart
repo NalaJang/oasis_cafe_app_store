@@ -5,14 +5,14 @@ import 'package:oasis_cafe_app_store/model/model_openingHours.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
 import 'package:provider/provider.dart';
 
-class AboutUsEditPage extends StatefulWidget {
-  const AboutUsEditPage({Key? key}) : super(key: key);
+class OpeningHoursEditPage extends StatefulWidget {
+  const OpeningHoursEditPage({Key? key}) : super(key: key);
 
   @override
-  State<AboutUsEditPage> createState() => _AboutUsEditPageState();
+  State<OpeningHoursEditPage> createState() => _OpeningHoursEditPageState();
 }
 
-class _AboutUsEditPageState extends State<AboutUsEditPage> {
+class _OpeningHoursEditPageState extends State<OpeningHoursEditPage> {
 
 
   @override

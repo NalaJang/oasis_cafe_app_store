@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/openingHoursProvider.dart';
-import 'aboutUsEditPage.dart';
+import 'openingHoursEditPage.dart';
 
 class OpeningHours extends StatelessWidget {
   const OpeningHours({Key? key}) : super(key: key);
@@ -28,6 +28,7 @@ class OpeningHours extends StatelessWidget {
 
         const SizedBox(height: 10,),
 
+        // 서버에서 영업 시간 가져오기
         for( var i = 0; i < dayList.length; i++ )
           _getOpeningHoursInfo(context, dayList[i], i)
       ],
@@ -50,7 +51,7 @@ class OpeningHours extends StatelessWidget {
       onTap: (){
         Navigator.push(context,
           MaterialPageRoute(builder: (context) =>
-          const AboutUsEditPage())
+          const OpeningHoursEditPage())
         );
       },
       child: const Text(
@@ -63,9 +64,10 @@ class OpeningHours extends StatelessWidget {
     );
   }
 
+  // 영업 시간 정보
   Widget _getOpeningHoursInfo(BuildContext context, String day, int index) {
     var dayTextSize = const TextStyle(fontSize: 17.0);
-    var openingHoursProvider = Provider.of<OpeningHoursProvider>(context);
+    var openingHoursProvider = Provider.of<OpeningHoursProvider>(context, listen: false);
     openingHoursProvider.getOpeningHours();
 
     String openAmPm = openingHoursProvider.hoursList[index].openAmPm;
