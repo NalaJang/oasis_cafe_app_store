@@ -19,37 +19,26 @@ class MyDrawer extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(0),
               children: [
-                const DrawerHeader(
-                  decoration: BoxDecoration(
-                    color: Palette.backgroundColor1
-                  ),
-                  child: Text(
-                    'Hello,\n',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold
-                    ),
-                  ),
-                ),
+                _drawerHeader(context),
 
                 // 새 메뉴 추가, 메뉴 정보 수정, 메뉴 품절 등
                 ListTile(
-                  leading: Icon(Icons.event_note_outlined),
-                  title: Text('메뉴 관리'),
+                  leading: const Icon(Icons.event_note_outlined),
+                  title: const Text('메뉴 관리'),
                   onTap: (){},
                 ),
 
                 // 사이렌 오더 받기 임시 중지
                 ListTile(
-                  leading: Icon(Icons.event_note_outlined),
-                  title: Text('임시중지'),
+                  leading: const Icon(Icons.event_note_outlined),
+                  title: const Text('임시중지'),
                   onTap: (){},
                 ),
 
                 // 운영 시간, 전화번호, 위치
                 ListTile(
-                  leading: Icon(Icons.event_note_outlined),
-                  title: Text('운영 정보'),
+                  leading: const Icon(Icons.event_note_outlined),
+                  title: const Text('운영 정보'),
                   onTap: (){
                     Navigator.push(context,
                         MaterialPageRoute(builder: (context) => const AboutUs()));
@@ -58,8 +47,8 @@ class MyDrawer extends StatelessWidget {
 
                 // 사이렌 오더 알람 소리 설정, 앱 버전
                 ListTile(
-                  leading: Icon(Icons.event_note_outlined),
-                  title: Text('설정'),
+                  leading: const Icon(Icons.event_note_outlined),
+                  title: const Text('설정'),
                   onTap: (){},
                 ),
               ],
@@ -78,16 +67,7 @@ class MyDrawer extends StatelessWidget {
                     leading: const Icon(Icons.logout),
                     title: const Text(Strings.signOut),
                     onTap: () async {
-                      var isSignOut = Provider.of<UserStateProvider>(context, listen: false).signOut();
-
-                      if( await isSignOut ) {
-                        Navigator.pushAndRemoveUntil(
-                          (context),
-                          MaterialPageRoute(
-                            builder: (context) => const MyApp()
-                          ), (route) => false
-                        );
-                      }
+                      _pressedSignOutButton(context);
                     },
                   ),
                 ),
@@ -97,5 +77,55 @@ class MyDrawer extends StatelessWidget {
         ],
       ),
     );
+  }
+
+
+  Widget _drawerHeader(BuildContext context) {
+    var userName = Provider.of<UserStateProvider>(context).userName;
+
+    return DrawerHeader(
+      decoration: const BoxDecoration(
+        color: Palette.backgroundColor1
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Hello,',
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: Text(
+              userName,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 20.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+
+  // 로그아웃 버튼 클릭
+  _pressedSignOutButton(BuildContext context) async {
+    var isSignOut = Provider.of<UserStateProvider>(context, listen: false).signOut();
+
+    if( await isSignOut ) {
+      Navigator.pushAndRemoveUntil(
+        (context),
+        MaterialPageRoute(
+          builder: (context) => const MyApp()
+        ), (route) => false
+      );
+    }
   }
 }
