@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/model/model_openingHours.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
@@ -38,7 +39,7 @@ class _OpeningHoursEditPageState extends State<OpeningHoursEditPage> {
             children: [
               for( var day = 0; day < dayList.length; day++ )
                 SetOpeningHoursTime(
-                  id: openingHoursProvider.hoursList[day].id,
+                    date: openingHoursProvider.hoursList[day].id,
                   day: dayList[day],
                   openTime: openingHoursProvider.hoursList[day].openTime,
                   closeTime: openingHoursProvider.hoursList[day].closeTime
@@ -52,10 +53,10 @@ class _OpeningHoursEditPageState extends State<OpeningHoursEditPage> {
 
 
 class SetOpeningHoursTime extends StatefulWidget {
-  const SetOpeningHoursTime({required this.id, required this.day,
+  const SetOpeningHoursTime({required this.date, required this.day,
     required this.openTime, required this.closeTime, Key? key}) : super(key: key);
 
-  final String id;
+  final String date;
   final String day;
   final DateTime openTime;
   final DateTime closeTime;
@@ -98,16 +99,12 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
           ),
         ),
 
-        const Text(
-          '시작',
-          style: TextStyle(
-            fontSize: 15.0
-          ),
-        ),
+        const Text('시작'),
 
+        // 시작 시간
         CupertinoButton(
           onPressed: () => _showTimePickerDialog(
-            widget.id,
+            widget.date,
             CupertinoDatePicker(
               initialDateTime: widget.openTime,
               mode: CupertinoDatePickerMode.time,
@@ -120,14 +117,17 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
             ),
           ),
 
+          // 설정된 시간 보여주기
           child: setTimeText(widget.openTime),
         ),
 
         const SizedBox(width: 15.0,),
         const Text('종료'),
+
+        // 종료 시간
         CupertinoButton(
           onPressed: () => _showTimePickerDialog(
-            widget.id,
+            widget.date,
             CupertinoDatePicker(
               initialDateTime: widget.closeTime,
               mode: CupertinoDatePickerMode.time,
@@ -140,6 +140,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
             ),
           ),
 
+          // 설정된 시간 보여주기
           child: setTimeText(widget.closeTime),
         ),
       ],
@@ -147,34 +148,36 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
   }
 
 
+  // 설정된 시간 보여주기
   Container setTimeText(DateTime time) {
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey, width: 1),
-          borderRadius: BorderRadius.circular(8.0)
+        border: Border.all(color: Colors.grey, width: 1),
+        borderRadius: BorderRadius.circular(8.0)
       ),
 
       child: Text(
-        time.minute.toString() == '0' ?
+        time.minute.isEqual(0) ?
         '${time.hour} : 00' : '${time.hour} : ${time.minute}',
 
         style: const TextStyle(
-            fontSize: 18.0,
-            color: Colors.black87
+          fontSize: 18.0,
+          color: Colors.black87
         ),
       ),
     );
   }
 
 
-  void _showTimePickerDialog(String id, Widget child) {
+  void _showTimePickerDialog(String selectedDate, Widget child) {
+    double popupHeight = MediaQuery.of(context).size.height * 0.4;
     var provider = Provider.of<OpeningHoursProvider>(context, listen: false);
 
     showCupertinoModalPopup(
       context: context,
       builder: (BuildContext context) => Container(
-        height: 216,
+        height: popupHeight,
         padding: const EdgeInsets.only(top: 6.0),
         // The Bottom margin is provided to align the popup above the system
         // navigation bar.
@@ -202,7 +205,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                 TextButton(
                   onPressed: (){
                     Navigator.pop(context);
-                    provider.updateTime(id, '0', '0', '0', '0');
+                    provider.updateTime(selectedDate, '0', '0', '0', '0');
                   },
                   child: const Text(
                     '휴무',
@@ -229,7 +232,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                 ),
                 onPressed: (){
                   Navigator.pop(context);
-                  provider.updateTime(id, changedOpenHour, changedOpenMinutes,
+                  provider.updateTime(selectedDate, changedOpenHour, changedOpenMinutes,
                       changedCloseHour, changedCloseMinutes);
                 },
                 child: const Text('적용'),
