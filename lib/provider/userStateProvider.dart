@@ -79,6 +79,33 @@ class UserStateProvider with ChangeNotifier {
   }
 
 
+
+  // 로그아웃
+  Future<bool> signOut() async{
+    try {
+      await _authentication.signOut();
+      await userInfo.doc(userUid).update({
+        'signOutTime' : DateTime.now()
+      });
+
+      Map<String, String> allValues = await storage.readAll();
+      if( allValues != null ) {
+        allValues.forEach((key, value) async {
+
+          if( value == 'STATUS_LOGIN' ) {
+            await storage.write(key: userUid, value: 'STATUS_LOGOUT');
+          }
+        });
+      }
+      return true;
+
+    } catch(e) {
+      print(e.toString());
+    }
+    return false;
+  }
+
+
   // FlutterSecureStorage 에 저장된 정보 가져오기
   Future<void> getStorageInfo(BuildContext context) async {
     // Read all values
@@ -119,20 +146,5 @@ class UserStateProvider with ChangeNotifier {
     await userInfo.doc(userUid).update({
       'signInTime' : DateTime.now()
     });
-  }
-
-
-  // 로그아웃
-  Future<void> signOut() async{
-    try {
-      await _authentication.signOut();
-      await userInfo.doc(userUid).update({
-        'signOutTime' : DateTime.now()
-      });
-
-      print('signOut');
-    } catch(e) {
-      print(e.toString());
-    }
   }
 }

@@ -131,14 +131,17 @@ class _HomeState extends State<Home> {
                   child: ListTile(
                     leading: const Icon(Icons.logout),
                     title: const Text(Strings.signOut),
-                    onTap: (){
-                      Provider.of<UserStateProvider>(context, listen: false).signOut();
-                      Navigator.pushAndRemoveUntil(
-                          context,
+                    onTap: () async {
+                      var isSignOut = Provider.of<UserStateProvider>(context, listen: false).signOut();
+
+                      if( await isSignOut ) {
+                        Navigator.pushAndRemoveUntil(
+                          (context),
                           MaterialPageRoute(
-                              builder: (context) => const MyApp()
+                            builder: (context) => const MyApp()
                           ), (route) => false
-                      );
+                        );
+                      }
                     },
                   ),
                 ),
