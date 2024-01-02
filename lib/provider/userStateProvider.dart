@@ -1,7 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
+import '../screens/home/home.dart';
 import '../strings/strings_en.dart';
 
 class UserStateProvider with ChangeNotifier {
@@ -9,6 +12,7 @@ class UserStateProvider with ChangeNotifier {
   final db = FirebaseFirestore.instance;
   final _authentication = FirebaseAuth.instance;
   late CollectionReference userInfo;
+  var storage = const FlutterSecureStorage();
 
   String userUid = '';
   String userName = '';
@@ -19,6 +23,7 @@ class UserStateProvider with ChangeNotifier {
 
   bool isSignedUp = false;
   bool isLogged = false;
+
 
   UserStateProvider() {
     userInfo = db.collection(Strings.collection_admin);
@@ -50,7 +55,7 @@ class UserStateProvider with ChangeNotifier {
   }
 
   // 로그인
-  Future<bool> signIn(String email, String password) async {
+  Future<bool> signIn(String email, String password, bool isAutoLogin) async {
     final newUser = await _authentication.signInWithEmailAndPassword(
         email: email,
         password: password
@@ -62,11 +67,39 @@ class UserStateProvider with ChangeNotifier {
       // 사용자 정보 가져오기
       await getUserInfo(userUid);
 
+      // 자동 로그인 체크 박스 체크를 했다면, storage 에 사용자 정보 저장
+      if( isAutoLogin ) {
+        await storage.write(key: userUid, value: 'STATUS_LOGIN');
+      }
+
       isLogged = true;
     }
 
     return isLogged;
   }
+
+
+  // FlutterSecureStorage 에 저장된 정보 가져오기
+  Future<void> getStorageInfo(BuildContext context) async {
+    // Read all values
+    Map<String, String> allValues = await storage.readAll();
+
+    if( allValues != null ) {
+      allValues.forEach((key, value) {
+
+        if( value == 'STATUS_LOGIN' ) {
+          userUid = key;
+          getUserInfo(userUid);
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => const Home())
+          );
+        }
+      });
+    }
+  }
+
 
   // 사용자 정보 가져오기
   Future<void> getUserInfo(String userUid) async {

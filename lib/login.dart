@@ -21,8 +21,7 @@ class _LoginState extends State<Login> {
   bool showSpinner = false;
   bool isChecked = false;
   var formKey = GlobalKey<FormState>();
-  var storage = const FlutterSecureStorage();
-  dynamic userInfo = '';
+
 
   void _tryValidation() {
     final isValid = formKey.currentState!.validate();
@@ -40,16 +39,8 @@ class _LoginState extends State<Login> {
 
     // 자동 로그인 확인
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      userInfo = await storage.read(key: 'STATUS_LOGIN');
 
-      if( userInfo != null ) {
-        Provider.of<UserStateProvider>((context), listen: false).getUserInfo(userInfo);
-
-        Navigator.push(
-          (context),
-          MaterialPageRoute(builder: (context) => const Home())
-        );
-      }
+      Provider.of<UserStateProvider>(context, listen: false).getStorageInfo(context);
     });
   }
 
@@ -127,17 +118,12 @@ class _LoginState extends State<Login> {
 
             var email = userProvider.userEmail;
             var password = userProvider.userPassword;
-            var isLogged = userProvider.signIn(email, password);
+            var isLogged = userProvider.signIn(email, password, isChecked);
 
             if( await isLogged ) {
               setState(() {
                 showSpinner = false;
               });
-
-              // 자동 로그인 체크 박스 체크를 했다면, storage 에 사용자 정보 저장
-              if( isChecked ) {
-                storage.write(key: 'STATUS_LOGIN', value: userProvider.userUid);
-              }
 
               Navigator.push(
                 (context),
