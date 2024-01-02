@@ -36,12 +36,18 @@ class OpeningHours extends StatelessWidget {
   }
 
   Widget _title() {
-    return const Text(
-      '영업 시간',
-      style: TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold
-      ),
+    return Row(
+      children: const [
+        Icon(CupertinoIcons.clock),
+
+        Text(
+          ' 영업 시간',
+          style: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.bold
+          ),
+        ),
+      ],
     );
   }
 
