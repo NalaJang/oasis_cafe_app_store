@@ -26,10 +26,11 @@ Try launch the app.
 ## Menu tree
 
 * Store app
-
+<img width="781" alt="oasis_cafe_store_menu_tree" src="https://github.com/NalaJang/oasis_cafe_app_store/assets/73895803/ada99bf2-c0c1-4885-9f43-2ad77b15a2e4">
 
 
 ## Screen shots
+<img width="849" alt="image" src="https://github.com/NalaJang/oasis_cafe_app_store/assets/73895803/c458723a-e599-4785-a560-28e116d111f4">
 
 
 
