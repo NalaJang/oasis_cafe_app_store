@@ -1,0 +1,82 @@
+{
+  "project_info": {
+    "project_number": "378864859026",
+    "project_id": "oasis-cafe-app",
+    "storage_bucket": "oasis-cafe-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378864859026:android:43a9d5550e56b36173b34b",
+        "android_client_info": {
+          "package_name": "com.example.oasis_cafe_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378864859026-rsr1h67fdnu9e7i3hbk5l5d4avmsh3b6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLf9HIPQ8dhhJWaj2DocMXvqlg9VwyKb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378864859026-rsr1h67fdnu9e7i3hbk5l5d4avmsh3b6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "378864859026-ochqamah3oad4o3ts70oo00ldphtu19o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oasisCafeApp"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:378864859026:android:62bc107f4d7541c873b34b",
+        "android_client_info": {
+          "package_name": "com.example.oasis_cafe_app_store"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "378864859026-rsr1h67fdnu9e7i3hbk5l5d4avmsh3b6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCLf9HIPQ8dhhJWaj2DocMXvqlg9VwyKb4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "378864859026-rsr1h67fdnu9e7i3hbk5l5d4avmsh3b6.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "378864859026-ochqamah3oad4o3ts70oo00ldphtu19o.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.oasisCafeApp"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
