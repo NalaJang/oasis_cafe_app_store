@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/gaps.dart';
 
-import '../../config/palette.dart';
+import '../../../config/palette.dart';
 
 class PhoneNumberEditPage extends StatefulWidget {
   const PhoneNumberEditPage({Key? key}) : super(key: key);

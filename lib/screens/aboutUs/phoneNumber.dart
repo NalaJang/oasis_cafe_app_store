@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:oasis_cafe_app_store/screens/aboutUs/phoneNumberEditPage.dart';
+import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/phoneNumberEditPage.dart';
 
 import '../../config/commonButton.dart';
 

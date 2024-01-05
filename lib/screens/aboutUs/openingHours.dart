@@ -4,7 +4,7 @@ import 'package:oasis_cafe_app_store/config/commonButton.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/openingHoursProvider.dart';
-import 'openingHoursEditPage.dart';
+import 'editPages/openingHoursEditPage.dart';
 
 class OpeningHours extends StatelessWidget {
   const OpeningHours({Key? key}) : super(key: key);
