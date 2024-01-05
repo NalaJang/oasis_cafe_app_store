@@ -37,13 +37,21 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
 
       body: Padding(
         padding: const EdgeInsets.all(10.0),
-        child: Row(
+        child: Column(
           children: [
-            _numberTextFormField(true, 3, number1),
-            Gaps.gapW10,
-            _numberTextFormField(false, 4, number2),
-            Gaps.gapW10,
-            _numberTextFormField(false, 4, number3),
+            Row(
+              children: [
+                _numberTextFormField(true, 3, number1),
+                Gaps.gapW10,
+                _numberTextFormField(false, 4, number2),
+                Gaps.gapW10,
+                _numberTextFormField(false, 4, number3),
+              ],
+            ),
+            Gaps.spacer,
+
+            // 수정 버튼
+            _updateButton()
           ],
         ),
       ),
@@ -69,6 +77,33 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
           ),
         ),
       ),
+    );
+  }
+
+  // 수정 버튼
+  Widget _updateButton() {
+    return ElevatedButton(
+      onPressed: (){},
+
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        backgroundColor: Palette.buttonColor1,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18),
+        ),
+        side: const BorderSide(
+          color: Palette.buttonColor1,
+        )
+      ),
+
+      child: Container(
+        width: double.infinity,
+        margin: const EdgeInsets.only(top: 15, bottom: 15),
+        child: const Text(
+          '수정하기',
+          textAlign: TextAlign.center,
+        ),
+      )
     );
   }
 }
