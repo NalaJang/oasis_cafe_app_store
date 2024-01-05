@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/openingHours.dart';
+import 'package:oasis_cafe_app_store/screens/aboutUs/phoneNumber.dart';
 
 class AboutUs extends StatelessWidget {
   const AboutUs({Key? key}) : super(key: key);
@@ -23,8 +24,10 @@ class AboutUs extends StatelessWidget {
               // 영업 시간
               OpeningHours(),
 
-              Divider(height: 30, color: Colors.grey,)
+              Divider(height: 30, color: Colors.grey,),
 
+              // 매장 전화번호
+              PhoneNumber(),
             ],
           ),
         ),
