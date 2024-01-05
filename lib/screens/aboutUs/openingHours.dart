@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:oasis_cafe_app_store/config/commonButton.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/openingHoursProvider.dart';
@@ -22,7 +23,7 @@ class OpeningHours extends StatelessWidget {
             _title(),
 
             // 수정하기 버튼
-            _editButton(context),
+            CommonButton().editButton(context, OpeningHoursEditPage.routeName),
           ],
         ),
 
@@ -51,24 +52,6 @@ class OpeningHours extends StatelessWidget {
     );
   }
 
-  // 수정하기 버튼
-  Widget _editButton(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-        Navigator.push(context,
-          MaterialPageRoute(builder: (context) =>
-          const OpeningHoursEditPage())
-        );
-      },
-      child: const Text(
-        '수정하기',
-        style: TextStyle(
-          color: Colors.blue,
-          fontSize: 17.0
-        ),
-      ),
-    );
-  }
 
   // 영업 시간 정보
   Widget _getOpeningHoursInfo(BuildContext context, String day, int index) {

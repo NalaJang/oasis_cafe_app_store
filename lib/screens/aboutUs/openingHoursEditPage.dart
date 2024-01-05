@@ -9,6 +9,8 @@ import 'package:provider/provider.dart';
 class OpeningHoursEditPage extends StatefulWidget {
   const OpeningHoursEditPage({Key? key}) : super(key: key);
 
+  static const String routeName = '/openingHoursEditPage';
+
   @override
   State<OpeningHoursEditPage> createState() => _OpeningHoursEditPageState();
 }
