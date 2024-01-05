@@ -92,7 +92,7 @@ class OpeningHours extends StatelessWidget {
     if( openingHoursProvider.hoursList.isEmpty ) {
       return const CircularProgressIndicator();
     }
-    
+
     String openAmPm = openingHoursProvider.hoursList[index].openAmPm;
     String openHour = openingHoursProvider.hoursList[index].openHour;
     String openMinutes = openingHoursProvider.hoursList[index].openMinutes;
@@ -108,8 +108,6 @@ class OpeningHours extends StatelessWidget {
           style: dayTextSize,
         ),
 
-        openingHoursProvider.hoursList.isEmpty ?
-        const CircularProgressIndicator() :
         openingHoursProvider.hoursList[index].openHour == '0' ?
         Text(
           '휴무',
