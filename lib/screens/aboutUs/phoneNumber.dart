@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:oasis_cafe_app_store/screens/aboutUs/phoneNumberEditPage.dart';
+
+import '../../config/commonButton.dart';
 
 class PhoneNumber extends StatelessWidget {
   const PhoneNumber({Key? key}) : super(key: key);
@@ -7,7 +10,22 @@ class PhoneNumber extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        _title()
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _title(),
+
+            // 수정하기 버튼
+            CommonButton().editButton(context, PhoneNumberEditPage.routeName),
+          ],
+        ),
+
+        const Text(
+          '02-743-1234',
+          style: TextStyle(
+            fontSize: 17.0
+          ),
+        )
       ],
     );
   }

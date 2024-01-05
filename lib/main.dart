@@ -4,6 +4,7 @@ import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/openingHoursEditPage.dart';
+import 'package:oasis_cafe_app_store/screens/aboutUs/phoneNumberEditPage.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'login.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
 
 final routes = {
   Login.routeName : (context) => const Login(),
-  OpeningHoursEditPage.routeName : (context) => const OpeningHoursEditPage()
+  OpeningHoursEditPage.routeName : (context) => const OpeningHoursEditPage(),
+  PhoneNumberEditPage.routeName : (context) => const PhoneNumberEditPage(),
 };
 
