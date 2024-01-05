@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oasis_cafe_app_store/config/gaps.dart';
 
 import '../../config/palette.dart';
 
@@ -39,9 +40,9 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
         child: Row(
           children: [
             _numberTextFormField(true, 3, number1),
-            SizedBox(width: 10,),
+            Gaps.gapW10,
             _numberTextFormField(false, 4, number2),
-            SizedBox(width: 10,),
+            Gaps.gapW10,
             _numberTextFormField(false, 4, number3),
           ],
         ),
