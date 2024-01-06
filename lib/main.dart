@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
+import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/openingHoursEditPage.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/phoneNumberEditPage.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserStateProvider()),
         ChangeNotifierProvider(create: (context) => OrderStateProvider()),
         ChangeNotifierProvider(create: (context) => OpeningHoursProvider()),
+        ChangeNotifierProvider(create: (context) => PhoneNumberProvider()),
       ],
 
       child: MaterialApp(
