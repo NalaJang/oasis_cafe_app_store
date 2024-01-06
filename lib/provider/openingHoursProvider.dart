@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import '../model/model_openingHours.dart';
 
 class OpeningHoursProvider with ChangeNotifier {
+  static const String openingHoursDocName = 'openingHoursDoc';
+
   final db = FirebaseFirestore.instance;
   late DocumentReference openingHoursDocument;
   late CollectionReference openingHoursCollection;
@@ -11,8 +13,7 @@ class OpeningHoursProvider with ChangeNotifier {
 
 
   OpeningHoursProvider() {
-    openingHoursDocument = db.collection('aboutUs').doc('DGiejo4a7ZkeWpC8OnY6');
-    // openingHoursCollection = db.collection('aboutUs');
+    openingHoursDocument = db.collection('aboutUs').doc(openingHoursDocName);
   }
 
 

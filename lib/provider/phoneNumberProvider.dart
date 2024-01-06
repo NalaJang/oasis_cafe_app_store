@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import '../model/model_phoneNumber.dart';
 
 class PhoneNumberProvider with ChangeNotifier {
-  late CollectionReference phoneNumberCollection;
+  static const String phoneNumberDocName = 'phoneNumberDoc';
+
+  late DocumentReference phoneNumberReference;
   final db = FirebaseFirestore.instance;
-  final String docName = 'phoneNumberDoc';
   var isChecked = false;
   var isUpdated = false;
   String number1 = '';
@@ -15,13 +16,13 @@ class PhoneNumberProvider with ChangeNotifier {
 
 
   PhoneNumberProvider() {
-    phoneNumberCollection = db.collection('aboutUs');
+    phoneNumberReference = db.collection('aboutUs').doc(phoneNumberDocName);
   }
 
 
   // 전화번호 가져오기
   Future<void> getPhoneNumber() async {
-    await phoneNumberCollection.doc(docName).get().then(
+    await phoneNumberReference.get().then(
           (DocumentSnapshot doc) {
             if( doc.data() != null) {
               number1 = PhoneNumberModel.getSnapshotData(doc).number1;
@@ -44,7 +45,7 @@ class PhoneNumberProvider with ChangeNotifier {
   // 전화번호 저장
   Future<bool> updatePhoneNumber(String number1, String number2, String number3) async {
     try {
-      await phoneNumberCollection.doc(docName).update({
+      await phoneNumberReference.update({
         'number1' : number1,
         'number2' : number2,
         'number3' : number3,
