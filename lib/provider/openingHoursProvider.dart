@@ -11,9 +11,21 @@ class OpeningHoursProvider with ChangeNotifier {
   late CollectionReference openingHoursCollection;
   List<OpeningHoursModel> hoursList = [];
 
-
   OpeningHoursProvider() {
     openingHoursDocument = db.collection('aboutUs').doc(openingHoursDocName);
+  }
+
+
+  // 기본 데이터 세팅
+  Future<void> setOpeningHours() async {
+    print('setOpeningHours');
+    for( int i = 0; i < 7; i++ ) {
+      await openingHoursDocument.collection('openingHours')
+          .doc(i.toString())
+          .set(
+          OpeningHoursModel('오전', '8', '0', '오후', '3', '0').setData()
+      );
+    }
   }
 
 

@@ -15,6 +15,23 @@ class OpeningHoursModel {
   DateTime closeTime =  DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,
       DateTime.now().hour, DateTime.now().minute);
 
+  OpeningHoursModel(
+      this.openAmPm, this.openHour, this.openMinutes,
+      this.closeAmPm, this.closeHour, this.closeMinutes
+      );
+
+
+  Map<String, dynamic> setData() {
+    return {
+      "openAmPm": openAmPm,
+      "openHour": openHour,
+      "openMinutes": openMinutes,
+      "closeAmPm": closeAmPm,
+      "closeHour": closeHour,
+      "closeMinutes": closeMinutes,
+    };
+  }
+
 
   OpeningHoursModel.getSnapshotData(DocumentSnapshot snapshot) {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;

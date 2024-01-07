@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
 
 import '../screens/home/home.dart';
 import '../strings/strings_en.dart';
@@ -22,6 +23,7 @@ class UserStateProvider with ChangeNotifier {
   String userMobileNumber = '';
 
   bool isSignedUp = false;
+  bool isFirstAdmin = false;
   bool isLogged = false;
 
 
@@ -34,25 +36,43 @@ class UserStateProvider with ChangeNotifier {
     final newUser = await _authentication.createUserWithEmailAndPassword(
         email: email, password: password);
 
-    await userInfo
-        .doc(newUser.user!.uid)
-        .set({
-      // 데이터의 형식은 항상 map 의 형태
-      'signUpTime' : DateTime.now(),
-      'signInTime' : DateTime.now(),
-      'signOutTime' : DateTime.now(),
-      'userEmail' : email,
-      'userPassword' : password,
-      'userName' : name,
-      'userMobileNumber' : mobileNumber,
-    });
-
     if( newUser.user != null ) {
+
+      await userInfo
+          .doc(newUser.user!.uid)
+          .set({
+        // 데이터의 형식은 항상 map 의 형태
+        'signUpTime' : DateTime.now(),
+        'signInTime' : DateTime.now(),
+        'signOutTime' : DateTime.now(),
+        'userEmail' : email,
+        'userPassword' : password,
+        'userName' : name,
+        'userMobileNumber' : mobileNumber,
+      });
+
+
+      await firstAdmin();
+      if( isFirstAdmin ) {
+        OpeningHoursProvider().setOpeningHours();
+      }
+
       isSignedUp = true;
     }
 
     return isSignedUp;
   }
+
+
+  // 기존 가입자가 있었는 지 확인
+  Future<void> firstAdmin() async {
+    await userInfo.get().then((querySnapshot) {
+      if( querySnapshot.docs.length == 1 ) {
+        isFirstAdmin = true;
+      }
+    });
+  }
+
 
   // 로그인
   Future<bool> signIn(String email, String password, bool isAutoLogin) async {
