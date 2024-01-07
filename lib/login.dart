@@ -39,10 +39,10 @@ class _LoginState extends State<Login> {
     super.initState();
 
     // 자동 로그인 확인
-    // WidgetsBinding.instance.addPostFrameCallback((_) async {
-    //
-    //   Provider.of<UserStateProvider>(context, listen: false).getStorageInfo(context);
-    // });
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+
+      Provider.of<UserStateProvider>(context, listen: false).getStorageInfo(context);
+    });
   }
 
   @override

@@ -115,7 +115,8 @@ class UserStateProvider with ChangeNotifier {
         allValues.forEach((key, value) async {
 
           if( value == 'STATUS_LOGIN' ) {
-            await storage.write(key: userUid, value: 'STATUS_LOGOUT');
+            // await storage.write(key: userUid, value: 'STATUS_LOGOUT');
+            await storage.delete(key: userUid);
           }
         });
       }
