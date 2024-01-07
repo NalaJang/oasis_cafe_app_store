@@ -8,7 +8,7 @@ import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/openingHoursEditP
 import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/phoneNumberEditPage.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
-import 'login.dart';
+import 'screens/login/login.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

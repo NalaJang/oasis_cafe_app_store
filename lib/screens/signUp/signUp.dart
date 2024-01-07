@@ -5,7 +5,7 @@ import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
 import 'package:oasis_cafe_app_store/strings/strings_en.dart';
 import 'package:provider/provider.dart';
 
-import 'login.dart';
+import '../login/login.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);
