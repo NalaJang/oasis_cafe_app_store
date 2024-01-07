@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:oasis_cafe_app_store/config/gaps.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
-import 'package:oasis_cafe_app_store/main.dart';
 
 class CommonDialog {
 
-  showConfirmDialog(BuildContext context, String content) {
-    showDialog(
+  Future<bool> showConfirmDialog(BuildContext context, String content) async {
+    bool result = await showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -25,6 +24,7 @@ class CommonDialog {
       }
     );
 
+    return result;
   }
 
 
@@ -32,7 +32,7 @@ class CommonDialog {
   Widget _cancelButton(BuildContext context) {
     return ElevatedButton(
       onPressed: (){
-        Navigator.of(context).pop();
+        Navigator.of(context).pop(false);
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
@@ -57,14 +57,7 @@ class CommonDialog {
   Widget _confirmButton(BuildContext context) {
     return ElevatedButton(
       onPressed: (){
-
-        // Navigator.pushAndRemoveUntil(
-        //   (context),
-        //   MaterialPageRoute(
-        //     builder: (context) => const MyApp()
-        //   ), (route) => false
-        // );
-
+        Navigator.of(context).pop(true);
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,

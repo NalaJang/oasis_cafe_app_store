@@ -3,10 +3,10 @@ import 'package:oasis_cafe_app_store/config/commonDialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/palette.dart';
+import '../../main.dart';
 import '../../provider/userStateProvider.dart';
 import '../../strings/strings_en.dart';
 import '../aboutUs/aboutUs.dart';
-import '../login/login.dart';
 import '../setting/setting.dart';
 
 class MyDrawer extends StatelessWidget {
@@ -122,12 +122,21 @@ class MyDrawer extends StatelessWidget {
 
   // 로그아웃 버튼 클릭
   _pressedSignOutButton(BuildContext context) async {
-    var isSignOut = Provider.of<UserStateProvider>(context, listen: false).signOut();
 
-    CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?');
+    var result = CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?');
 
-    // if( await isSignOut ) {
-    //   CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?');
-    // }
+    if( await result ) {
+
+      var isSignOut = Provider.of<UserStateProvider>((context), listen: false).signOut();
+
+      if( await isSignOut ) {
+        Navigator.pushAndRemoveUntil(
+          (context),
+          MaterialPageRoute(
+              builder: (context) => const MyApp()
+          ), (route) => false
+        );
+      }
+    }
   }
 }
