@@ -5,7 +5,7 @@ import 'package:oasis_cafe_app_store/main.dart';
 
 class CommonDialog {
 
-  showConfirmDialog(BuildContext context, String content, String routeName) {
+  showConfirmDialog(BuildContext context, String content) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -19,7 +19,7 @@ class CommonDialog {
             Gaps.gapW10,
 
             // 확인 버튼
-            _confirmButton(context, routeName)
+            _confirmButton(context)
           ],
         );
       }
@@ -54,16 +54,16 @@ class CommonDialog {
   }
 
   // 확인 버튼
-  Widget _confirmButton(BuildContext context, String routeName) {
+  Widget _confirmButton(BuildContext context) {
     return ElevatedButton(
       onPressed: (){
 
-        Navigator.pushAndRemoveUntil(
-          (context),
-          MaterialPageRoute(
-            builder: (context) => const MyApp()
-          ), (route) => false
-        );
+        // Navigator.pushAndRemoveUntil(
+        //   (context),
+        //   MaterialPageRoute(
+        //     builder: (context) => const MyApp()
+        //   ), (route) => false
+        // );
 
       },
       style: ElevatedButton.styleFrom(

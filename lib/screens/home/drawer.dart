@@ -124,8 +124,10 @@ class MyDrawer extends StatelessWidget {
   _pressedSignOutButton(BuildContext context) async {
     var isSignOut = Provider.of<UserStateProvider>(context, listen: false).signOut();
 
-    if( await isSignOut ) {
-      CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?', Login.routeName);
-    }
+    CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?');
+
+    // if( await isSignOut ) {
+    //   CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?');
+    // }
   }
 }
