@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:oasis_cafe_app_store/config/commonDialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/palette.dart';
@@ -6,6 +7,7 @@ import '../../main.dart';
 import '../../provider/userStateProvider.dart';
 import '../../strings/strings_en.dart';
 import '../aboutUs/aboutUs.dart';
+import '../login/login.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -120,12 +122,7 @@ class MyDrawer extends StatelessWidget {
     var isSignOut = Provider.of<UserStateProvider>(context, listen: false).signOut();
 
     if( await isSignOut ) {
-      Navigator.pushAndRemoveUntil(
-        (context),
-        MaterialPageRoute(
-          builder: (context) => const MyApp()
-        ), (route) => false
-      );
+      CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?', Login.routeName);
     }
   }
 }
