@@ -19,6 +19,11 @@ class PhoneNumberProvider with ChangeNotifier {
     phoneNumberReference = db.collection('aboutUs').doc(phoneNumberDocName);
   }
 
+  Future<void> setPhoneNumber() async {
+    await phoneNumberReference.set(
+        PhoneNumberModel('','','').setData()
+    );
+  }
 
   // 전화번호 가져오기
   Future<void> getPhoneNumber() async {

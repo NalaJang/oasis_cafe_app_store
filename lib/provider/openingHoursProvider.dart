@@ -18,7 +18,6 @@ class OpeningHoursProvider with ChangeNotifier {
 
   // 기본 데이터 세팅
   Future<void> setOpeningHours() async {
-    print('setOpeningHours');
     for( int i = 0; i < 7; i++ ) {
       await openingHoursDocument.collection('openingHours')
           .doc(i.toString())

@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
+import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
 
 import '../screens/home/home.dart';
 import '../strings/strings_en.dart';
@@ -55,6 +56,7 @@ class UserStateProvider with ChangeNotifier {
       await firstAdmin();
       if( isFirstAdmin ) {
         OpeningHoursProvider().setOpeningHours();
+        PhoneNumberProvider().setPhoneNumber();
       }
 
       isSignedUp = true;
