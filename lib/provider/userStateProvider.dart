@@ -22,6 +22,7 @@ class UserStateProvider with ChangeNotifier {
   String userPassword = '';
   String userDateOfBirth = '';
   String userMobileNumber = '';
+  bool notification = false;
 
   bool isSignedUp = false;
   bool isFirstAdmin = false;
@@ -50,6 +51,7 @@ class UserStateProvider with ChangeNotifier {
         'userPassword' : password,
         'userName' : name,
         'userMobileNumber' : mobileNumber,
+        'notification' : notification,
       });
 
 
@@ -164,10 +166,20 @@ class UserStateProvider with ChangeNotifier {
       userName = value['userName'],
       userEmail = value['userEmail'],
       userMobileNumber = value['userMobileNumber'],
+      notification = value['notification'],
     });
 
     await userInfo.doc(userUid).update({
       'signInTime' : DateTime.now()
     });
+  }
+
+  // 알람 설정 업데이트
+  Future<void> updateAlarmSetting(String userUid, bool isSelected) async {
+    await userInfo.doc(userUid).update({
+      'notification' : isSelected,
+    });
+
+    notifyListeners();
   }
 }
