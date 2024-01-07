@@ -182,4 +182,18 @@ class UserStateProvider with ChangeNotifier {
 
     notifyListeners();
   }
+
+  // 계정 삭제
+  Future<bool> deleteAccount() async {
+    try {
+      await _authentication.currentUser?.delete();
+      await userInfo.doc(userUid).delete();
+      return true;
+
+    } catch(e) {
+      print(e.toString());
+    }
+
+    return false;
+  }
 }
