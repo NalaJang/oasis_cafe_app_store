@@ -3,11 +3,11 @@ import 'package:oasis_cafe_app_store/config/commonDialog.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/palette.dart';
-import '../../main.dart';
 import '../../provider/userStateProvider.dart';
 import '../../strings/strings_en.dart';
 import '../aboutUs/aboutUs.dart';
 import '../login/login.dart';
+import '../setting/setting.dart';
 
 class MyDrawer extends StatelessWidget {
   const MyDrawer({Key? key}) : super(key: key);
@@ -51,7 +51,10 @@ class MyDrawer extends StatelessWidget {
                 ListTile(
                   leading: const Icon(Icons.event_note_outlined),
                   title: const Text('설정'),
-                  onTap: (){},
+                  onTap: (){
+                    Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => const Setting()));
+                  },
                 ),
               ],
             ),
