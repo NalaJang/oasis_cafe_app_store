@@ -96,8 +96,7 @@ class OrderStateProvider with ChangeNotifier {
         .collection('user_order')
         .doc(orderUid)
         .update({
-      'processState' : Strings.orderCanceled,
-      'reasonOfCanceled' : reason
+      'processState' : '${Strings.orderCanceled}:$reason',
     });
   }
 
