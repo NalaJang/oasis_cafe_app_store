@@ -106,47 +106,7 @@ class _OrderListState extends State<OrderList> {
                     const SizedBox(width: 5,),
 
                     // 주문 상태 업데이트
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: processState == Strings.newOrder ? Colors.brown : Colors.white,
-                        side: const BorderSide(
-                          color: Colors.brown,
-                        )
-                      ),
-                      onPressed: () async {
-                        // '주문 접수(new)' 클릭 시
-                        if( processState == Strings.newOrder ) {
-                          orderStateProvider.updateNewOrderState(orderId, userUid, orderUid);
-
-                        // '처리중(inProcess)' 클릭 -> '완료' 로 상태 업데이트
-                        } else if( processState == Strings.orderInProcess ) {
-                          var result = await showProcessingStateDialog('완료');
-
-                          setState(() {
-                            if( result )  {
-                              orderStateProvider.updateOrderInProcessState(orderId, userUid, orderUid);
-                            }
-                          });
-
-                        // '완료(done)' 클릭 -> 'pickUp' 으로 상태 업데이트
-                        } else if( processState == Strings.orderDone ) {
-                          var result = await showProcessingStateDialog('픽업');
-
-                          setState(() {
-                            if( result )  {
-                              orderStateProvider.updateOrderDoneState(index, orderId, userUid, orderUid);
-                            }
-                          });
-                        }
-                      },
-                      child: Text(
-                        processState,
-                        style: TextStyle(
-                          color: processState == Strings.newOrder ? Colors.white : Colors.brown,
-                          fontWeight: FontWeight.bold
-                        ),
-                      ),
-                    ),
+                    _orderStateUpdate(processState, index, orderId, userUid, orderUid),
                   ],
                 ),
 
@@ -162,6 +122,51 @@ class _OrderListState extends State<OrderList> {
           return const Center(child: CircularProgressIndicator(),);
         }
       }
+    );
+  }
+
+  // 주문 상태 업데이트
+  Widget _orderStateUpdate(String processState, int index, String orderId, String userUid, String orderUid) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+          backgroundColor: processState == Strings.newOrder ? Colors.brown : Colors.white,
+          side: const BorderSide(
+            color: Colors.brown,
+          )
+      ),
+      onPressed: () async {
+        // '주문 접수(new)' 클릭 시
+        if( processState == Strings.newOrder ) {
+          OrderStateProvider().updateNewOrderState(orderId, userUid, orderUid);
+
+          // '처리중(inProcess)' 클릭 -> '완료' 로 상태 업데이트
+        } else if( processState == Strings.orderInProcess ) {
+          var result = await showProcessingStateDialog('완료');
+
+          setState(() {
+            if( result )  {
+              OrderStateProvider().updateOrderInProcessState(orderId, userUid, orderUid);
+            }
+          });
+
+          // '완료(done)' 클릭 -> 'pickUp' 으로 상태 업데이트
+        } else if( processState == Strings.orderDone ) {
+          var result = await showProcessingStateDialog('픽업');
+
+          setState(() {
+            if( result )  {
+              OrderStateProvider().updateOrderDoneState(index, orderId, userUid, orderUid);
+            }
+          });
+        }
+      },
+      child: Text(
+        processState,
+        style: TextStyle(
+            color: processState == Strings.newOrder ? Colors.white : Colors.brown,
+            fontWeight: FontWeight.bold
+        ),
+      ),
     );
   }
 
