@@ -78,12 +78,6 @@ class _OrderListState extends State<OrderList> {
               String time = split_orderTime[1];
 
 
-              if( processState == 'new' ) {
-                buttonText = '주문\n접수';
-              } else {
-                buttonText = '처리중';
-              }
-
               return ListTile(
                 leading: Text('$date\n$time', textAlign: TextAlign.center,),
                 title: Text('$itemName $quantity개'),

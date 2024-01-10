@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:oasis_cafe_app_store/config/gaps.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
 import 'package:oasis_cafe_app_store/screens/home/home.dart';
@@ -237,7 +238,7 @@ class EmailPasswordField extends StatelessWidget {
           ),
         ),
 
-        const SizedBox(height: 20,),
+        Gaps.gapH20,
 
         // password
         Padding(

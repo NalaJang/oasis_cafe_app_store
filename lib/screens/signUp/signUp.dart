@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
+import 'package:oasis_cafe_app_store/config/gaps.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
 import 'package:oasis_cafe_app_store/strings/strings_en.dart';
@@ -23,16 +24,17 @@ class _SignUpState extends State<SignUp> {
   var userMobileNumberController = TextEditingController();
 
   bool showSpinner = false;
-  final double textFormSizedBoxHeight = 30.0;
 
 
-  void _tryValidation() {
+  bool _tryValidation() {
     final isValid = formKey.currentState!.validate();
 
     // 폼 스테이트 값이 유효하다면 값을 저장
     if( isValid) {
       formKey.currentState!.save();
+      return true;
     }
+    return false;
   }
 
 
@@ -84,7 +86,7 @@ class _SignUpState extends State<SignUp> {
                     decoration: _getTextFormDecoration(Strings.email)
                   ),
 
-                  SizedBox(height: textFormSizedBoxHeight,),
+                  Gaps.gapH30,
 
                   // 비밀번호
                   TextFormField(
@@ -100,7 +102,7 @@ class _SignUpState extends State<SignUp> {
                     decoration: _getTextFormDecoration(Strings.password),
                   ),
 
-                  SizedBox(height: textFormSizedBoxHeight,),
+                  Gaps.gapH30,
 
                   // 비밀번호 확인
                   TextFormField(
@@ -115,13 +117,7 @@ class _SignUpState extends State<SignUp> {
                     decoration: _getTextFormDecoration(Strings.confirmPassword),
                   ),
 
-                  SizedBox(height: textFormSizedBoxHeight,),
-
-                  // 본인 인증 서비스
-                  // Text(
-                  //     '본인 인증 서비스 약관 전체 동의\n'
-                  //         '휴대폰 본인 인증 서비스 이용약관 동의(필수)'
-                  // ),
+                  Gaps.gapH30,
 
                   // 이름
                   TextFormField(
@@ -133,7 +129,7 @@ class _SignUpState extends State<SignUp> {
 
                   ),
 
-                  SizedBox(height: textFormSizedBoxHeight,),
+                  Gaps.gapH30,
 
                   // 휴대폰 번호
                   TextFormField(
@@ -145,7 +141,7 @@ class _SignUpState extends State<SignUp> {
 
                   ),
 
-                  SizedBox(height: textFormSizedBoxHeight,),
+                  Gaps.gapH30,
 
                   // 회원 가입 버튼
                   signUpButton()
@@ -164,56 +160,57 @@ class _SignUpState extends State<SignUp> {
       onTap: () async {
 
         // 사용자 입력 값 유효성 검사
-        _tryValidation();
+        if( _tryValidation() ) {
 
-        try {
-          setState(() {
-            showSpinner = true;
-          });
-
-          var isSignUp = Provider.of<UserStateProvider>(context, listen: false)
-              .signUp(
-              userEmailController.text,
-              userPasswordController.text,
-              userNameController.text,
-              userMobileNumberController.text
-          );
-
-          if( await isSignUp ) {
+          try {
             setState(() {
-              showSpinner = false;
+              showSpinner = true;
             });
 
+            var isSignUp = Provider.of<UserStateProvider>(context, listen: false)
+                .signUp(
+                userEmailController.text,
+                userPasswordController.text,
+                userNameController.text,
+                userMobileNumberController.text
+            );
+
+            if( await isSignUp ) {
+              setState(() {
+                showSpinner = false;
+              });
+
+              if( mounted ) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text(
+                        '회원가입이 완료되었습니다.',
+                      ),
+                    )
+                );
+
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Login())
+                );
+              }
+            }
+
+          } catch (e) {
+            print(e);
             if( mounted ) {
               ScaffoldMessenger.of(context).showSnackBar(
-                  const SnackBar(
-                    content: Text(
-                      '회원가입이 완료되었습니다.',
-                    ),
+                  SnackBar(
+                      content: Text(
+                          e.toString()
+                      )
                   )
               );
 
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const Login())
-              );
+              setState(() {
+                showSpinner = false;
+              });
             }
-          }
-
-        } catch (e) {
-          print(e);
-          if( mounted ) {
-            ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                    content: Text(
-                        e.toString()
-                    )
-                )
-            );
-
-            setState(() {
-              showSpinner = false;
-            });
           }
         }
       },

@@ -7,6 +7,7 @@ class CommonDialog {
   Future<bool> showConfirmDialog(BuildContext context, String content) async {
     bool result = await showDialog(
       context: context,
+      barrierDismissible: false, // 다이얼로그 바깥 영역 터치 방지
       builder: (BuildContext context) {
         return AlertDialog(
           content: Text(content),
