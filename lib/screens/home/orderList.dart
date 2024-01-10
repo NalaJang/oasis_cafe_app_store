@@ -25,15 +25,13 @@ class _OrderListState extends State<OrderList> {
   bool processingConfirm = false;
   // 라디오 버튼 초기화 값
   ReasonOfOrderCancellation _reason = ReasonOfOrderCancellation.cafeCircumstances;
-
+  String collectionName = 'user_order_new';
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
 
-    final db = FirebaseFirestore.instance;
-    var orderStateProvider = Provider.of<OrderStateProvider>(context);
-    String collectionName = 'user_order_new';
-    double getWidth = Get.width;
+    var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
 
     String setCollectionName() {
       if( widget.currentTabIndex == 0 ) {
@@ -43,8 +41,14 @@ class _OrderListState extends State<OrderList> {
       }
       return collectionName;
     }
-
+    final db = FirebaseFirestore.instance;
     orderStateProvider.orderCollection = db.collection(setCollectionName());
+  }
+
+  @override
+  Widget build(BuildContext context) {
+
+    var orderStateProvider = Provider.of<OrderStateProvider>(context);
 
     return StreamBuilder(
       // orderTime 내림차순으로 데이터 정렬
@@ -127,6 +131,8 @@ class _OrderListState extends State<OrderList> {
 
   // 주문 상태 업데이트
   Widget _orderStateUpdate(String processState, int index, String orderId, String userUid, String orderUid) {
+    var orderStateProvider = Provider.of<OrderStateProvider>(context);
+
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
           backgroundColor: processState == Strings.newOrder ? Colors.brown : Colors.white,
@@ -137,7 +143,7 @@ class _OrderListState extends State<OrderList> {
       onPressed: () async {
         // '주문 접수(new)' 클릭 시
         if( processState == Strings.newOrder ) {
-          OrderStateProvider().updateNewOrderState(orderId, userUid, orderUid);
+          orderStateProvider.updateNewOrderState(orderId, userUid, orderUid);
 
           // '처리중(inProcess)' 클릭 -> '완료' 로 상태 업데이트
         } else if( processState == Strings.orderInProcess ) {
@@ -145,7 +151,7 @@ class _OrderListState extends State<OrderList> {
 
           setState(() {
             if( result )  {
-              OrderStateProvider().updateOrderInProcessState(orderId, userUid, orderUid);
+              orderStateProvider.updateOrderInProcessState(orderId, userUid, orderUid);
             }
           });
 
@@ -155,7 +161,7 @@ class _OrderListState extends State<OrderList> {
 
           setState(() {
             if( result )  {
-              OrderStateProvider().updateOrderDoneState(index, orderId, userUid, orderUid);
+              orderStateProvider.updateOrderDoneState(index, orderId, userUid, orderUid);
             }
           });
         }

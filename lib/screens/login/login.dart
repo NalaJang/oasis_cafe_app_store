@@ -53,27 +53,29 @@ class _LoginState extends State<Login> {
         child: Form(
           key: formKey,
           child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
 
-                const Banner(),
+                  const Banner(),
 
-                // 이메일, 비밀번호 텍스트 필드
-                const EmailPasswordField(),
+                  // 이메일, 비밀번호 텍스트 필드
+                  const EmailPasswordField(),
 
-                // 로그인 상태 유지
-                _autoLoginCheckBox(),
-                const SizedBox(height: 30,),
+                  // 로그인 상태 유지
+                  _autoLoginCheckBox(),
+                  const SizedBox(height: 30,),
 
-                // 로그인 버튼
-                _loginButton(),
+                  // 로그인 버튼
+                  _loginButton(),
 
-                const SizedBox(height: 20,),
+                  const SizedBox(height: 20,),
 
-                // 비밀번호 찾기, 회원가입 메뉴
-                const BottomMenu()
-              ],
+                  // 비밀번호 찾기, 회원가입 메뉴
+                  const BottomMenu()
+                ],
+              ),
             ),
           ),
         ),
