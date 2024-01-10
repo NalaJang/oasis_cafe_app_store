@@ -128,9 +128,10 @@ class _LoginState extends State<Login> {
                 showSpinner = false;
               });
 
-              Navigator.push(
+              Navigator.pushAndRemoveUntil(
                 (context),
-                MaterialPageRoute(builder: (context) => const Home())
+                MaterialPageRoute(builder: (context) => const Home()
+                ), (route) => false
               );
             }
 
