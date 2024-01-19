@@ -66,12 +66,12 @@ class _LoginState extends State<Login> {
 
                   // 로그인 상태 유지
                   _autoLoginCheckBox(),
-                  const SizedBox(height: 30,),
+                  Gaps.gapH30,
 
                   // 로그인 버튼
                   _loginButton(),
 
-                  const SizedBox(height: 20,),
+                  Gaps.gapH20,
 
                   // 비밀번호 찾기, 회원가입 메뉴
                   const BottomMenu()
@@ -189,7 +189,7 @@ class Banner extends StatelessWidget {
           size: 80,
         ),
 
-        SizedBox(height: 30,),
+        Gaps.gapH30,
 
         Text(
           Strings.hello,
@@ -198,7 +198,7 @@ class Banner extends StatelessWidget {
           ),
         ),
 
-        SizedBox(height: 10,),
+        Gaps.gapH10,
 
         Text(
           Strings.welcome,
