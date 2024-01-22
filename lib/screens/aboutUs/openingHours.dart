@@ -91,7 +91,7 @@ class OpeningHours extends StatelessWidget {
           style: dayTextSize,
         ),
 
-        openingHoursProvider.hoursList[index].openHour == '0' ?
+        openingHoursProvider.hoursList[index].openHour == '00' ?
         Text(
           '휴무',
           style: dayTextSize,

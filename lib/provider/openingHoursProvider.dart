@@ -22,7 +22,7 @@ class OpeningHoursProvider with ChangeNotifier {
       await openingHoursDocument.collection('openingHours')
           .doc(i.toString())
           .set(
-          OpeningHoursModel('오전', '8', '0', '오후', '3', '0').setData()
+          OpeningHoursModel('오전', '8', '00', '오후', '3', '00').setData()
       );
     }
   }

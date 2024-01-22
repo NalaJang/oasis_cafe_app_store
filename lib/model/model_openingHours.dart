@@ -46,10 +46,10 @@ class OpeningHoursModel {
 
 
     if( openMinutes == '0' ) {
-      openMinutes = '00';
+      openMinutes = openMinutes.padRight(2, '0');
     }
     if( closeMinutes == '0' ) {
-      closeMinutes = '00';
+      closeMinutes = closeMinutes.padRight(2, '0');
     }
 
     openTime = DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day,
