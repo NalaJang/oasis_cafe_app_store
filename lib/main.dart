@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
 import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
@@ -31,7 +32,8 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => PhoneNumberProvider()),
       ],
 
-      child: MaterialApp(
+      // getX 를 사용하기 위해 MaterialApp -> GetMaterialApp 로 변경
+      child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
         initialRoute: Login.routeName,
         routes: routes,

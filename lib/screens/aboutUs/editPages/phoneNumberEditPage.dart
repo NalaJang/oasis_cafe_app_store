@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:oasis_cafe_app_store/config/gaps.dart';
 import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
@@ -140,10 +141,7 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
       var isUpdated = provider.updatePhoneNumber(number1Controller.text, number2Controller.text, number3Controller.text);
 
       if( await isUpdated ) {
-        setState(() {
-          showSpinner = false;
-        });
-        _showSnackBar('수정되었습니다.');
+        _showSnackBar('전화번호가 수정되었습니다.');
       }
 
     } catch(e) {
@@ -184,14 +182,14 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
   }
 
   _showSnackBar(String content) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(content)
-      )
-    );
-
     setState(() {
       showSpinner = false;
     });
+
+    Get.snackbar(
+      '수정',
+      content,
+      snackPosition: SnackPosition.TOP
+    );
   }
 }
