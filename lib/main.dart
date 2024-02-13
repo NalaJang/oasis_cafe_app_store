@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
-import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
+import 'package:oasis_cafe_app_store/provider/phoneNumberController.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/openingHoursEditPage.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/phoneNumberEditPage.dart';
@@ -16,6 +18,10 @@ void main() async {
   await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform
   );
+
+  // Registering PhoneNumberProvider with Get
+  Get.put(PhoneNumberController());
+
   runApp(const MyApp());
 }
 
@@ -29,7 +35,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => UserStateProvider()),
         ChangeNotifierProvider(create: (context) => OrderStateProvider()),
         ChangeNotifierProvider(create: (context) => OpeningHoursProvider()),
-        ChangeNotifierProvider(create: (context) => PhoneNumberProvider()),
+        // ChangeNotifierProvider(create: (context) => PhoneNumberProvider()),
       ],
 
       // getX 를 사용하기 위해 MaterialApp -> GetMaterialApp 로 변경
