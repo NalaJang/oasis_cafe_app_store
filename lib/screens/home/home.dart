@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
-import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
+import 'package:oasis_cafe_app_store/provider/orderStateController.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
-import 'package:provider/provider.dart';
 
 import 'drawer.dart';
 
@@ -42,8 +42,8 @@ class _HomeState extends State<Home> {
             ),
 
             tabs: [
-              Tab(text: '신규/처리중 ${Provider.of<OrderStateProvider>(context).getNewOrderLength()}',),
-              Tab(text: '완료 ${Provider.of<OrderStateProvider>(context).getCompletedOrderLength()}',)
+              Tab(text: '신규/처리중 ${Get.find<OrderStateController>().getNewOrderLength()}',),
+              Tab(text: '완료 ${Get.find<OrderStateController>().getCompletedOrderLength()}',)
             ],
           ),
         ),

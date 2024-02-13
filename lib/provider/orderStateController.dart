@@ -1,17 +1,16 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/strings/strings_en.dart';
 
 import '../model/model_order.dart';
-import '../screens/home/home.dart';
 
-class OrderStateProvider with ChangeNotifier {
+class OrderStateController extends GetxController {
 
-  final db = FirebaseFirestore.instance;
   late CollectionReference orderCollection;
   List<OrderModel> orderList = [];
-  var newOrderLength = 0;
-  var completedOrderLength = 0;
+  final db = FirebaseFirestore.instance;
+  var newOrderLength = 0.obs;
+  var completedOrderLength = 0.obs;
 
   // OrderStateProvider() {
   //   orderCollection = db.collection('user_order_new');
@@ -27,7 +26,6 @@ class OrderStateProvider with ChangeNotifier {
                   }).toList();
     });
 
-    notifyListeners();
   }
 
 
@@ -35,18 +33,18 @@ class OrderStateProvider with ChangeNotifier {
   int getNewOrderLength() {
 
     db.collection(Strings.collection_userOrderNew).get().then((value) {
-      newOrderLength = value.size;
+      newOrderLength.value = value.size;
     });
-    return newOrderLength;
+    return newOrderLength.value;
   }
 
   // 완료 메뉴 항목 리스트 개수 가져오기
   int getCompletedOrderLength() {
 
     db.collection(Strings.collection_userOrderCompleted).get().then((value) {
-      completedOrderLength = value.size;
+      completedOrderLength.value = value.size;
     });
-    return completedOrderLength;
+    return completedOrderLength.value;
   }
 
 

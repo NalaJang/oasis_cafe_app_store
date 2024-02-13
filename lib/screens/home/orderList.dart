@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
-import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
-import 'package:provider/provider.dart';
+import 'package:oasis_cafe_app_store/provider/orderStateController.dart';
 
 import '../../strings/strings_en.dart';
 
@@ -31,7 +31,7 @@ class _OrderListState extends State<OrderList> {
   void initState() {
     super.initState();
 
-    var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
+    var orderStateController = Get.find<OrderStateController>();
 
     String setCollectionName() {
       if( widget.currentTabIndex == 0 ) {
@@ -42,17 +42,17 @@ class _OrderListState extends State<OrderList> {
       return collectionName;
     }
     final db = FirebaseFirestore.instance;
-    orderStateProvider.orderCollection = db.collection(setCollectionName());
+    orderStateController.orderCollection = db.collection(setCollectionName());
   }
 
   @override
   Widget build(BuildContext context) {
 
-    var orderStateProvider = Provider.of<OrderStateProvider>(context);
+    var orderStateController = Get.find<OrderStateController>();
 
     return StreamBuilder(
       // orderTime 내림차순으로 데이터 정렬
-      stream: orderStateProvider.orderCollection.orderBy('orderTime', descending: true).snapshots(),
+      stream: orderStateController.orderCollection.orderBy('orderTime', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         if( streamSnapshot.hasData ) {
           return ListView.separated(
@@ -63,7 +63,7 @@ class _OrderListState extends State<OrderList> {
             itemCount: streamSnapshot.data!.docs.length,
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
-              orderStateProvider.getUserOrderList();
+              orderStateController.getUserOrderList();
               String orderId = documentSnapshot.id;
               String userUid = documentSnapshot['userUid'];
               String orderUid = documentSnapshot['orderUid'];
@@ -125,7 +125,7 @@ class _OrderListState extends State<OrderList> {
 
   // 주문 상태 업데이트
   Widget _orderStateUpdate(String processState, int index, String orderId, String userUid, String orderUid) {
-    var orderStateProvider = Provider.of<OrderStateProvider>(context);
+    var orderStateController = Get.find<OrderStateController>();
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -137,7 +137,7 @@ class _OrderListState extends State<OrderList> {
       onPressed: () async {
         // '주문 접수(new)' 클릭 시
         if( processState == Strings.newOrder ) {
-          orderStateProvider.updateNewOrderState(orderId, userUid, orderUid);
+          orderStateController.updateNewOrderState(orderId, userUid, orderUid);
 
           // '처리중(inProcess)' 클릭 -> '완료' 로 상태 업데이트
         } else if( processState == Strings.orderInProcess ) {
@@ -145,7 +145,7 @@ class _OrderListState extends State<OrderList> {
 
           setState(() {
             if( result )  {
-              orderStateProvider.updateOrderInProcessState(orderId, userUid, orderUid);
+              orderStateController.updateOrderInProcessState(orderId, userUid, orderUid);
             }
           });
 
@@ -155,7 +155,7 @@ class _OrderListState extends State<OrderList> {
 
           setState(() {
             if( result )  {
-              orderStateProvider.updateOrderDoneState(index, orderId, userUid, orderUid);
+              orderStateController.updateOrderDoneState(index, orderId, userUid, orderUid);
             }
           });
         }
@@ -172,9 +172,9 @@ class _OrderListState extends State<OrderList> {
 
   // 주문 정보 보기 다이얼로그
   Future<void> _showOrderDetailDialog(BuildContext context, int index, String processState) async {
-    var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
-    var customerName = await orderStateProvider.getUserName(index);
-    var orderedItem = orderStateProvider.orderList[index];
+    var orderStateController = Get.find<OrderStateController>();
+    var customerName = await orderStateController.getUserName(index);
+    var orderedItem = orderStateController.orderList[index];
     print('주문 정보 index > $index');
     print('주문 정보 orderedItem > ${orderedItem.id}');
 
@@ -239,7 +239,7 @@ class _OrderListState extends State<OrderList> {
                         print('_reason > $_reason');
                         if( mounted ) {
                           Navigator.pop(context);
-                          orderStateProvider.updateOrderCanceled(
+                          orderStateController.updateOrderCanceled(
                               index, orderedItem.id, orderedItem.userUid, orderedItem.orderUid, _reason.toString()
                           );
                         }
