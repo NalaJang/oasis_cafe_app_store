@@ -308,52 +308,19 @@ class _OrderListState extends State<OrderList> {
   }
 
   // 주문 처리 상태 다이얼로그
-  Future<bool> showProcessingStateDialog(String nextProcess) async {
-    processingConfirm = false;
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return AlertDialog(
-          title: Text('처리중'),
-          content: Text('$nextProcess 처리를 하시겠습니까?'),
-          actions: [
-            // 취소
-            CommonButton.cancelButton(),
+  showProcessingStateDialog(String nextProcess) {
+    return Get.dialog(
+      AlertDialog(
+        title: Text('처리중'),
+        content: Text('$nextProcess 처리를 하시겠습니까?'),
+        actions: [
+          // 취소
+          CommonButton.cancelButton(),
 
-            // 확인
-            submitButton(nextProcess)
-          ],
-        );
-      }
-    );
-    return processingConfirm;
-  }
-
-
-  // 제출 버튼
-  ElevatedButton submitButton(String content) {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.brown,
-            side: const BorderSide(
-                color: Colors.brown
-            )
-        ),
-        onPressed: (){
-          if( content == '완료' || content == '픽업' || content == '주문 취소' ) {
-            processingConfirm = true;
-          }
-          ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text(
-                  '$content 처리되었습니다.',
-                ),
-              )
-          );
-          Navigator.pop(context);
-        },
-        child: const Text(Strings.submit)
+          // 확인
+          CommonButton.submitButton(nextProcess)
+        ],
+      )
     );
   }
-
 }

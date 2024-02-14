@@ -11,9 +11,9 @@ class CommonButton {
   static Widget submitButton(String content) {
     return ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: Palette.backgroundColor1,
+          backgroundColor: Palette.darkBackgroundColor,
           side: const BorderSide(
-            color: Palette.buttonColor1
+            color: Palette.darkBorderColor
           )
         ),
 
@@ -25,9 +25,9 @@ class CommonButton {
           );
 
           // 취소 처리 snackbar 가 띄워지고 1초 후 다이얼로그 닫기
-          Future.delayed(const Duration(seconds: 1), () {
+          // Future.delayed(const Duration(seconds: 1), () {
             Get.key.currentState?.pop(true);
-          });
+          // });
 
           // if( content == '완료' || content == '픽업' || content == '주문 취소' ) {
           //   processingConfirm = true;
@@ -48,9 +48,9 @@ class CommonButton {
   static Widget cancelButton() {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.white,
+        backgroundColor: Palette.whiteBackgroundColor,
         side: const BorderSide(
-          color: Palette.buttonColor1
+          color: Palette.darkBorderColor
         )
       ),
 
@@ -59,7 +59,7 @@ class CommonButton {
       child: const Text(
           Strings.cancel,
           style: TextStyle(
-            color: Palette.textColor1
+            color: Palette.darkTextColor
         ),
       )
     );
