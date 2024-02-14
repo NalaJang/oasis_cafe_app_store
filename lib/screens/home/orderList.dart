@@ -318,7 +318,7 @@ class _OrderListState extends State<OrderList> {
           content: Text('$nextProcess 처리를 하시겠습니까?'),
           actions: [
             // 취소
-            cancelButton(),
+            CommonButton.cancelButton(),
 
             // 확인
             submitButton(nextProcess)
@@ -329,27 +329,6 @@ class _OrderListState extends State<OrderList> {
     return processingConfirm;
   }
 
-  // 취소 버튼
-  ElevatedButton cancelButton() {
-    return ElevatedButton(
-        style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            side: const BorderSide(
-                color: Colors.brown
-            )
-        ),
-        onPressed: (){
-          // processingConfirm = false;
-          Navigator.pop(context);
-        },
-        child: const Text(
-          Strings.cancel,
-          style: TextStyle(
-              color: Colors.brown
-          ),
-        )
-    );
-  }
 
   // 제출 버튼
   ElevatedButton submitButton(String content) {
