@@ -18,32 +18,56 @@ class OrderStateController extends GetxController {
 
 
   Future<void> getUserOrderList() async {
-    orderList = await orderCollection
-                .orderBy('orderTime', descending: true)
-                .get().then((querySnapshot) {
-                  return querySnapshot.docs.map((document) {
+    try {
+      final querySnapshot = await orderCollection
+                            .orderBy('orderTime', descending: true)
+                            .get();
+
+      orderList = querySnapshot.docs.map((document) {
                     return OrderModel.getSnapshotData(document);
                   }).toList();
-    });
 
+    } catch(e) {
+      print('Error fetching user order list : $e');
+    }
   }
 
+
+  @override
+  void onInit() {
+    super.onInit();
+
+    getNewOrderLength();
+    getCompletedOrderLength();
+  }
 
   // 신규/처리중 메뉴 항목 리스트 개수 가져오기
   int getNewOrderLength() {
 
-    db.collection(Strings.collection_userOrderNew).get().then((value) {
-      newOrderLength.value = value.size;
-    });
+    try {
+      db.collection(Strings.collection_userOrderNew).get().then((value) {
+        newOrderLength.value = value.size;
+      });
+
+    } catch(e) {
+      print('Error getting new order length: $e');
+    }
+
     return newOrderLength.value;
   }
 
   // 완료 메뉴 항목 리스트 개수 가져오기
   int getCompletedOrderLength() {
 
-    db.collection(Strings.collection_userOrderCompleted).get().then((value) {
-      completedOrderLength.value = value.size;
-    });
+    try {
+      db.collection(Strings.collection_userOrderCompleted).get().then((value) {
+        completedOrderLength.value = value.size;
+      });
+
+    } catch(e) {
+      print('Error getting new order length: $e');
+    }
+
     return completedOrderLength.value;
   }
 

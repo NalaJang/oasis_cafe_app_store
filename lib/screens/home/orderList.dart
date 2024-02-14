@@ -57,70 +57,77 @@ class _OrderListState extends State<OrderList> {
       stream: orderStateController.orderCollection.orderBy('orderTime', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         if( streamSnapshot.hasData ) {
-          return ListView.separated(
-            separatorBuilder: (BuildContext context, int index) => const Divider(
-            color: Colors.grey,
-            ),
-
-            itemCount: streamSnapshot.data!.docs.length,
-            itemBuilder: (context, index) {
-              final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
-              orderStateController.getUserOrderList();
-              String orderId = documentSnapshot.id;
-              String userUid = documentSnapshot['userUid'];
-              String orderUid = documentSnapshot['orderUid'];
-              int quantity = documentSnapshot['quantity'];
-              String itemName = documentSnapshot['itemName'];
-              String orderTime = documentSnapshot['orderTime'];
-              String processState = documentSnapshot['processState'];
-
-              // orderTime = yyyy-MM-dd H:m:s
-              List<String> split_orderTime = orderTime.split(' ');
-              String date = split_orderTime[0];
-              String time = split_orderTime[1];
-
-
-              return ListTile(
-                leading: Text('$date\n$time', textAlign: TextAlign.center,),
-                title: Text('$itemName $quantity개'),
-                trailing: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.white,
-                          side: const BorderSide(
-                              color: Colors.white
-                          )
-                      ),
-                      onPressed: (){},
-                      child: const Text(
-                        '주문표\n인쇄',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black
-                        ),
-                      ),
-                    ),
-
-                    Gaps.gapW5,
-
-                    // 주문 상태 업데이트
-                    _orderStateUpdate(processState, index, orderId, userUid, orderUid),
-                  ],
-                ),
-
-                // 주문 정보 다이얼로그
-                onTap: (){
-                  _showOrderDetailDialog(context, index, processState);
-                },
-              );
-            }
-          );
+          return _buildOrderListView(streamSnapshot);
 
         } else {
           return CircularProgressBar.circularProgressBar;
         }
+      }
+    );
+  }
+
+
+  Widget _buildOrderListView(AsyncSnapshot<QuerySnapshot> streamSnapshot) {
+    var orderStateController = Get.find<OrderStateController>();
+
+    return ListView.separated(
+      separatorBuilder: (BuildContext context, int index) => const Divider(
+        color: Colors.grey,
+      ),
+
+      itemCount: streamSnapshot.data!.docs.length,
+      itemBuilder: (context, index) {
+        final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
+        orderStateController.getUserOrderList();
+        String orderId = documentSnapshot.id;
+        String userUid = documentSnapshot['userUid'];
+        String orderUid = documentSnapshot['orderUid'];
+        int quantity = documentSnapshot['quantity'];
+        String itemName = documentSnapshot['itemName'];
+        String orderTime = documentSnapshot['orderTime'];
+        String processState = documentSnapshot['processState'];
+
+        // orderTime = yyyy-MM-dd H:m:s
+        List<String> split_orderTime = orderTime.split(' ');
+        String date = split_orderTime[0];
+        String time = split_orderTime[1];
+
+
+        return ListTile(
+          leading: Text('$date\n$time', textAlign: TextAlign.center,),
+          title: Text('$itemName $quantity개'),
+          trailing: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    side: const BorderSide(
+                        color: Colors.white
+                    )
+                ),
+                onPressed: (){},
+                child: const Text(
+                  '주문표\n인쇄',
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      color: Colors.black
+                  ),
+                ),
+              ),
+
+              Gaps.gapW5,
+
+              // 주문 상태 업데이트
+              _orderStateUpdate(processState, index, orderId, userUid, orderUid),
+            ],
+          ),
+
+          // 주문 정보 다이얼로그
+          onTap: (){
+            _showOrderDetailDialog(context, index, processState);
+          },
+        );
       }
     );
   }
@@ -252,7 +259,7 @@ class _OrderListState extends State<OrderList> {
                       ),
                     )
                   ),
-                ) : const Spacer()
+                ) : Gaps.spacer
               ],
             ),
           );
