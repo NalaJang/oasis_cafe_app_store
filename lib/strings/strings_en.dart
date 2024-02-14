@@ -36,6 +36,7 @@ class Strings {
   static const String orderInProcess = 'inProcess';
   static const String orderDone = 'done';
   static const String orderPickedUp = 'pickedUp';
+  static const String orderCancel = 'order cancel';
 
   static const String signOut = 'Sign out';
 }

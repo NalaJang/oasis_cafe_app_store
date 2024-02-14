@@ -3,8 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
+import 'package:oasis_cafe_app_store/config/circularProgressIndicator.dart';
+import 'package:oasis_cafe_app_store/config/gaps.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateController.dart';
 
+import '../../config/commonButton.dart';
 import '../../strings/strings_en.dart';
 
 class OrderList extends StatefulWidget {
@@ -21,27 +24,26 @@ enum ReasonOfOrderCancellation {cafeCircumstances, soldOut, notAllowed}
 
 class _OrderListState extends State<OrderList> {
 
-  String buttonText = '주문 접수';
   bool processingConfirm = false;
-  // 라디오 버튼 초기화 값
+  // 취소 사유 라디오 버튼 초기화 값
   ReasonOfOrderCancellation _reason = ReasonOfOrderCancellation.cafeCircumstances;
-  String collectionName = 'user_order_new';
+  String clickedCollectionName = Strings.collection_userOrderNew;
 
   @override
   void initState() {
     super.initState();
 
-    var orderStateController = Get.find<OrderStateController>();
-
     String setCollectionName() {
       if( widget.currentTabIndex == 0 ) {
-        collectionName = 'user_order_new';
+        clickedCollectionName = Strings.collection_userOrderNew;
       } else if( widget.currentTabIndex == 1 ) {
-        collectionName = 'user_order_completed';
+        clickedCollectionName = Strings.collection_userOrderCompleted;
       }
-      return collectionName;
+      return clickedCollectionName;
     }
+
     final db = FirebaseFirestore.instance;
+    var orderStateController = Get.find<OrderStateController>();
     orderStateController.orderCollection = db.collection(setCollectionName());
   }
 
@@ -101,7 +103,7 @@ class _OrderListState extends State<OrderList> {
                       ),
                     ),
 
-                    const SizedBox(width: 5,),
+                    Gaps.gapW5,
 
                     // 주문 상태 업데이트
                     _orderStateUpdate(processState, index, orderId, userUid, orderUid),
@@ -117,7 +119,7 @@ class _OrderListState extends State<OrderList> {
           );
 
         } else {
-          return const Center(child: CircularProgressIndicator(),);
+          return CircularProgressBar.circularProgressBar;
         }
       }
     );
@@ -195,7 +197,7 @@ class _OrderListState extends State<OrderList> {
                   ],
                 ),
 
-                const SizedBox(height: 15,),
+                Gaps.gapH15,
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -205,11 +207,11 @@ class _OrderListState extends State<OrderList> {
                   ],
                 ),
 
-                const SizedBox(height: 15,),
+                Gaps.gapH15,
 
                 const Text('주문 내역'),
 
-                const SizedBox(height: 10,),
+                Gaps.gapH10,
 
                 Text('${orderedItem.quantity} ${orderedItem.hotOrIced} ${orderedItem.itemName}'),
                 Text('${orderedItem.espressoOption} shots'),
@@ -219,7 +221,7 @@ class _OrderListState extends State<OrderList> {
                 orderedItem.whippedCreamOption.isEmpty ? const Visibility(visible: false,child: Text('',),) : Text('${orderedItem.whippedCreamOption}'),
                 Text(orderedItem.cup),
 
-                const Spacer(),
+                Gaps.spacer,
                 // 주문 취소 버튼(새 주문일 경우에만 취소 버튼 보임)
                 processState == Strings.newOrder ?
                 SizedBox(
@@ -234,16 +236,14 @@ class _OrderListState extends State<OrderList> {
                     ),
 
                     onPressed: () async {
-                      var isCanceled = await showOrderCancelDialog();
+                      var isCanceled = await showTheDialog();
                       if( isCanceled ) {
-                        print('_reason > $_reason');
-                        if( mounted ) {
-                          Navigator.pop(context);
-                          orderStateController.updateOrderCanceled(
-                              index, orderedItem.id, orderedItem.userUid, orderedItem.orderUid, _reason.toString()
-                          );
-                        }
+                        Get.back;
+                        orderStateController.updateOrderCanceled(
+                            index, orderedItem.id, orderedItem.userUid, orderedItem.orderUid, _reason.toString()
+                        );
                       }
+
                     },
                     child: const Text(
                       '주문 취소',
@@ -261,48 +261,43 @@ class _OrderListState extends State<OrderList> {
     }
   }
 
-  List<String> reasonOfCancellationList = ['업소 사정 취소', '재료 소진', '요청사항 불가'];
+  final List<String> reasonOfCancellationList = ['업소 사정 취소', '재료 소진', '요청사항 불가'];
   // AlertDialog 에서는 setState() 가 작동을 하지 않았다.
   // setState() 는 StatefulBuilder 에서만 사용이 가능하다고 해서
   // AlertDialog 를 StatefulBuilder widget 으로 감싸주었다.
-  Future<bool> showOrderCancelDialog() async {
-    processingConfirm = false;
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, StateSetter setState) {
-            return AlertDialog(
-              title: const Text('주문 취소'),
-              content: Column(
-                children: [
-                  for( var i = 0; i < reasonOfCancellationList.length; i++ )
-                    RadioListTile(
-                      title: Text(reasonOfCancellationList[i]),
-                      value: ReasonOfOrderCancellation.values[i],
-                      groupValue: _reason,
-                      onChanged: (ReasonOfOrderCancellation? value) {
-                        setState(() {
-                          _reason = value!;
-                        });
-                      },
-                    ),
-                ],
-              ),
-
-              actions: [
-                // 취소
-                cancelButton(),
-
-                // 확인
-                submitButton('주문 취소')
+  showTheDialog() {
+    return Get.dialog(
+      StatefulBuilder(
+        builder: (context, StateSetter setState) {
+          return AlertDialog(
+            title: const Text(Strings.orderCancel),
+            content: Column(
+              children: [
+                for( var i = 0; i < reasonOfCancellationList.length; i++ )
+                  RadioListTile(
+                    title: Text(reasonOfCancellationList[i]),
+                    value: ReasonOfOrderCancellation.values[i],
+                    groupValue: _reason,
+                    onChanged: (ReasonOfOrderCancellation? value) {
+                      setState(() {
+                        _reason = value!;
+                      });
+                    },
+                  ),
               ],
-            );
-          },
-        );
-      }
+            ),
+
+            actions: [
+              // 취소 버튼
+              CommonButton.cancelButton(),
+
+              // 주문 취소 확인 버튼
+              CommonButton.submitButton(Strings.orderCancel),
+            ],
+          );
+        }
+      )
     );
-    return processingConfirm;
   }
 
   // 주문 처리 상태 다이얼로그

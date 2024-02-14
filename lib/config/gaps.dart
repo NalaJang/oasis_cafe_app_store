@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class Gaps {
   static const spacer = Spacer();
+  static const gapW5 = SizedBox(width: 5,);
   static const gapW10 = SizedBox(width: 10,);
 
 
