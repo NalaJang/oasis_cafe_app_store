@@ -19,6 +19,7 @@ class OrderModel {
   late String syrupOption;
   late String whippedCreamOption;
   late String iceOption;
+  late String processState;
 
   OrderModel.getSnapshotData(DocumentSnapshot snapshot) {
     Map<String, dynamic> data = snapshot.data() as Map<String, dynamic>;
@@ -38,11 +39,12 @@ class OrderModel {
     syrupOption = data['syrupOption'];
     whippedCreamOption = data['whippedCreamOption'];
     iceOption = data['iceOption'];
+    processState = data['processState'];
   }
 
   // 완료 처리된 주문 내역을 'user_order_completed' collection 에 저장
   OrderModel.setDataToCompletedOrder(bool isCanceled, String reason, String orderId, String orderUid, OrderModel data) {
-    String processState;
+    // String processState;
     if( isCanceled ) {
       processState = Strings.orderCanceled;
     } else {
