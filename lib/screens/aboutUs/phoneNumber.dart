@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/gaps.dart';
-import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
+import 'package:oasis_cafe_app_store/provider/phoneNumberController.dart';
 import 'package:oasis_cafe_app_store/screens/aboutUs/editPages/phoneNumberEditPage.dart';
-import 'package:provider/provider.dart';
 
 import '../../config/commonButton.dart';
 
@@ -12,39 +12,44 @@ class PhoneNumber extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    String phoneNumber = '';
-    var phoneNumberProvider = Provider.of<PhoneNumberProvider>(context);
+    var phoneNumberController = Get.find<PhoneNumberController>();
     // 전화번호 가져오기
-    phoneNumberProvider.getPhoneNumber();
+    phoneNumberController.getPhoneNumber();
 
-    if( phoneNumberProvider.isChecked ) {
-      phoneNumber = '${phoneNumberProvider.number1} - ${phoneNumberProvider.number2} - ${phoneNumberProvider.number3}';
-    } else {
-      phoneNumber = '등록된 번호가 없습니다.';
-    }
+    return Obx(
+      () {
+        String phoneNumber = '';
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        if( phoneNumberController.isChecked.value ) {
+          phoneNumber = '${phoneNumberController.number1} - ${phoneNumberController.number2} - ${phoneNumberController.number3}';
+        } else {
+          phoneNumber = '등록된 번호가 없습니다.';
+        }
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _title(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _title(),
 
-            // 수정하기 버튼
-            CommonButton().editButton(context, PhoneNumberEditPage.routeName),
+                // 수정하기 버튼
+                CommonButton().editButton(context, PhoneNumberEditPage.routeName),
+              ],
+            ),
+
+            Gaps.gapH10,
+
+            Text(
+              phoneNumber,
+              style: const TextStyle(
+                  fontSize: 17.0
+              ),
+            )
           ],
-        ),
-
-        Gaps.gapH10,
-
-        Text(
-          phoneNumber,
-          style: const TextStyle(
-            fontSize: 17.0
-          ),
-        )
-      ],
+        );
+      }
     );
   }
 

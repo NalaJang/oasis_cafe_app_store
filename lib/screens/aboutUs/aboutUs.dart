@@ -28,6 +28,9 @@ class AboutUs extends StatelessWidget {
 
               // 매장 전화번호
               PhoneNumber(),
+
+              // 매장 위치
+              // Location()
             ],
           ),
         ),

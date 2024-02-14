@@ -1,10 +1,13 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/route_manager.dart';
-import 'package:oasis_cafe_app_store/provider/orderStateProvider.dart';
-import 'package:provider/provider.dart';
+import 'package:oasis_cafe_app_store/config/circularProgressIndicator.dart';
+import 'package:oasis_cafe_app_store/config/gaps.dart';
+import 'package:oasis_cafe_app_store/provider/orderStateController.dart';
 
+import '../../config/commonButton.dart';
 import '../../strings/strings_en.dart';
 
 class OrderList extends StatefulWidget {
@@ -21,38 +24,37 @@ enum ReasonOfOrderCancellation {cafeCircumstances, soldOut, notAllowed}
 
 class _OrderListState extends State<OrderList> {
 
-  String buttonText = '주문 접수';
   bool processingConfirm = false;
-  // 라디오 버튼 초기화 값
+  // 취소 사유 라디오 버튼 초기화 값
   ReasonOfOrderCancellation _reason = ReasonOfOrderCancellation.cafeCircumstances;
-  String collectionName = 'user_order_new';
+  String clickedCollectionName = Strings.collection_userOrderNew;
 
   @override
   void initState() {
     super.initState();
 
-    var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
-
     String setCollectionName() {
       if( widget.currentTabIndex == 0 ) {
-        collectionName = 'user_order_new';
+        clickedCollectionName = Strings.collection_userOrderNew;
       } else if( widget.currentTabIndex == 1 ) {
-        collectionName = 'user_order_completed';
+        clickedCollectionName = Strings.collection_userOrderCompleted;
       }
-      return collectionName;
+      return clickedCollectionName;
     }
+
     final db = FirebaseFirestore.instance;
-    orderStateProvider.orderCollection = db.collection(setCollectionName());
+    var orderStateController = Get.find<OrderStateController>();
+    orderStateController.orderCollection = db.collection(setCollectionName());
   }
 
   @override
   Widget build(BuildContext context) {
 
-    var orderStateProvider = Provider.of<OrderStateProvider>(context);
+    var orderStateController = Get.find<OrderStateController>();
 
     return StreamBuilder(
       // orderTime 내림차순으로 데이터 정렬
-      stream: orderStateProvider.orderCollection.orderBy('orderTime', descending: true).snapshots(),
+      stream: orderStateController.orderCollection.orderBy('orderTime', descending: true).snapshots(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> streamSnapshot) {
         if( streamSnapshot.hasData ) {
           return ListView.separated(
@@ -63,7 +65,7 @@ class _OrderListState extends State<OrderList> {
             itemCount: streamSnapshot.data!.docs.length,
             itemBuilder: (context, index) {
               final DocumentSnapshot documentSnapshot = streamSnapshot.data!.docs[index];
-              orderStateProvider.getUserOrderList();
+              orderStateController.getUserOrderList();
               String orderId = documentSnapshot.id;
               String userUid = documentSnapshot['userUid'];
               String orderUid = documentSnapshot['orderUid'];
@@ -77,12 +79,6 @@ class _OrderListState extends State<OrderList> {
               String date = split_orderTime[0];
               String time = split_orderTime[1];
 
-
-              if( processState == 'new' ) {
-                buttonText = '주문\n접수';
-              } else {
-                buttonText = '처리중';
-              }
 
               return ListTile(
                 leading: Text('$date\n$time', textAlign: TextAlign.center,),
@@ -107,7 +103,7 @@ class _OrderListState extends State<OrderList> {
                       ),
                     ),
 
-                    const SizedBox(width: 5,),
+                    Gaps.gapW5,
 
                     // 주문 상태 업데이트
                     _orderStateUpdate(processState, index, orderId, userUid, orderUid),
@@ -123,7 +119,7 @@ class _OrderListState extends State<OrderList> {
           );
 
         } else {
-          return const Center(child: CircularProgressIndicator(),);
+          return CircularProgressBar.circularProgressBar;
         }
       }
     );
@@ -131,7 +127,7 @@ class _OrderListState extends State<OrderList> {
 
   // 주문 상태 업데이트
   Widget _orderStateUpdate(String processState, int index, String orderId, String userUid, String orderUid) {
-    var orderStateProvider = Provider.of<OrderStateProvider>(context);
+    var orderStateController = Get.find<OrderStateController>();
 
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -143,7 +139,7 @@ class _OrderListState extends State<OrderList> {
       onPressed: () async {
         // '주문 접수(new)' 클릭 시
         if( processState == Strings.newOrder ) {
-          orderStateProvider.updateNewOrderState(orderId, userUid, orderUid);
+          orderStateController.updateNewOrderState(orderId, userUid, orderUid);
 
           // '처리중(inProcess)' 클릭 -> '완료' 로 상태 업데이트
         } else if( processState == Strings.orderInProcess ) {
@@ -151,7 +147,7 @@ class _OrderListState extends State<OrderList> {
 
           setState(() {
             if( result )  {
-              orderStateProvider.updateOrderInProcessState(orderId, userUid, orderUid);
+              orderStateController.updateOrderInProcessState(orderId, userUid, orderUid);
             }
           });
 
@@ -161,7 +157,7 @@ class _OrderListState extends State<OrderList> {
 
           setState(() {
             if( result )  {
-              orderStateProvider.updateOrderDoneState(index, orderId, userUid, orderUid);
+              orderStateController.updateOrderDoneState(index, orderId, userUid, orderUid);
             }
           });
         }
@@ -178,9 +174,9 @@ class _OrderListState extends State<OrderList> {
 
   // 주문 정보 보기 다이얼로그
   Future<void> _showOrderDetailDialog(BuildContext context, int index, String processState) async {
-    var orderStateProvider = Provider.of<OrderStateProvider>(context, listen: false);
-    var customerName = await orderStateProvider.getUserName(index);
-    var orderedItem = orderStateProvider.orderList[index];
+    var orderStateController = Get.find<OrderStateController>();
+    var customerName = await orderStateController.getUserName(index);
+    var orderedItem = orderStateController.orderList[index];
     print('주문 정보 index > $index');
     print('주문 정보 orderedItem > ${orderedItem.id}');
 
@@ -201,7 +197,7 @@ class _OrderListState extends State<OrderList> {
                   ],
                 ),
 
-                const SizedBox(height: 15,),
+                Gaps.gapH15,
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -211,11 +207,11 @@ class _OrderListState extends State<OrderList> {
                   ],
                 ),
 
-                const SizedBox(height: 15,),
+                Gaps.gapH15,
 
                 const Text('주문 내역'),
 
-                const SizedBox(height: 10,),
+                Gaps.gapH10,
 
                 Text('${orderedItem.quantity} ${orderedItem.hotOrIced} ${orderedItem.itemName}'),
                 Text('${orderedItem.espressoOption} shots'),
@@ -225,7 +221,7 @@ class _OrderListState extends State<OrderList> {
                 orderedItem.whippedCreamOption.isEmpty ? const Visibility(visible: false,child: Text('',),) : Text('${orderedItem.whippedCreamOption}'),
                 Text(orderedItem.cup),
 
-                const Spacer(),
+                Gaps.spacer,
                 // 주문 취소 버튼(새 주문일 경우에만 취소 버튼 보임)
                 processState == Strings.newOrder ?
                 SizedBox(
@@ -240,16 +236,14 @@ class _OrderListState extends State<OrderList> {
                     ),
 
                     onPressed: () async {
-                      var isCanceled = await showOrderCancelDialog();
+                      var isCanceled = await showTheDialog();
                       if( isCanceled ) {
-                        print('_reason > $_reason');
-                        if( mounted ) {
-                          Navigator.pop(context);
-                          orderStateProvider.updateOrderCanceled(
-                              index, orderedItem.id, orderedItem.userUid, orderedItem.orderUid, _reason.toString()
-                          );
-                        }
+                        Get.back;
+                        orderStateController.updateOrderCanceled(
+                            index, orderedItem.id, orderedItem.userUid, orderedItem.orderUid, _reason.toString()
+                        );
                       }
+
                     },
                     child: const Text(
                       '주문 취소',
@@ -267,48 +261,43 @@ class _OrderListState extends State<OrderList> {
     }
   }
 
-  List<String> reasonOfCancellationList = ['업소 사정 취소', '재료 소진', '요청사항 불가'];
+  final List<String> reasonOfCancellationList = ['업소 사정 취소', '재료 소진', '요청사항 불가'];
   // AlertDialog 에서는 setState() 가 작동을 하지 않았다.
   // setState() 는 StatefulBuilder 에서만 사용이 가능하다고 해서
   // AlertDialog 를 StatefulBuilder widget 으로 감싸주었다.
-  Future<bool> showOrderCancelDialog() async {
-    processingConfirm = false;
-    await showDialog(
-      context: context,
-      builder: (context) {
-        return StatefulBuilder(
-          builder: (context, StateSetter setState) {
-            return AlertDialog(
-              title: const Text('주문 취소'),
-              content: Column(
-                children: [
-                  for( var i = 0; i < reasonOfCancellationList.length; i++ )
-                    RadioListTile(
-                      title: Text(reasonOfCancellationList[i]),
-                      value: ReasonOfOrderCancellation.values[i],
-                      groupValue: _reason,
-                      onChanged: (ReasonOfOrderCancellation? value) {
-                        setState(() {
-                          _reason = value!;
-                        });
-                      },
-                    ),
-                ],
-              ),
-
-              actions: [
-                // 취소
-                cancelButton(),
-
-                // 확인
-                submitButton('주문 취소')
+  showTheDialog() {
+    return Get.dialog(
+      StatefulBuilder(
+        builder: (context, StateSetter setState) {
+          return AlertDialog(
+            title: const Text(Strings.orderCancel),
+            content: Column(
+              children: [
+                for( var i = 0; i < reasonOfCancellationList.length; i++ )
+                  RadioListTile(
+                    title: Text(reasonOfCancellationList[i]),
+                    value: ReasonOfOrderCancellation.values[i],
+                    groupValue: _reason,
+                    onChanged: (ReasonOfOrderCancellation? value) {
+                      setState(() {
+                        _reason = value!;
+                      });
+                    },
+                  ),
               ],
-            );
-          },
-        );
-      }
+            ),
+
+            actions: [
+              // 취소 버튼
+              CommonButton.cancelButton(),
+
+              // 주문 취소 확인 버튼
+              CommonButton.submitButton(Strings.orderCancel),
+            ],
+          );
+        }
+      )
     );
-    return processingConfirm;
   }
 
   // 주문 처리 상태 다이얼로그

@@ -3,8 +3,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:oasis_cafe_app_store/model/model_user.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
-import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
+import 'package:oasis_cafe_app_store/provider/phoneNumberController.dart';
 
 import '../screens/home/home.dart';
 import '../strings/strings_en.dart';
@@ -42,23 +43,15 @@ class UserStateProvider with ChangeNotifier {
 
       await userInfo
           .doc(newUser.user!.uid)
-          .set({
-        // 데이터의 형식은 항상 map 의 형태
-        'signUpTime' : DateTime.now(),
-        'signInTime' : DateTime.now(),
-        'signOutTime' : DateTime.now(),
-        'userEmail' : email,
-        'userPassword' : password,
-        'userName' : name,
-        'userMobileNumber' : mobileNumber,
-        'notification' : notification,
-      });
+          .set(
+              UserModel(name, email, password, mobileNumber).setData()
+      );
 
 
       await firstAdmin();
       if( isFirstAdmin ) {
         OpeningHoursProvider().setOpeningHours();
-        PhoneNumberProvider().setPhoneNumber();
+        PhoneNumberController().setPhoneNumber();
       }
 
       isSignedUp = true;

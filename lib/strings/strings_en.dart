@@ -11,6 +11,7 @@ class Strings {
 
   static const String hello = 'Hello';
   static const String welcome = 'Welcome to Oasis cafe';
+  static const String storeName = 'Oasis cafe';
 
   static const String signIn = 'Admin sign in';
   static const String signUp = 'Sign up';
@@ -35,6 +36,7 @@ class Strings {
   static const String orderInProcess = 'inProcess';
   static const String orderDone = 'done';
   static const String orderPickedUp = 'pickedUp';
+  static const String orderCancel = 'order cancel';
 
   static const String signOut = 'Sign out';
 }

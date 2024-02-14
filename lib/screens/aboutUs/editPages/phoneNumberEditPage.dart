@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:oasis_cafe_app_store/config/gaps.dart';
-import 'package:oasis_cafe_app_store/provider/phoneNumberProvider.dart';
-import 'package:provider/provider.dart';
+import 'package:oasis_cafe_app_store/provider/phoneNumberController.dart';
 
 import '../../../config/palette.dart';
 
@@ -37,14 +37,10 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
   void initState() {
     super.initState();
 
-    final provider = Provider.of<PhoneNumberProvider>(context, listen: false);
-    var number1 = provider.number1;
-    var number2 = provider.number2;
-    var number3 = provider.number3;
-
-    number1Controller.text = number1;
-    number2Controller.text = number2;
-    number3Controller.text = number3;
+    var phoneNumberController = Get.find<PhoneNumberController>();
+    number1Controller.text = phoneNumberController.number1.value;
+    number2Controller.text = phoneNumberController.number2.value;
+    number3Controller.text = phoneNumberController.number3.value;
 
   }
 
@@ -131,24 +127,27 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
 
   // 전화번호 저장
   _pressedUpdateButton() async {
-    var provider = Provider.of<PhoneNumberProvider>(context, listen: false);
+    var phoneNumberController = Get.find<PhoneNumberController>();
 
     try {
       setState(() {
         showSpinner = true;
       });
-      var isUpdated = provider.updatePhoneNumber(number1Controller.text, number2Controller.text, number3Controller.text);
+      var isUpdated = await phoneNumberController.updatePhoneNumber(number1Controller.text, number2Controller.text, number3Controller.text);
 
-      if( await isUpdated ) {
-        setState(() {
-          showSpinner = false;
-        });
-        _showSnackBar('수정되었습니다.');
+      if( isUpdated ) {
+        // Fetch the updated phone number after the update
+        await phoneNumberController.getPhoneNumber();
+        _showSnackBar('전화번호가 수정되었습니다.');
       }
 
     } catch(e) {
       print(e);
       _showSnackBar(e.toString());
+    } finally {
+      setState(() {
+        showSpinner = false;
+      });
     }
   }
 
@@ -184,14 +183,14 @@ class _PhoneNumberEditPageState extends State<PhoneNumberEditPage> {
   }
 
   _showSnackBar(String content) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(content)
-      )
-    );
-
     setState(() {
       showSpinner = false;
     });
+
+    Get.snackbar(
+      '수정',
+      content,
+      snackPosition: SnackPosition.TOP
+    );
   }
 }

@@ -6,6 +6,8 @@ import 'package:oasis_cafe_app_store/model/model_openingHours.dart';
 import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../config/circularProgressIndicator.dart';
+
 class OpeningHoursEditPage extends StatefulWidget {
   const OpeningHoursEditPage({Key? key}) : super(key: key);
 
@@ -32,16 +34,16 @@ class _OpeningHoursEditPageState extends State<OpeningHoursEditPage> {
       ),
 
       body: Padding(
-        padding: const EdgeInsets.only(left: 15.0, right: 15.0, top: 10.0),
+        padding: const EdgeInsets.only(left: 15.0, right: 10.0, top: 10.0),
         child:
         openingHoursProvider.hoursList.isEmpty ?
-          const CircularProgressIndicator() :
+          CircularProgressBar.circularProgressBar :
 
           Column(
             children: [
               for( var day = 0; day < dayList.length; day++ )
                 SetOpeningHoursTime(
-                    date: openingHoursProvider.hoursList[day].id,
+                  date: openingHoursProvider.hoursList[day].id,
                   day: dayList[day],
                   openTime: openingHoursProvider.hoursList[day].openTime,
                   closeTime: openingHoursProvider.hoursList[day].closeTime
@@ -88,62 +90,67 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Expanded(
-          child: Text(
-            widget.day,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              color: Colors.black87,
-              fontSize: 17.0,
-              fontWeight: FontWeight.bold
-            ),
+        Text(
+          widget.day,
+          textAlign: TextAlign.center,
+          style: const TextStyle(
+            color: Colors.black87,
+            fontSize: 17.0,
+            fontWeight: FontWeight.bold
           ),
         ),
 
-        const Text('시작'),
+        Row(
+          children: [
+            const Text('시작'),
+            // 시작 시간
+            CupertinoButton(
+              onPressed: () => _showTimePickerDialog(
+                widget.date,
+                CupertinoDatePicker(
+                  initialDateTime: widget.openTime,
+                  mode: CupertinoDatePickerMode.time,
+                  use24hFormat: false,
+                  minuteInterval: 30,
+                  onDateTimeChanged: (DateTime newTime) {
+                    changedOpenHour = newTime.hour.toString();
+                    changedOpenMinutes = newTime.minute.toString();
+                  },
+                ),
+              ),
 
-        // 시작 시간
-        CupertinoButton(
-          onPressed: () => _showTimePickerDialog(
-            widget.date,
-            CupertinoDatePicker(
-              initialDateTime: widget.openTime,
-              mode: CupertinoDatePickerMode.time,
-              use24hFormat: false,
-              minuteInterval: 30,
-              onDateTimeChanged: (DateTime newTime) {
-                changedOpenHour = newTime.hour.toString();
-                changedOpenMinutes = newTime.minute.toString();
-              },
+              // 설정된 시간 보여주기
+              child: setTimeText(widget.openTime),
             ),
-          ),
-
-          // 설정된 시간 보여주기
-          child: setTimeText(widget.openTime),
+          ],
         ),
 
-        const SizedBox(width: 15.0,),
-        const Text('종료'),
+        // const SizedBox(width: 15.0,),
+        Row(
+          children: [
+            const Text('종료'),
+            // 종료 시간
+            CupertinoButton(
+              onPressed: () => _showTimePickerDialog(
+                widget.date,
+                CupertinoDatePicker(
+                  initialDateTime: widget.closeTime,
+                  mode: CupertinoDatePickerMode.time,
+                  use24hFormat: false,
+                  minuteInterval: 30,
+                  onDateTimeChanged: (DateTime newTime) {
+                    changedCloseHour = newTime.hour.toString();
+                    changedCloseMinutes = newTime.minute.toString();
+                  },
+                ),
+              ),
 
-        // 종료 시간
-        CupertinoButton(
-          onPressed: () => _showTimePickerDialog(
-            widget.date,
-            CupertinoDatePicker(
-              initialDateTime: widget.closeTime,
-              mode: CupertinoDatePickerMode.time,
-              use24hFormat: false,
-              minuteInterval: 30,
-              onDateTimeChanged: (DateTime newTime) {
-                changedCloseHour = newTime.hour.toString();
-                changedCloseMinutes = newTime.minute.toString();
-              },
+              // 설정된 시간 보여주기
+              child: setTimeText(widget.closeTime),
             ),
-          ),
-
-          // 설정된 시간 보여주기
-          child: setTimeText(widget.closeTime),
+          ],
         ),
       ],
     );
@@ -207,7 +214,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                 TextButton(
                   onPressed: (){
                     Navigator.pop(context);
-                    provider.updateTime(selectedDate, '0', '0', '0', '0');
+                    provider.updateTime(selectedDate, '00', '00', '00', '00');
                   },
                   child: const Text(
                     '휴무',
