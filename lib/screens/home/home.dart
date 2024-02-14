@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateController.dart';
 import 'package:oasis_cafe_app_store/screens/home/orderList.dart';
+import 'package:oasis_cafe_app_store/strings/strings_en.dart';
 
 import 'drawer.dart';
 
@@ -26,20 +27,14 @@ class _HomeState extends State<Home> {
         appBar: AppBar(
           backgroundColor: Palette.backgroundColor1,
           elevation: 0.0,
-          title: Text('Oasis cafe'),
+          title: const Text(Strings.storeName),
 
           bottom: TabBar(
-            indicator: BoxDecoration(
-              color: Colors.white
-            ),
+            indicator: const BoxDecoration(color: Colors.white),
             labelColor: Palette.textColor1,
             unselectedLabelColor: Colors.white,
-            labelStyle: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-            unselectedLabelStyle: TextStyle(
-              fontWeight: FontWeight.normal
-            ),
+            labelStyle: const TextStyle(fontWeight: FontWeight.bold,),
+            unselectedLabelStyle: const TextStyle(fontWeight: FontWeight.normal),
 
             tabs: [
               Tab(text: '신규/처리중 ${Get.find<OrderStateController>().getNewOrderLength()}',),
