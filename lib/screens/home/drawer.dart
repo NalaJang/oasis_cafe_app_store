@@ -22,7 +22,7 @@ class MyDrawer extends StatelessWidget {
             child: ListView(
               padding: const EdgeInsets.all(0),
               children: [
-                _drawerHeader(context),
+                const CustomDrawerHeader(),
 
                 // 새 메뉴 추가, 메뉴 정보 수정, 메뉴 품절 등
                 ListTile(
@@ -86,7 +86,32 @@ class MyDrawer extends StatelessWidget {
   }
 
 
-  Widget _drawerHeader(BuildContext context) {
+  // 로그아웃 버튼 클릭
+  _pressedSignOutButton(BuildContext context) async {
+
+    var result =  CommonDialog().showConfirmDialog('로그아웃 하시겠습니까?');
+
+    if( await result ) {
+
+      var isSignOut = Provider.of<UserStateProvider>((context), listen: false).signOut();
+
+      if( await isSignOut ) {
+        try {
+          // 이전의 마지막 페이지 제거
+          Get.off(() => const Login());
+        } catch(e) {
+          print('Error $e');
+        }
+      }
+    }
+  }
+}
+
+class CustomDrawerHeader extends StatelessWidget {
+  const CustomDrawerHeader({super.key});
+
+  @override
+  Widget build(BuildContext context) {
     var userName = Provider.of<UserStateProvider>(context).userName;
 
     return DrawerHeader(
@@ -97,7 +122,7 @@ class MyDrawer extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const Text(
-            'Hello,',
+            '${Strings.hello},',
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold
@@ -118,26 +143,5 @@ class MyDrawer extends StatelessWidget {
         ],
       ),
     );
-  }
-
-
-  // 로그아웃 버튼 클릭
-  _pressedSignOutButton(BuildContext context) async {
-
-    var result =  CommonDialog().showConfirmDialog('로그아웃 하시겠습니까?');
-
-    if( await result ) {
-
-      var isSignOut = Provider.of<UserStateProvider>((context), listen: false).signOut();
-
-      if( await isSignOut ) {
-        try {
-          // 이전의 마지막 페이지 제거
-          Get.off(() => const Login());
-        } catch(e) {
-          print('Error $e');
-        }
-      }
-    }
   }
 }
