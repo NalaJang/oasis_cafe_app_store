@@ -5,6 +5,10 @@ class Strings {
   static const String collection_userOrder = 'user_order';
   static const String collection_userOrderNew = 'user_order_new';
   static const String collection_userOrderCompleted = 'user_order_completed';
+  static const String collection_aboutUs = 'aboutUs';
+  static const String document_openingHours = 'openingHoursDoc';
+  static const String collection_openingHours = 'openingHours';
+
 
   static const String submit = 'Submit';
   static const String cancel = 'Cancel';

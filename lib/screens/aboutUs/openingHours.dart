@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:oasis_cafe_app_store/config/commonButton.dart';
 import 'package:provider/provider.dart';
 
-import '../../provider/openingHoursProvider.dart';
+import '../../provider/openingHoursController.dart';
 import 'editPages/openingHoursEditPage.dart';
 
 class OpeningHours extends StatelessWidget {
@@ -69,19 +71,20 @@ class OpeningHours extends StatelessWidget {
      내가 해당 속성을 false 로 설정해 놓는 바람에 'getOpeningHours()' 함수에서 hoursList 에 데이터를 담았음에도 불구하고
      바로 데이터가 업데이트 안되었던 것으로 보인다.
     */
-    var openingHoursProvider = Provider.of<OpeningHoursProvider>(context);
+    // var openingHoursProvider = Provider.of<OpeningHoursController>(context);
+    var openingHoursProvider = Get.find<OpeningHoursController>();
     openingHoursProvider.getOpeningHours();
 
-    if( openingHoursProvider.hoursList.isEmpty ) {
+    if( openingHoursProvider.openingHoursList.isEmpty ) {
       return const CircularProgressIndicator();
     }
 
-    String openAmPm = openingHoursProvider.hoursList[index].openAmPm;
-    String openHour = openingHoursProvider.hoursList[index].openHour;
-    String openMinutes = openingHoursProvider.hoursList[index].openMinutes;
-    String closeAmPm = openingHoursProvider.hoursList[index].closeAmPm;
-    String closeHour = openingHoursProvider.hoursList[index].closeHour;
-    String closeMinutes = openingHoursProvider.hoursList[index].closeMinutes;
+    String openAmPm = openingHoursProvider.openingHoursList[index].openAmPm;
+    String openHour = openingHoursProvider.openingHoursList[index].openHour;
+    String openMinutes = openingHoursProvider.openingHoursList[index].openMinutes;
+    String closeAmPm = openingHoursProvider.openingHoursList[index].closeAmPm;
+    String closeHour = openingHoursProvider.openingHoursList[index].closeHour;
+    String closeMinutes = openingHoursProvider.openingHoursList[index].closeMinutes;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -91,7 +94,7 @@ class OpeningHours extends StatelessWidget {
           style: dayTextSize,
         ),
 
-        openingHoursProvider.hoursList[index].openHour == '00' ?
+        openingHoursProvider.openingHoursList[index].openHour == '00' ?
         Text(
           '휴무',
           style: dayTextSize,

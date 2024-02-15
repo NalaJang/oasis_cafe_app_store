@@ -1,25 +1,29 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:oasis_cafe_app_store/strings/strings_en.dart';
 
 import '../model/model_openingHours.dart';
 
-class OpeningHoursProvider with ChangeNotifier {
-  static const String openingHoursDocName = 'openingHoursDoc';
+class OpeningHoursController extends GetxController {
 
   final db = FirebaseFirestore.instance;
-  late DocumentReference openingHoursDocument;
+  late CollectionReference openingHoursDocument;
   late CollectionReference openingHoursCollection;
-  List<OpeningHoursModel> hoursList = [];
+  // List<OpeningHoursModel> hoursList = [];
+  var openingHoursList = <OpeningHoursModel>[].obs;
 
-  OpeningHoursProvider() {
-    openingHoursDocument = db.collection('aboutUs').doc(openingHoursDocName);
+  OpeningHoursController() {
+    openingHoursDocument = db.collection(Strings.collection_aboutUs)
+                            .doc(Strings.document_openingHours)
+                            .collection(Strings.collection_openingHours);
   }
 
 
   // 기본 데이터 세팅
   Future<void> setOpeningHours() async {
     for( int i = 0; i < 7; i++ ) {
-      await openingHoursDocument.collection('openingHours')
+      await openingHoursDocument
           .doc(i.toString())
           .set(
           OpeningHoursModel('오전', '8', '00', '오후', '3', '00').setData()
@@ -29,12 +33,14 @@ class OpeningHoursProvider with ChangeNotifier {
 
 
   Future<void> getOpeningHours() async {
-    hoursList = await openingHoursDocument.collection('openingHours').get().then((querySnapshot) {
+    List<OpeningHoursModel> tempList = await openingHoursDocument.get().then((querySnapshot) {
       return querySnapshot.docs.map((document) {
         return OpeningHoursModel.getSnapshotData(document);
       }).toList();
     });
-    notifyListeners();
+
+    // Use RxList constructor to convert the list to RxList
+    openingHoursList.assignAll(tempList.obs);
   }
 
 
@@ -42,7 +48,7 @@ class OpeningHoursProvider with ChangeNotifier {
   Future<void> updateTime(String date, String openHour, String openMinutes,
       String closeHour, String closeMinutes) async {
 
-    await openingHoursDocument.collection('openingHours').doc(date).update({
+    await openingHoursDocument.doc(date).update({
       'openHour' : openHour,
       'openMinutes' : openMinutes,
       'closeHour' : closeHour,

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
-import 'package:oasis_cafe_app_store/provider/openingHoursProvider.dart';
+import 'package:oasis_cafe_app_store/provider/openingHoursController.dart';
 import 'package:oasis_cafe_app_store/provider/orderStateController.dart';
 import 'package:oasis_cafe_app_store/provider/phoneNumberController.dart';
 import 'package:oasis_cafe_app_store/provider/userStateProvider.dart';
@@ -22,6 +22,7 @@ void main() async {
   // Registering PhoneNumberProvider with Get
   Get.put(PhoneNumberController());
   Get.put(OrderStateController());
+  Get.put(OpeningHoursController());
 
   runApp(const MyApp());
 }
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (context) => UserStateProvider()),
         // ChangeNotifierProvider(create: (context) => OrderStateProvider()),
-        ChangeNotifierProvider(create: (context) => OpeningHoursProvider()),
+        // ChangeNotifierProvider(create: (context) => OpeningHoursProvider()),
         // ChangeNotifierProvider(create: (context) => PhoneNumberProvider()),
       ],
 
