@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/commonDialog.dart';
 import 'package:oasis_cafe_app_store/screens/login/login.dart';
+import 'package:oasis_cafe_app_store/screens/menuManagement/menuManagement.dart';
+import 'package:oasis_cafe_app_store/screens/temporaryStop/temporaryStop.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/palette.dart';
@@ -25,38 +27,13 @@ class MyDrawer extends StatelessWidget {
                 const CustomDrawerHeader(),
 
                 // 새 메뉴 추가, 메뉴 정보 수정, 메뉴 품절 등
-                ListTile(
-                  leading: const Icon(Icons.event_note_outlined),
-                  title: const Text('메뉴 관리'),
-                  onTap: (){},
-                ),
-
+                _drawerListTile(Icons.restaurant_menu, '메뉴 관리', const MenuManagement(), '/MenuManagement'),
                 // 사이렌 오더 받기 임시 중지
-                ListTile(
-                  leading: const Icon(Icons.event_note_outlined),
-                  title: const Text('임시중지'),
-                  onTap: (){},
-                ),
-
+                _drawerListTile(Icons.stop_circle_outlined, '임시 중지', const TemporaryStop(), '/TemporaryStop'),
                 // 운영 시간, 전화번호, 위치
-                ListTile(
-                  leading: const Icon(Icons.event_note_outlined),
-                  title: const Text('운영 정보'),
-                  onTap: (){
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => const AboutUs()));
-                  },
-                ),
-
+                _drawerListTile(Icons.info_outline, '운영 정보', const AboutUs(), '/AboutUs'),
                 // 사이렌 오더 알람 소리 설정, 앱 버전
-                ListTile(
-                  leading: const Icon(Icons.event_note_outlined),
-                  title: const Text('설정'),
-                  onTap: (){
-                    Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => const Setting()));
-                  },
-                ),
+                _drawerListTile(Icons.settings, '설정', const Setting(), '/Setting'),
               ],
             ),
           ),
@@ -82,6 +59,16 @@ class MyDrawer extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  _drawerListTile(IconData icon, String title, Widget nextPage, String routeName) {
+    return ListTile(
+      leading: Icon(icon),
+      title: Text(title),
+      onTap: (){
+        Get.to(() => nextPage, routeName: routeName);
+      },
     );
   }
 
