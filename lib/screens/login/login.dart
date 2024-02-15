@@ -125,6 +125,9 @@ class _LoginState extends State<Login> {
             var isLogged = userProvider.signIn(email, password, isChecked);
 
             if( await isLogged ) {
+              userProvider.userEmail = '';
+              userProvider.userPassword = '';
+
               setState(() {
                 showSpinner = false;
               });

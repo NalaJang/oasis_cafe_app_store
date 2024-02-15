@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/commonDialog.dart';
+import 'package:oasis_cafe_app_store/screens/login/login.dart';
 import 'package:provider/provider.dart';
 
 import '../../config/palette.dart';
-import '../../main.dart';
 import '../../provider/userStateProvider.dart';
 import '../../strings/strings_en.dart';
 import '../aboutUs/aboutUs.dart';
@@ -123,19 +124,19 @@ class MyDrawer extends StatelessWidget {
   // 로그아웃 버튼 클릭
   _pressedSignOutButton(BuildContext context) async {
 
-    var result = CommonDialog().showConfirmDialog((context), '로그아웃 하시겠습니까?');
+    var result =  CommonDialog().showConfirmDialog('로그아웃 하시겠습니까?');
 
     if( await result ) {
 
       var isSignOut = Provider.of<UserStateProvider>((context), listen: false).signOut();
 
       if( await isSignOut ) {
-        Navigator.pushAndRemoveUntil(
-          (context),
-          MaterialPageRoute(
-              builder: (context) => const MyApp()
-          ), (route) => false
-        );
+        try {
+          // 이전의 마지막 페이지 제거
+          Get.off(() => const Login());
+        } catch(e) {
+          print('Error $e');
+        }
       }
     }
   }

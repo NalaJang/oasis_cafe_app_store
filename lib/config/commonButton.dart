@@ -44,6 +44,27 @@ class CommonButton {
     );
   }
 
+
+  // // 라운드 모양의 확인 버튼(로그아웃, 계정 삭제)
+  static Widget roundBorderConfirmButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Palette.darkBackgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        side: const BorderSide(
+          color: Palette.darkBorderColor,
+        )
+      ),
+
+      onPressed: () => Get.key.currentState?.pop(true),
+
+      child: const Text('예'),
+    );
+  }
+
+
   // 취소 버튼
   static Widget cancelButton() {
     return ElevatedButton(
@@ -64,6 +85,32 @@ class CommonButton {
       )
     );
   }
+
+
+  // 라운드 모양의 취소 버튼(로그아웃, 계정 삭제)
+  static Widget roundBorderCancelButton() {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Palette.whiteBackgroundColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20)
+        ),
+        side: const BorderSide(
+          color: Palette.darkBorderColor,
+        )
+      ),
+
+      onPressed: () =>  Get.key.currentState?.pop(false),
+
+      child: const Text(
+        '아니오',
+        style: TextStyle(
+          color: Palette.darkTextColor
+        ),
+      ),
+    );
+  }
+
 
   // 수정하기 버튼
   Widget editButton(BuildContext context, String routeName) {

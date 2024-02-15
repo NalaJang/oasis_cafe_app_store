@@ -1,76 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:oasis_cafe_app_store/config/commonButton.dart';
 import 'package:oasis_cafe_app_store/config/gaps.dart';
-import 'package:oasis_cafe_app_store/config/palette.dart';
 
 class CommonDialog {
 
-  Future<bool> showConfirmDialog(BuildContext context, String content) async {
-    bool result = await showDialog(
-      context: context,
-      barrierDismissible: false, // 다이얼로그 바깥 영역 터치 방지
-      builder: (BuildContext context) {
-        return AlertDialog(
-          content: Text(content),
 
-          actions: [
-            // 취소 버튼
-            _cancelButton(context),
+  showConfirmDialog(String content) {
+    return Get.dialog(
+      // 다이얼로그 바깥 영역 터치 방지
+      barrierDismissible: false,
 
-            Gaps.gapW10,
+      AlertDialog(
+        content: Text(content),
 
-            // 확인 버튼
-            _confirmButton(context)
-          ],
-        );
-      }
-    );
+        actions: [
+          // 취소 버튼
+          CommonButton.roundBorderCancelButton(),
 
-    return result;
-  }
+          Gaps.gapW10,
 
-
-  // 취소 버튼
-  Widget _cancelButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: (){
-        Navigator.of(context).pop(false);
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        backgroundColor: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        side: const BorderSide(
-          color: Palette.buttonColor1,
-        )
-      ),
-      child: const Text(
-        '아니오',
-        style: TextStyle(
-          color: Palette.buttonColor1
-        ),
-      ),
-    );
-  }
-
-  // 확인 버튼
-  Widget _confirmButton(BuildContext context) {
-    return ElevatedButton(
-      onPressed: (){
-        Navigator.of(context).pop(true);
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        backgroundColor: Palette.buttonColor1,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20)
-        ),
-        side: const BorderSide(
-          color: Palette.buttonColor1,
-        )
-      ),
-      child: const Text('예'),
+          // 확인 버튼
+          CommonButton.roundBorderConfirmButton()
+        ],
+      )
     );
   }
 }

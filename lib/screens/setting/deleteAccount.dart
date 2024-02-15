@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/commonDialog.dart';
+import 'package:oasis_cafe_app_store/screens/login/login.dart';
 import 'package:provider/provider.dart';
 
 import '../../main.dart';
@@ -14,21 +16,14 @@ class DeleteAccount extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 50),
       child: GestureDetector(
         onTap: () async {
-          var result = CommonDialog().showConfirmDialog(context, '계정을 삭제하시겠습니까?');
-          if( await result ) {
+          var result = await CommonDialog().showConfirmDialog('계정을 삭제하시겠습니까?');
+          if(  result ) {
 
-            var isDeleted = Provider.of<UserStateProvider>((context), listen: false).deleteAccount();
+            var isDeleted = await Provider.of<UserStateProvider>((context), listen: false).deleteAccount();
 
-            if( await isDeleted ) {
-
-
-
-              Navigator.pushAndRemoveUntil(
-                (context),
-                MaterialPageRoute(
-                  builder: (context) => const MyApp()
-                ), (route) => false
-              );
+            if( isDeleted ) {
+              // 이전의 모든 페이지 제거
+              Get.offAll(() => const Login());
             }
           }
         },
