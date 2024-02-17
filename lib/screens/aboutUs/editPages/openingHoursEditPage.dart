@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
 import 'package:oasis_cafe_app_store/model/model_openingHours.dart';
-import 'package:oasis_cafe_app_store/provider/openingHoursController.dart';
-import 'package:provider/provider.dart';
+import 'package:oasis_cafe_app_store/openingHoursController/openingHoursController.dart';
+import 'package:openingHoursController/openingHoursController.dart';
 
 import '../../../config/circularProgressIndicator.dart';
 
@@ -16,8 +16,8 @@ class OpeningHoursEditPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
 
-    var openingHoursProvider = Get.find<OpeningHoursController>();
-    openingHoursProvider.getOpeningHours();
+    var openingHoursController = Get.find<OpeningHoursController>();
+    // openingHoursController.getOpeningHours();
     List<String> dayList = ['월요일', '화요일', '수요일', '목요일', '금요일', '토요일', '일요일'];
 
     return Scaffold(
@@ -29,7 +29,7 @@ class OpeningHoursEditPage extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.only(left: 15.0, right: 10.0, top: 10.0),
         child:
-        openingHoursProvider.openingHoursList.isEmpty ?
+        openingHoursController.openingHoursList.isEmpty ?
           CircularProgressBar.circularProgressBar :
 
           Obx(() {
@@ -37,10 +37,10 @@ class OpeningHoursEditPage extends StatelessWidget {
               children: [
                 for( var day = 0; day < dayList.length; day++ )
                   SetOpeningHoursTime(
-                    date: openingHoursProvider.openingHoursList[day].id,
+                    date: openingHoursController.openingHoursList[day].id,
                     day: dayList[day],
-                    openTime: openingHoursProvider.openingHoursList[day].openTime,
-                    closeTime: openingHoursProvider.openingHoursList[day].closeTime
+                    openTime: openingHoursController.openingHoursList[day].openTime,
+                    closeTime: openingHoursController.openingHoursList[day].closeTime
                   ),
               ],
             );
@@ -174,7 +174,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
 
   void _showTimePickerDialog(String selectedDate, Widget child) {
     double popupHeight = MediaQuery.of(context).size.height * 0.4;
-    var provider = Get.find<OpeningHoursController>();
+    var openingHoursController = Get.find<OpeningHoursController>();
 
     showCupertinoModalPopup(
       context: context,
@@ -207,7 +207,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                 TextButton(
                   onPressed: (){
                     Navigator.pop(context);
-                    provider.updateTime(selectedDate, '00', '00', '00', '00');
+                    openingHoursController.updateTime(selectedDate, '00', '00', '00', '00');
                   },
                   child: const Text(
                     '휴무',
@@ -234,7 +234,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                 ),
                 onPressed: (){
                   Navigator.pop(context);
-                  provider.updateTime(selectedDate, changedOpenHour, changedOpenMinutes,
+                  openingHoursController.updateTime(selectedDate, changedOpenHour, changedOpenMinutes,
                       changedCloseHour, changedCloseMinutes);
                 },
                 child: const Text('적용'),

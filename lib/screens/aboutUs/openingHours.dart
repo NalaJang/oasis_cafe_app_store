@@ -62,7 +62,7 @@ class OpeningHours extends StatelessWidget {
     var dayTextSize = const TextStyle(fontSize: 17.0);
 
     /*
-     var openingHoursProvider = Provider.of<OpeningHoursProvider>(context, listen: false);
+     var openingHoursController = Provider.of<openingHoursController>(context, listen: false);
      (에러) RangeError (index): Invalid value: Valid value range is empty: 0
      : 페이지를 나갔다 다시 들어오면 정상 작동하였다. 분명 이 전에는 잘 작동했고 메소드로 코드를 분리하는 바람에 생긴 문제일까 고민했는데
      원인은 Provider 의 'listen: false' 파라미터 때문이었다.
@@ -73,19 +73,19 @@ class OpeningHours extends StatelessWidget {
      내가 해당 속성을 false 로 설정해 놓는 바람에 'getOpeningHours()' 함수에서 hoursList 에 데이터를 담았음에도 불구하고
      바로 데이터가 업데이트 안되었던 것으로 보인다.
     */
-    var openingHoursProvider = Get.find<OpeningHoursController>();
-    openingHoursProvider.getOpeningHours();
+    var openingHoursController = Get.find<OpeningHoursController>();
+    openingHoursController.getOpeningHours();
 
-    if( openingHoursProvider.openingHoursList.isEmpty ) {
+    if( openingHoursController.openingHoursList.isEmpty ) {
       return const CircularProgressIndicator();
     }
 
-    String openAmPm = openingHoursProvider.openingHoursList[index].openAmPm;
-    String openHour = openingHoursProvider.openingHoursList[index].openHour;
-    String openMinutes = openingHoursProvider.openingHoursList[index].openMinutes;
-    String closeAmPm = openingHoursProvider.openingHoursList[index].closeAmPm;
-    String closeHour = openingHoursProvider.openingHoursList[index].closeHour;
-    String closeMinutes = openingHoursProvider.openingHoursList[index].closeMinutes;
+    String openAmPm = openingHoursController.openingHoursList[index].openAmPm;
+    String openHour = openingHoursController.openingHoursList[index].openHour;
+    String openMinutes = openingHoursController.openingHoursList[index].openMinutes;
+    String closeAmPm = openingHoursController.openingHoursList[index].closeAmPm;
+    String closeHour = openingHoursController.openingHoursList[index].closeHour;
+    String closeMinutes = openingHoursController.openingHoursList[index].closeMinutes;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -95,7 +95,7 @@ class OpeningHours extends StatelessWidget {
           style: dayTextSize,
         ),
 
-        openingHoursProvider.openingHoursList[index].openHour == '00' ?
+        openingHoursController.openingHoursList[index].openHour == '00' ?
         Text(
           '휴무',
           style: dayTextSize,
