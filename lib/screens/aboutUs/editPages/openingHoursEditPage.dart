@@ -32,17 +32,19 @@ class OpeningHoursEditPage extends StatelessWidget {
         openingHoursProvider.openingHoursList.isEmpty ?
           CircularProgressBar.circularProgressBar :
 
-          Column(
-            children: [
-              for( var day = 0; day < dayList.length; day++ )
-                SetOpeningHoursTime(
-                  date: openingHoursProvider.openingHoursList[day].id,
-                  day: dayList[day],
-                  openTime: openingHoursProvider.openingHoursList[day].openTime,
-                  closeTime: openingHoursProvider.openingHoursList[day].closeTime
-                ),
-            ],
-          ),
+          Obx(() {
+            return Column(
+              children: [
+                for( var day = 0; day < dayList.length; day++ )
+                  SetOpeningHoursTime(
+                    date: openingHoursProvider.openingHoursList[day].id,
+                    day: dayList[day],
+                    openTime: openingHoursProvider.openingHoursList[day].openTime,
+                    closeTime: openingHoursProvider.openingHoursList[day].closeTime
+                  ),
+              ],
+            );
+          }),
       )
     );
   }
@@ -119,7 +121,6 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
           ],
         ),
 
-        // const SizedBox(width: 15.0,),
         Row(
           children: [
             const Text('종료'),
@@ -173,7 +174,6 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
 
   void _showTimePickerDialog(String selectedDate, Widget child) {
     double popupHeight = MediaQuery.of(context).size.height * 0.4;
-    // var provider = Provider.of<OpeningHoursController>(context, listen: false);
     var provider = Get.find<OpeningHoursController>();
 
     showCupertinoModalPopup(

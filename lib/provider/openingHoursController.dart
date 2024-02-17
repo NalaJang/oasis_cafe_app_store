@@ -10,7 +10,6 @@ class OpeningHoursController extends GetxController {
   final db = FirebaseFirestore.instance;
   late CollectionReference openingHoursDocument;
   late CollectionReference openingHoursCollection;
-  // List<OpeningHoursModel> hoursList = [];
   var openingHoursList = <OpeningHoursModel>[].obs;
 
   OpeningHoursController() {
@@ -48,9 +47,21 @@ class OpeningHoursController extends GetxController {
   Future<void> updateTime(String date, String openHour, String openMinutes,
       String closeHour, String closeMinutes) async {
 
+    String openAmPm = '오전';
+    String closeAmPm = '오전';
+
+    if( int.parse(openHour) > 12 ) {
+      openAmPm = '오후';
+    }
+    if( int.parse(closeHour) > 12 ) {
+      closeAmPm = '오후';
+    }
+
     await openingHoursDocument.doc(date).update({
+      'openAmPm': openAmPm,
       'openHour' : openHour,
       'openMinutes' : openMinutes,
+      'closeAmPm' : closeAmPm,
       'closeHour' : closeHour,
       'closeMinutes' : closeMinutes,
     });

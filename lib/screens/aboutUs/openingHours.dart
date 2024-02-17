@@ -33,7 +33,9 @@ class OpeningHours extends StatelessWidget {
 
         // 서버에서 영업 시간 가져오기
         for( var i = 0; i < dayList.length; i++ )
-          _getOpeningHoursInfo(context, dayList[i], i)
+          Obx(() {
+            return _getOpeningHoursInfo(context, dayList[i], i);
+          })
       ],
     );
   }
@@ -71,7 +73,6 @@ class OpeningHours extends StatelessWidget {
      내가 해당 속성을 false 로 설정해 놓는 바람에 'getOpeningHours()' 함수에서 hoursList 에 데이터를 담았음에도 불구하고
      바로 데이터가 업데이트 안되었던 것으로 보인다.
     */
-    // var openingHoursProvider = Provider.of<OpeningHoursController>(context);
     var openingHoursProvider = Get.find<OpeningHoursController>();
     openingHoursProvider.getOpeningHours();
 
