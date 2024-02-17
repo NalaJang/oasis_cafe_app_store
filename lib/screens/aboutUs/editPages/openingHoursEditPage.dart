@@ -2,11 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:oasis_cafe_app_store/config/palette.dart';
-import 'package:oasis_cafe_app_store/model/model_openingHours.dart';
-import 'package:oasis_cafe_app_store/openingHoursController/openingHoursController.dart';
-import 'package:openingHoursController/openingHoursController.dart';
 
 import '../../../config/circularProgressIndicator.dart';
+import '../../../provider/openingHoursController.dart';
 
 class OpeningHoursEditPage extends StatelessWidget {
   const OpeningHoursEditPage({Key? key}) : super(key: key);
@@ -233,7 +231,7 @@ class _SetOpeningHoursTime extends State<SetOpeningHoursTime> {
                   )
                 ),
                 onPressed: (){
-                  Navigator.pop(context);
+                  Get.back();
                   openingHoursController.updateTime(selectedDate, changedOpenHour, changedOpenMinutes,
                       changedCloseHour, changedCloseMinutes);
                 },
