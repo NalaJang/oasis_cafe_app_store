@@ -15,9 +15,10 @@ class UserStateProvider with ChangeNotifier {
   final db = FirebaseFirestore.instance;
   final _authentication = FirebaseAuth.instance;
   late CollectionReference userInfo;
+  late String userUid;
   var storage = const FlutterSecureStorage();
 
-  String userUid = '';
+  // String userUid = '';
   String userName = '';
   String userEmail = '';
   String userPassword = '';
@@ -40,9 +41,10 @@ class UserStateProvider with ChangeNotifier {
         email: email, password: password);
 
     if( newUser.user != null ) {
+      userUid = newUser.user!.uid;
 
       await userInfo
-          .doc(newUser.user!.uid)
+          .doc(userUid)
           .set(
               UserModel(name, email, password, mobileNumber).setData()
       );
