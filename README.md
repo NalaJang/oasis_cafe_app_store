@@ -19,9 +19,10 @@ This app is designed to streamline and enhance the management of orders, providi
 
 ## General info
 1. 개발 기간 : 2023.10 ~ 2024.01
-2. 주문 확인 : Firebase Database를 활용하여 주문 상태를 모니터하고 업데이트할 수 있습니다.
-3. 직관적 사용자 인터페이스 : Flutter의 위젯 라이브러리를 이용하여 직관적이인 주문 관리 인터페이스를 구현했습니다.
-4. 인증 및 권한 부여 : Firebase Authentication을 활용하여 권한이 부여된 관리자 및 직원이 안전하게 액세스할 수 있도록 하였습니다.
+2. 개발 인원 : 1명
+3. 주문 확인 : Firebase Database를 활용하여 주문 상태를 모니터하고 업데이트할 수 있습니다.
+4. 직관적 사용자 인터페이스 : Flutter의 위젯 라이브러리를 이용하여 직관적이인 주문 관리 인터페이스를 구현했습니다.
+5. 인증 및 권한 부여 : Firebase Authentication을 활용하여 권한이 부여된 관리자 및 직원이 안전하게 액세스할 수 있도록 하였습니다.
 
 <br></br>
 
